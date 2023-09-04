@@ -17,11 +17,24 @@ module.exports = (sequelize, DataTypes) => {
           discountedPrice: {
               type: DataTypes.INTEGER
             },
-          category:{
-            type: DataTypes.STRING
+          categoryId:{
+            type: DataTypes.INTEGER
           },
-          subCategory:{
+          subCategoryId:{
+              type: DataTypes.INTEGER
+            },
+          subSubCategoryId:{
+              type: DataTypes.INTEGER
+            },
+            image:{
               type: DataTypes.STRING
+            },
+            featuredImage:{
+              type: DataTypes.STRING
+    
+            },
+            trendingProduct:{
+              type: DataTypes.BOOLEAN
             },
           status: {
             type: DataTypes.BOOLEAN,

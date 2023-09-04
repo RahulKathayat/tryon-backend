@@ -1,10 +1,10 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
-const { AddProduct } = require('../models');
+const { WishList } = require('../models');
 const createAddProduct = async (_userBody) => {
   try {
     const userBody = _userBody;
-    const createdUser = await AddProduct.create(userBody);
+    const createdUser = await WishList.create(userBody);
     return createdUser;
   } catch (error) {
     console.error('Error creating user:', error);
@@ -13,7 +13,7 @@ const createAddProduct = async (_userBody) => {
 };
 const getAddProduct = async () => {
   try {
-    const data = await AddProduct.findAll();
+    const data = await WishList.findAll();
     return data;
   } catch (error) {
     console.error('Error retrieving users:', error);
@@ -23,7 +23,7 @@ const getAddProduct = async () => {
 const getAddProductById = async (id) => {
   try {
     console.log('id======================', id);
-    const data = await AddProduct.findOne({
+    const data = await WishList.findOne({
       where: { id: id }
     });
     return data;
@@ -34,7 +34,7 @@ const getAddProductById = async (id) => {
 };
 const getAddProductByEmail = async (email) => {
   try {
-    const data = await AddProduct.findOne({
+    const data = await WishList.findOne({
       where: { email: email }
     });
     return data;
@@ -47,7 +47,7 @@ const getAddProductByEmail = async (email) => {
 const updateAddProductById = async (query, newData) => {
   const id = query.id;
   console.log(id, '==================');
-  const findData = await AddProduct.findOne({
+  const findData = await WishList.findOne({
     where: { id: id }
   });
   if (findData) {
@@ -58,7 +58,7 @@ const updateAddProductById = async (query, newData) => {
 };
 const deleteAddProductById = async (id) => {
   try {
-    const deletedRowsCount = await AddProduct.destroy({
+    const deletedRowsCount = await WishList.destroy({
       where: { id: id }
     });
     return deletedRowsCount;
@@ -69,7 +69,7 @@ const deleteAddProductById = async (id) => {
 };
 const getAddProductWithSecretFieldsById = async (id) => {
   try {
-    const user = await AddProduct.scope('withSecretColumns').findOne({
+    const user = await WishList.scope('withSecretColumns').findOne({
       where: { id: id }
     });
     return user;

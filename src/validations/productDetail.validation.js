@@ -5,6 +5,10 @@ const createProductDetail = {
   body: Joi.object().keys({
    productId:Joi.number().required(),
    description: Joi.string().required(),
+   additionalInformation:Joi.string().required(),
+   sku:Joi.string().required(),
+   tags:Joi.string().required(),
+   fabric:Joi.string().required(),
    size:Joi.number().required(),
    colour:Joi.string().required(),
    status: Joi.boolean()
@@ -17,6 +21,10 @@ const updateProductDetail = {
   }),
   productId:Joi.number().required(),
   description: Joi.string().required(),
+  additionalInformation:Joi.string().required(),
+  sku:Joi.string().required(),
+  tags:Joi.string().required(),
+  fabric:Joi.string().required(),
   size:Joi.number().required(),
   colour:Joi.string().required(),
   status: Joi.boolean()

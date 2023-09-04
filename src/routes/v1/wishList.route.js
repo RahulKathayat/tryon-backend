@@ -1,7 +1,7 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const addProductController = require('../../controllers/addproduct.controller');
+const addProductController = require('../../controllers/wishList.controller');
 const authValidation = require('../../validations/auth.validation');
 const { addProductValidation } = require('../../validations');
 const { commonService } = require('../../services');

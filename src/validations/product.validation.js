@@ -9,8 +9,12 @@ const createProduct = {
     brandName:Joi.string().required(),
     originalPrice:Joi.number().required(),
     discountedPrice:Joi.number().required(),
-    category:Joi.string().required(),
-    subCategory:Joi.string().required(),
+    categoryId:Joi.number().required(),
+    subCategoryId:Joi.number().required(),
+    subSubCategoryId:Joi.number().required(),
+    image:Joi.string().required(),
+    featuredImage:Joi.string().required(),
+    trendingProduct:Joi.boolean(),
     status: Joi.boolean()
   })
 };
@@ -24,8 +28,12 @@ const updateProduct = {
     brandName:Joi.string().required(),
     originalPrice:Joi.number().required(),
     discountedPrice:Joi.number().required(),
-    category:Joi.string().required(),
-    subCategory:Joi.string().required(),
+    categoryId:Joi.number().required(),
+    subCategoryId:Joi.number().required(),
+    subSubCategoryId:Joi.number().required(),
+    image:Joi.string().required(),
+    featuredImage:Joi.string().required(),
+    trendingProduct:Joi.boolean(),
     status: Joi.boolean()
 };
 

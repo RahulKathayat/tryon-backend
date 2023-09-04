@@ -22,12 +22,25 @@ module.exports = {
         discountedPrice: {
             type: Sequelize.INTEGER
           },
-        category:{
+        categoryId:{
+          type: Sequelize.INTEGER
+        },
+        subCategoryId:{
+            type: Sequelize.INTEGER
+          },
+        subSubCategoryId:{
+            type: Sequelize.INTEGER
+          },
+        image:{
           type: Sequelize.STRING
         },
-        subCategory:{
-            type: Sequelize.STRING
-          },
+        featuredImage:{
+          type: Sequelize.STRING
+
+        },
+        trendingProduct:{
+          type: Sequelize.BOOLEAN
+        },
         status: {
           type: Sequelize.BOOLEAN
         },

@@ -8,6 +8,19 @@ module.exports = (sequelize, DataTypes) => {
         description: {
           type: DataTypes.STRING
         },
+        additionalInformation: {
+          type: DataTypes.STRING
+        },
+        sku:{
+          type:DataTypes.STRING
+        },
+        tags:{
+          type:DataTypes.STRING
+        },
+        fabric:{
+          type: DataTypes.STRING
+
+        },
         size: {
           type: DataTypes.STRING
         },

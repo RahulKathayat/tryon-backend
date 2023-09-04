@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const AddProduct = sequelize.define(
-      'AddProduct',
+    const WishList = sequelize.define(
+      'WishList',
       {
         productId:{
             type: DataTypes.INTEGER
@@ -20,10 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       {
-        tableName: 'AddProduct',
+        tableName: 'WishList',
         freezeTableName: true,
       }
     );
-     return AddProduct;
+     return WishList;
   };
   

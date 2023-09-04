@@ -1,0 +1,73 @@
+const catchAsync = require('../utils/catchAsync');
+const categoryService = require('../services/category.service');
+const httpStatus = require('http-status');
+
+const   createCategory= catchAsync(async (req, res) => {
+  let userBody = req.body;
+  const data = await categoryService.createCategory(userBody);
+  if (data) {
+    await res.status(200).send({ message: 'order created successfully' });
+  } else {
+    await res.status(404).send({ message: 'order not created' });
+  }
+});
+
+
+
+const getCategory = catchAsync(async (req, res) => {
+  const data = await categoryService.getCategory();
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'order data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
+
+const getCategoryById = catchAsync(async (req, res) => {
+  const data = await categoryService.getCategoryById(req.params.id);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'order data by id is fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
+
+
+
+const updateCategory = catchAsync(async (req, res) => {
+  try {
+    const userId = req.params;
+    const newData = req.body;
+    const updatedUser = await categoryService.updateCategoryById(userId, newData);
+    if (updatedUser) {
+      res.status(200).send({ data: updatedUser, message: 'order updated successfully' });
+    } else {
+      res.status(404).send({ message: 'order not found', status: 0 });
+    }
+  } catch (error) {
+    console.error('Error updating card:', error);
+    res.status(500).send({ message: 'Internal server error', status: -1 });
+  }
+});
+
+
+
+const deleteCategory = catchAsync(async (req, res) => {
+  const querry = req.params;
+
+  const deleteUser = await categoryService.deleteCategoryById(querry);
+  if (deleteUser) {
+    res.status(httpStatus.OK).send({ message: 'order deleted successfully' });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in card delete' });
+  }
+});
+module.exports = {
+    createCategory,
+    deleteCategory,
+    getCategory,
+    updateCategory,
+    getCategoryById
+};

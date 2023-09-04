@@ -1,35 +1,16 @@
 module.exports = {
     up: (queryInterface, Sequelize) =>
-      queryInterface.createTable('ProductDetails', {
+      queryInterface.createTable('SubSubCategory', {
         id: {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER
         },
-        productId:{
+        subCategoryId:{
             type: Sequelize.INTEGER
-          },
-        description: {
-          type: Sequelize.STRING
         },
-        additionalInformation: {
-          type: Sequelize.STRING
-        },
-        sku:{
-          type:Sequelize.STRING
-        },
-        tags:{
-          type:Sequelize.STRING
-        },
-        fabric:{
-          type: Sequelize.STRING
-
-        },
-        size: {
-          type: Sequelize.STRING
-        },
-        colour: {
+        description:{
             type: Sequelize.STRING
         },
         status: {
@@ -44,6 +25,6 @@ module.exports = {
           type: Sequelize.DATE
         }
       }),
-    down: (queryInterface) => queryInterface.dropTable('ProductDetails')
+    down: (queryInterface) => queryInterface.dropTable('SubSubCategory')
   };
   

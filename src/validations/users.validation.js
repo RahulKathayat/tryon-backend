@@ -9,7 +9,7 @@ const createUser = {
     email: Joi.string().required().email(),
     emailVerify: Joi.boolean().required(),
     password: Joi.string().required(),
-    address: Joi.string().required(),
+    addressId: Joi.number().required(),
     dob: Joi.date().required(),
     role: Joi.string().required(),
     status: Joi.boolean()
@@ -27,7 +27,7 @@ const updateUser = {
     email: Joi.string().required().email(),
     emailVerify: Joi.boolean().required(),
     password: Joi.string().required(),
-    address: Joi.string().required(),
+    addressId: Joi.number().required(),
     dob: Joi.date().required(),
     role: Joi.string().required(),
     status: Joi.boolean()

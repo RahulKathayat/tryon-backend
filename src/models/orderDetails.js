@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
           amount:{
               type:DataTypes.INTEGER
           },
+          trackingId:{
+            type:DataTypes.STRING
+  
+          },
           status: {
             type: DataTypes.BOOLEAN,
             defaultValue:true

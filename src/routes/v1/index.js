@@ -9,10 +9,11 @@ const productRoute = require('./product.route');
 const paymentRoute = require('./payment.route');
 const orderRoute = require('./order.route');
 const orderDetailsRoute = require('./orderDetails.route');
-const addProductRoute = require('./addProduct.route');
-
-
-
+const wishListRoute = require('./wishList.route');
+const CategoryRoute = require('./category.route');
+const subCategoryRoute = require('./subCategory.route');
+const subSubCategoryRoute = require('./subSubCategory.route');
+const addressRoute= require("./address.route")
 
 const router = express.Router();
 
@@ -47,6 +48,10 @@ const defaultRoutes = [
     route: paymentRoute
   },
   {
+    path: '/address',
+    route: addressRoute
+  },
+  {
     path: '/order',
     route: orderRoute
   },
@@ -55,9 +60,21 @@ const defaultRoutes = [
     route: orderDetailsRoute
   },
   {
-    path: '/addProduct',
-    route: addProductRoute
+    path: '/wishList',
+    route: wishListRoute
   },
+  {
+    path: '/category',
+    route: CategoryRoute
+  },
+  {
+    path: '/subCategory',
+    route: subCategoryRoute
+  },
+  {
+    path: '/subSubCategory',
+    route: subSubCategoryRoute
+  }
   
 ];
 

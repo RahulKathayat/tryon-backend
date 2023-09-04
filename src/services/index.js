@@ -9,7 +9,11 @@ module.exports.productService = require('./product.service');
 module.exports.paymentService = require('./payment.service');
 module.exports.orderService = require('./order.service');
 module.exports.orderDetailsService = require('./orderDetails.service');
-module.exports.addProductService = require('./addProduct.service');
+module.exports.addProductService = require('./wishList.service');
+module.exports.categoryService = require('./category.service');
+module.exports.subCategoryService = require('./subCategory.service');
+module.exports.subSubCategoryService = require('./subSubCategory.service');
+
 
 
 

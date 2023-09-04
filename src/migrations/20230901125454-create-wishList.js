@@ -1,6 +1,6 @@
 module.exports = {
     up: (queryInterface, Sequelize) =>
-      queryInterface.createTable('ProductDetails', {
+      queryInterface.createTable('WishList', {
         id: {
           allowNull: false,
           autoIncrement: true,
@@ -10,27 +10,14 @@ module.exports = {
         productId:{
             type: Sequelize.INTEGER
           },
-        description: {
+        productDetailId:{
+            type: Sequelize.INTEGER
+          },
+        userId:{
+            type: Sequelize.INTEGER
+          },
+        type: {
           type: Sequelize.STRING
-        },
-        additionalInformation: {
-          type: Sequelize.STRING
-        },
-        sku:{
-          type:Sequelize.STRING
-        },
-        tags:{
-          type:Sequelize.STRING
-        },
-        fabric:{
-          type: Sequelize.STRING
-
-        },
-        size: {
-          type: Sequelize.STRING
-        },
-        colour: {
-            type: Sequelize.STRING
         },
         status: {
           type: Sequelize.BOOLEAN
@@ -44,6 +31,6 @@ module.exports = {
           type: Sequelize.DATE
         }
       }),
-    down: (queryInterface) => queryInterface.dropTable('ProductDetails')
+    down: (queryInterface) => queryInterface.dropTable('WishList')
   };
   
