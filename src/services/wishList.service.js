@@ -1,89 +1,70 @@
-const httpStatus = require('http-status');
-const bcrypt = require('bcryptjs');
 const { WishList } = require('../models');
-const createAddProduct = async (_userBody) => {
-  try {
-    const userBody = _userBody;
-    const createdUser = await WishList.create(userBody);
-    return createdUser;
-  } catch (error) {
-    console.error('Error creating user:', error);
-    throw error;
-  }
+
+const createWishlist = async (_userBody) => {
+  const userBody = _userBody;
+  console.log("===============",userBody);
+   const data= await WishList.create(userBody);
+   console.log("data",data);
+   return data
 };
-const getAddProduct = async () => {
+
+const getWishlist = async () => {
   try {
-    const data = await WishList.findAll();
-    return data;
-  } catch (error) {
-    console.error('Error retrieving users:', error);
-    throw error;
-  }
-};
-const getAddProductById = async (id) => {
-  try {
-    console.log('id======================', id);
-    const data = await WishList.findOne({
-      where: { id: id }
+    const data = await WishList.findAll({
+      where: {}
     });
     return data;
   } catch (error) {
-    console.error('Error retrieving user by id:', error);
-    throw error;
+    console.error('WishList not found!!', error);
   }
 };
-const getAddProductByEmail = async (email) => {
+
+const getWishlistById = async (id) => {
   try {
-    const data = await WishList.findOne({
-      where: { email: email }
+    const data = await WishList.findAll({
+      where: {id:id}
     });
     return data;
   } catch (error) {
-    console.error('Error retrieving user by email:', error);
-    throw error;
+    console.error('WishList not found!!', error);
   }
 };
-//update user
-const updateAddProductById = async (query, newData) => {
-  const id = query.id;
-  console.log(id, '==================');
+
+const updateWishlistById = async (id, newData) => {
   const findData = await WishList.findOne({
-    where: { id: id }
+    where: id
   });
   if (findData) {
-    return findData.update(newData, { where: { id: id } });
+    return WishList.update(newData, { where: id });
   } else {
     return;
   }
-};
-const deleteAddProductById = async (id) => {
+}
+
+
+const deleteWishlistById = async (Id) => {
   try {
-    const deletedRowsCount = await WishList.destroy({
-      where: { id: id }
-    });
-    return deletedRowsCount;
+    const user = await WishList.findOne({ where:   Id  });
+
+    if (!user) {
+      throw new Error('Wishlist not found');
+    }
+    await user.update({ status: false });
+
+    console.log("Wishlist deleted successfully");
+
+    return { message: 'Wishlist deleted successfully' };
   } catch (error) {
-    console.error('Error deleting user by id:', error);
+    console.error(error);
     throw error;
   }
 };
-const getAddProductWithSecretFieldsById = async (id) => {
-  try {
-    const user = await WishList.scope('withSecretColumns').findOne({
-      where: { id: id }
-    });
-    return user;
-  } catch (error) {
-    console.error('Error retrieving user with secret fields by id:', error);
-    throw error;
-  }
-};
+
 module.exports = {
-    createAddProduct,
-  getAddProduct,
-  updateAddProductById,
-  deleteAddProductById,
-  getAddProductWithSecretFieldsById,
-  getAddProductByEmail,
-  getAddProductById
+    createWishlist,
+    getWishlist,
+    updateWishlistById,
+    deleteWishlistById,
+    getWishlistById
+  
 };

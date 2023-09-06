@@ -1,78 +1,73 @@
 const catchAsync = require('../utils/catchAsync');
-const { addProductService } = require('../services');
+const wishlistService = require('../services/wishList.service');
 const httpStatus = require('http-status');
 
-const createAddProduct = catchAsync(async (req, res) => {
+const   createWishlist= catchAsync(async (req, res) => {
   let userBody = req.body;
-  const data = await addProductService.createAddProduct(userBody);
+  const data = await wishlistService.createWishlist(userBody);
   if (data) {
-    await res.status(200).send({ message: 'add product created successfully' });
+    await res.status(200).send({ message: 'Wishlist created successfully' });
   } else {
-    await res.status(404).send({ message: 'product not added' });
+    await res.status(404).send({ message: 'Wishlist not created' });
   }
 });
 
-const getAddProduct = catchAsync(async (req, res) => {
-  const data = await addProductService.getAddProduct();
+
+
+const getWishlist = catchAsync(async (req, res) => {
+  const data = await wishlistService.getWishlist();
   if (data) {
-    res.status(httpStatus.OK).send({ message: 'add product  data fetched successfully', data: data });
-  } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
-  }
-  return data;
-});
-const getAddProductById = catchAsync(async (req, res) => {
-  const data = await addProductService.getAddProductById(req.params.id);
-  if (data) {
-    res.status(httpStatus.OK).send({ message: 'add product  by id is fetched successfully', data: data });
+    res.status(httpStatus.OK).send({ message: 'Wishlist data fetched successfully', data: data });
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
   }
   return data;
 });
 
-const getAddProductByEmail = catchAsync(async (req, res) => {
-  const query = req.query.email;
-  console.log('check query email-----------------', query);
-  const data = await addProductService.getAddProductByEmail(query);
+const getWishlistById = catchAsync(async (req, res) => {
+  const data = await wishlistService.getWishlistById(req.params.id);
   if (data) {
-    res.status(httpStatus.OK).send({ message: 'add product  data by email is fetched successfully', data: data });
+    res.status(httpStatus.OK).send({ message: 'Wishlist data by id is fetched successfully', data: data });
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
   }
   return data;
 });
 
-const updateAddProduct = catchAsync(async (req, res) => {
+
+
+const updateWishlist = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
     const newData = req.body;
-    const updatedUser = await addProductService.updateAddProductById(userId, newData);
+    const updatedUser = await wishlistService.updateWishlistById(userId, newData);
     if (updatedUser) {
-      res.status(200).send({ data: updatedUser, message: 'add product  updated successfully' });
+      res.status(200).send({ data: updatedUser, message: 'Wishlist updated successfully' });
     } else {
-      res.status(404).send({ message: 'add product  not found', status: 0 });
+      res.status(404).send({ message: 'Wishlist not found', status: 0 });
     }
   } catch (error) {
-    console.error('Error updating wallet:', error);
+    console.error('Error updating Wishlist:', error);
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
 
-const deleteAddProduct = catchAsync(async (req, res) => {
+
+
+const deleteWishlist = catchAsync(async (req, res) => {
   const querry = req.params;
-  const deleteUser = await addProductService.deleteAddProductById(querry);
+
+  const deleteUser = await wishlistService.deleteWishlistById(querry);
   if (deleteUser) {
-    res.status(httpStatus.OK).send({ message: 'add product  deleted successfully' });
+    res.status(httpStatus.OK).send({ message: 'Wishlist deleted successfully' });
   } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in User delete' });
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in Wishlist delete' });
   }
 });
 module.exports = {
-  createAddProduct,
-  deleteAddProduct,
-  getAddProduct,
-  updateAddProduct,
-  getAddProductById,
-  getAddProductByEmail
+  createWishlist,
+  deleteWishlist,
+    getWishlist,
+    updateWishlist,
+  getWishlistById
 };

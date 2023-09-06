@@ -12,7 +12,7 @@ const getRatings = async () => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('ratings not found!!', error);
   }
 };
 
@@ -23,7 +23,7 @@ const getRatingsById = async (id) => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('ratings not found!!', error);
   }
 };
 
@@ -39,10 +39,22 @@ const updateRatingsById = async (id, newData) => {
 }
 
 
-const deleteRatingsById = async (id) => {
-  return Ratings.destroy({
-    where: id
-  });
+const deleteRatingsById = async (Id) => {
+  try {
+    const user = await Ratings.findOne({ where:   Id  });
+
+    if (!user) {
+      throw new Error('Ratings not found');
+    }
+    await user.update({ status: false });
+
+    console.log("Ratings deleted successfully");
+
+    return { message: 'Ratings deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 module.exports = {

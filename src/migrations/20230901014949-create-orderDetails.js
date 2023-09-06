@@ -20,6 +20,10 @@ module.exports = {
           type:Sequelize.STRING
 
         },
+        trackingLink:{
+          type:Sequelize.STRING
+
+        },
         status: {
           type: Sequelize.BOOLEAN
         },

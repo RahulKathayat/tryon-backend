@@ -33,9 +33,14 @@ module.exports = (sequelize, DataTypes) => {
               type: DataTypes.STRING
     
             },
-            trendingProduct:{
-              type: DataTypes.BOOLEAN
+            productType:{
+              type: DataTypes.INTEGER
             },
+          length:{
+            type: DataTypes.INTEGER
+  
+          },
+
           status: {
             type: DataTypes.BOOLEAN,
             defaultValue:true

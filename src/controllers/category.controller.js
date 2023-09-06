@@ -6,9 +6,9 @@ const   createCategory= catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await categoryService.createCategory(userBody);
   if (data) {
-    await res.status(200).send({ message: 'order created successfully' });
+    await res.status(200).send({ message: 'category created successfully' });
   } else {
-    await res.status(404).send({ message: 'order not created' });
+    await res.status(404).send({ message: 'category not created' });
   }
 });
 
@@ -17,7 +17,7 @@ const   createCategory= catchAsync(async (req, res) => {
 const getCategory = catchAsync(async (req, res) => {
   const data = await categoryService.getCategory();
   if (data) {
-    res.status(httpStatus.OK).send({ message: 'order data fetched successfully', data: data });
+    res.status(httpStatus.OK).send({ message: 'category data fetched successfully', data: data });
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
   }
@@ -27,7 +27,7 @@ const getCategory = catchAsync(async (req, res) => {
 const getCategoryById = catchAsync(async (req, res) => {
   const data = await categoryService.getCategoryById(req.params.id);
   if (data) {
-    res.status(httpStatus.OK).send({ message: 'order data by id is fetched successfully', data: data });
+    res.status(httpStatus.OK).send({ message: 'category data by id is fetched successfully', data: data });
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
   }
@@ -42,12 +42,12 @@ const updateCategory = catchAsync(async (req, res) => {
     const newData = req.body;
     const updatedUser = await categoryService.updateCategoryById(userId, newData);
     if (updatedUser) {
-      res.status(200).send({ data: updatedUser, message: 'order updated successfully' });
+      res.status(200).send({ data: updatedUser, message: 'category updated successfully' });
     } else {
-      res.status(404).send({ message: 'order not found', status: 0 });
+      res.status(404).send({ message: 'category not found', status: 0 });
     }
   } catch (error) {
-    console.error('Error updating card:', error);
+    console.error('Error updating category:', error);
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
@@ -59,9 +59,9 @@ const deleteCategory = catchAsync(async (req, res) => {
 
   const deleteUser = await categoryService.deleteCategoryById(querry);
   if (deleteUser) {
-    res.status(httpStatus.OK).send({ message: 'order deleted successfully' });
+    res.status(httpStatus.OK).send({ message: 'category deleted successfully' });
   } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in card delete' });
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in category delete' });
   }
 });
 module.exports = {

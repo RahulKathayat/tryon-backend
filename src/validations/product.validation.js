@@ -1,5 +1,4 @@
 const Joi = require('joi');
-// const { password, objectId } = require('./custom.validation');
 
 const createProduct = {
   body: Joi.object().keys({
@@ -14,7 +13,8 @@ const createProduct = {
     subSubCategoryId:Joi.number().required(),
     image:Joi.string().required(),
     featuredImage:Joi.string().required(),
-    trendingProduct:Joi.boolean(),
+    productType:Joi.number().valid(0,1,2).required(), //0=newProduct, 1=hotDeals, 2=bestSeller
+    length:Joi.number().required(),
     status: Joi.boolean()
   })
 };
@@ -33,7 +33,8 @@ const updateProduct = {
     subSubCategoryId:Joi.number().required(),
     image:Joi.string().required(),
     featuredImage:Joi.string().required(),
-    trendingProduct:Joi.boolean(),
+    productType:Joi.number().valid(0,1,2).required(), //0=newProduct, 1=hotDeals, 2=bestSeller
+    length:Joi.number().required(),
     status: Joi.boolean()
 };
 

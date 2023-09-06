@@ -42,10 +42,22 @@ const updateOrderById = async (id, newData) => {
 }
 
 
-const deleteOrderById = async (id) => {
-  return Orders.destroy({
-    where: id
-  });
+const deleteOrderById = async (Id) => {
+  try {
+    const user = await Orders.findOne({ where:   Id  });
+
+    if (!user) {
+      throw new Error('Orders not found');
+    }
+    await user.update({ status: false });
+
+    console.log("Orders deleted successfully");
+
+    return { message: 'Orders deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 module.exports = {

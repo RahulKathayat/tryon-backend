@@ -15,7 +15,7 @@ const getOrderDetails = async () => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('orderDetails not found!!', error);
   }
 };
 
@@ -26,7 +26,7 @@ const getOrderDetailsById = async (id) => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('orderDetails not found!!', error);
   }
 };
 
@@ -41,13 +41,23 @@ const updateOrderDetailsById = async (id, newData) => {
   }
 }
 
+const deleteOrderDetailsById = async (Id) => {
+  try {
+    const user = await OrderDetails.findOne({ where:   Id  });
 
-const deleteOrderDetailsById = async (id) => {
-  return OrderDetails.destroy({
-    where: id
-  });
+    if (!user) {
+      throw new Error('OrderDetails not found');
+    }
+    await user.update({ status: false });
+
+    console.log("OrderDetails deleted successfully");
+
+    return { message: 'OrderDetails deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
-
 module.exports = {
     createOrderDetails,
     getOrderDetails,

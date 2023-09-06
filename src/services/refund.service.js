@@ -12,7 +12,7 @@ const getRefund = async () => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('refund not found!!', error);
   }
 };
 
@@ -23,7 +23,7 @@ const getRefundById = async (id) => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('refund not found!!', error);
   }
 };
 
@@ -39,10 +39,22 @@ const updateRefundById = async (id, newData) => {
 }
 
 
-const deleteRefundById = async (id) => {
-  return Refund.destroy({
-    where: id
-  });
+const deleteRefundById = async (Id) => {
+  try {
+    const user = await Refund.findOne({ where:   Id  });
+
+    if (!user) {
+      throw new Error('Refund not found');
+    }
+    await user.update({ status: false });
+
+    console.log("Refund deleted successfully");
+
+    return { message: 'Refund deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 module.exports = {

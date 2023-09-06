@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
             type:DataTypes.STRING
   
           },
+          trackingLink:{
+            type:DataTypes.STRING
+  
+          },
           status: {
             type: DataTypes.BOOLEAN,
             defaultValue:true

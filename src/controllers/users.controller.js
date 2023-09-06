@@ -2,6 +2,7 @@ const catchAsync = require('../utils/catchAsync');
 const userService = require('../services/user.service');
 const httpStatus = require('http-status');
 
+
 //create user
 const   createUser= catchAsync(async (req, res) => {
   let userBody = req.body;

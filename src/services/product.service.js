@@ -12,7 +12,7 @@ const getProduct = async () => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('product not found!!', error);
   }
 };
 
@@ -23,7 +23,7 @@ const getProductById = async (id) => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('product not found!!', error);
   }
 };
 
@@ -39,17 +39,32 @@ const updateProductById = async (id, newData) => {
 }
 
 
-const deleteProductById = async (id) => {
-  return Product.destroy({
-    where: id
-  });
+const deleteProductById = async (Id) => {
+  try {
+    const user = await Product.findOne({ where:   Id  });
+
+    if (!user) {
+      throw new Error('Product not found');
+    }
+    await user.update({ status: false });
+
+    console.log("Product deleted successfully");
+
+    return { message: 'Product deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
+
+
 
 module.exports = {
   createProduct,
   getProduct,
   updateProductById,
   deleteProductById,
-  getProductById
+  getProductById,
+  
   
 };

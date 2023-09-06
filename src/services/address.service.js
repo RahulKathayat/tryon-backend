@@ -42,12 +42,23 @@ const updateAddressById = async (id, newData) => {
 }
 
 
-const deleteAddressById = async (id) => {
-  return Address.destroy({
-    where: id
-  });
-};
+const deleteAddressById = async (Id) => {
+  try {
+    const user = await Address.findOne({ where:   Id  });
 
+    if (!user) {
+      throw new Error('Address not found');
+    }
+    await user.update({ status: false });
+
+    console.log("Address deleted successfully");
+
+    return { message: 'Address deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 module.exports = {
     createAddress,
     getAddress,

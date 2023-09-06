@@ -1,18 +1,18 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const addProductController = require('../../controllers/wishList.controller');
+const wishlistController = require('../../controllers/wishList.controller');
 const authValidation = require('../../validations/auth.validation');
-const { addProductValidation } = require('../../validations');
+const { wishlistValidation } = require('../../validations');
 const { commonService } = require('../../services');
 const router = express.Router();
 router
   .route('/')
-  .get(auth(),addProductController.getAddProduct)
-  .post(auth(),validate(addProductValidation.createAddProduct), addProductController.createAddProduct);
+  .get(auth(),wishlistController.getWishlist)
+  .post(auth(),validate(wishlistValidation.createWishlist), wishlistController.createWishlist);
 router
   .route('/:id')
-  .put(auth(),validate(addProductValidation.updateAddProduct), addProductController.updateAddProduct)
-  .delete(auth(),addProductController.deleteAddProduct)
-  .get(auth(),addProductController.getAddProductById);
+  .put(auth(),validate(wishlistValidation.updateWishlist), wishlistController.updateWishlist)
+  .delete(auth(),wishlistController.deleteWishlist)
+  .get(auth(),wishlistController.getWishlistById);
 module.exports = router;

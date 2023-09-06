@@ -3,7 +3,7 @@ const Joi = require("joi");
 const createSubSubCategory={
     body:Joi.object().keys({
         subCategoryId:Joi.number().required(),
-        description:Joi.string().required(),
+        subSubCategoryName:Joi.string().required(),
         status:Joi.boolean()
     })
 }
@@ -15,7 +15,7 @@ const updateSubSubCategory={
       }),
     body:Joi.object().keys({
         subCategoryId:Joi.number().required(),
-        description:Joi.string().required(),
+        subSubCategoryName:Joi.string().required(),
         status:Joi.boolean()
     })
 }

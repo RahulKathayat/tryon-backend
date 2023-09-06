@@ -11,9 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         userId:{
             type: DataTypes.INTEGER
           },
-        type: {
-          type: DataTypes.STRING
-        },
         status: {
           type: DataTypes.BOOLEAN,
           defaultValue:true

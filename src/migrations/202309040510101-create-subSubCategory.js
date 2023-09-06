@@ -10,7 +10,7 @@ module.exports = {
         subCategoryId:{
             type: Sequelize.INTEGER
         },
-        description:{
+        subSubCategoryName:{
             type: Sequelize.STRING
         },
         status: {

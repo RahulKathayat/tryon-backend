@@ -12,7 +12,7 @@ const getPayment = async () => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('payment not found!!', error);
   }
 };
 
@@ -23,7 +23,7 @@ const getPaymentById = async (id) => {
     });
     return data;
   } catch (error) {
-    console.error('card not found!!', error);
+    console.error('payment not found!!', error);
   }
 };
 
@@ -39,11 +39,24 @@ const updatePaymentById = async (id, newData) => {
 }
 
 
-const deletePaymentById = async (id) => {
-  return Payment.destroy({
-    where: id
-  });
+const deletePaymentById = async (Id) => {
+  try {
+    const user = await Payment.findOne({ where:   Id  });
+
+    if (!user) {
+      throw new Error('Payment not found');
+    }
+    await user.update({ status: false });
+
+    console.log("Payment deleted successfully");
+
+    return { message: 'Payment deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
+
 
 module.exports = {
   createPayment,

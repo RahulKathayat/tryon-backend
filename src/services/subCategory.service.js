@@ -41,11 +41,22 @@ const updateSubCategoryById = async (id, newData) => {
   }
 }
 
+const deleteSubCategoryById = async (Id) => {
+  try {
+    const user = await SubCategory.findOne({ where:   Id  });
 
-const deleteSubCategoryById = async (id) => {
-  return SubCategory.destroy({
-    where: id
-  });
+    if (!user) {
+      throw new Error('SubCategory not found');
+    }
+    await user.update({ status: false });
+
+    console.log("SubCategory deleted successfully");
+
+    return { message: 'SubCategory deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 module.exports = {

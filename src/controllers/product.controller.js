@@ -64,10 +64,54 @@ const deleteProduct = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in card delete' });
   }
 });
+
+// // upload image 
+// const uploadImage = async (req, res) => {
+//   try {
+//     console.log("request===datavalue===========================================",req.user)
+//     const image = req.file.filename;
+//     if (req.file === undefined) {
+//       return res.send(`You must select a file.`);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     return res.send(`Error when trying upload images: ${error}`);
+//   }
+// };
+
+
+//updateImage
+// const updateImage = catchAsync(async (req, res) => {
+//   try {
+//     console.log("id Req================",req.user);
+//     const userId=req.user.id
+//     const body={}
+//     if(req.body.image){
+//       body.image=req.body.image   
+//     }
+//     console.log("body data======================",body.image);
+//     const updatedUser = await productService.updateImage(userId, body.image);
+//     console.log("updateUser================",updatedUser);
+//     if (updatedUser) {
+//       res.status(200).send({ data: updatedUser, message: 'User updated successfully' });
+//     } else {
+//       res.status(404).send({ message: 'User not found', status: 0 });
+//     }
+//   } catch (error) {
+//     console.error('Error updating user:', error);
+//     res.status(500).send({ message: 'Internal server error', status: -1 });
+//   }
+// });
+
+
 module.exports = {
     createProduct,
   deleteProduct,
   getProduct,
   updateProduct,
-  getProductById
+  getProductById,
+  // uploadImage,
+  // updateImage
 };
+
+

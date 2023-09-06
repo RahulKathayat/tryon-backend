@@ -39,11 +39,24 @@ const updateProductDetailById = async (id, newData) => {
 }
 
 
-const deleteProductDetailById = async (id) => {
-  return ProductDetails.destroy({
-    where: id
-  });
+const deleteProductDetailById = async (Id) => {
+  try {
+    const user = await ProductDetails.findOne({ where:   Id  });
+
+    if (!user) {
+      throw new Error('ProductDetails not found');
+    }
+    await user.update({ status: false });
+
+    console.log("ProductDetails deleted successfully");
+
+    return { message: 'ProductDetails deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
+
 
 module.exports = {
   createProductDetail,

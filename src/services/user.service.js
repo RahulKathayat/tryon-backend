@@ -1,4 +1,5 @@
-// const httpStatus = require('http-status');
+const httpStatus = require('http-status');
+const ApiError = require('../utils/ApiError');
 const bcrypt = require('bcryptjs');
 const { Users } = require('../models');
 
@@ -38,7 +39,7 @@ const getUserById=async(id)=>{
   try{
     console.log("id======================",id);
     const data= await Users.findOne({
-      where: {id:id}
+      where: {id:id},
     });
     return data;
   } catch (error) {
@@ -74,22 +75,25 @@ const updateUserById = async (id, newData) => {
   }
 }
 
-
-
-
-
-
-const deleteUserById = async (id) => {
+const deleteUserById = async (userId) => {
   try {
-    const deletedRowsCount = await Users.destroy({
-      where: { id: id }
-    });
-    return deletedRowsCount;
+    const user = await Users.findOne({ where:   userId  });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+    await user.update({ status: false });
+
+    console.log("User deleted successfully");
+
+    return { message: 'User deleted successfully' };
   } catch (error) {
-    console.error('Error deleting user by id:', error);
+    console.error(error);
     throw error;
   }
 };
+
+
 
 const getUserWithSecretFieldsById = async (id) => {
   try {

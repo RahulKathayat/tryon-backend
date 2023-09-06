@@ -2,8 +2,11 @@ module.exports = (sequelize, DataTypes) => {
     const Category = sequelize.define(
       'Category',
       {
-        description:{
+        categoryName:{
             type: DataTypes.STRING
+        },
+        popularCategory:{
+          type: DataTypes.BOOLEAN
         },
         status: {
             type: DataTypes.BOOLEAN,

@@ -2,7 +2,8 @@ const Joi = require("joi");
 
 const createCategory={
     body:Joi.object().keys({
-        description:Joi.string().required(),
+        categoryName:Joi.string().required(),
+        popularCategory:Joi.boolean().required(),
         status:Joi.boolean()
     })
 }
@@ -13,7 +14,9 @@ const updateCategory={
         id: Joi.number().required()
       }),
     body:Joi.object().keys({
-        description:Joi.string().required(),
+        categoryName:Joi.string().required(),
+        popularCategory:Joi.boolean().required(),
+
         status:Joi.boolean()
     })
 }

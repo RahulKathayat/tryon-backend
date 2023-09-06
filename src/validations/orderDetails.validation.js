@@ -7,6 +7,7 @@ const createOrderDetails = {
     type:Joi.string().required(),
     amount:Joi.number().required(),
     trackingId:Joi.string().required(),
+    trackingLink:Joi.string().required(),
     status: Joi.boolean()
   })
 };
@@ -19,6 +20,7 @@ const updateOrderDetails = {
   type:Joi.string().required(),
   amount:Joi.number().required(),
   trackingId:Joi.string().required(),
+  trackingLink:Joi.string().required(),
   status: Joi.boolean()
 };
 

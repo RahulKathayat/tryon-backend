@@ -42,10 +42,23 @@ const updateCategoryById = async (id, newData) => {
 }
 
 
-const deleteCategoryById = async (id) => {
-  return Category.destroy({
-    where: id
-  });
+
+const deleteCategoryById = async (Id) => {
+  try {
+    const user = await Category.findOne({ where:   Id  });
+
+    if (!user) {
+      throw new Error('Category not found');
+    }
+    await user.update({ status: false });
+
+    console.log("Category deleted successfully");
+
+    return { message: 'Category deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 module.exports = {

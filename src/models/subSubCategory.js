@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const SubSubCategory = sequelize.define(
       'SubSubCategory',
       {
-        description:{
+        subSubCategoryName:{
             type: DataTypes.STRING
         },
         subCategoryId:{

@@ -7,8 +7,11 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER
         },
-        description:{
+        categoryName:{
             type: Sequelize.STRING
+        },
+        popularCategory:{
+          type: Sequelize.BOOLEAN
         },
         status: {
           type: Sequelize.BOOLEAN

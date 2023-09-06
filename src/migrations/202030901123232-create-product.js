@@ -38,9 +38,14 @@ module.exports = {
           type: Sequelize.STRING
 
         },
-        trendingProduct:{
-          type: Sequelize.BOOLEAN
+        productType:{
+          type: Sequelize.INTEGER
         },
+        length:{
+          type: Sequelize.INTEGER
+
+        },
+
         status: {
           type: Sequelize.BOOLEAN
         },

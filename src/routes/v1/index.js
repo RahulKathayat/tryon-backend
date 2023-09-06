@@ -13,7 +13,13 @@ const wishListRoute = require('./wishList.route');
 const CategoryRoute = require('./category.route');
 const subCategoryRoute = require('./subCategory.route');
 const subSubCategoryRoute = require('./subSubCategory.route');
-const addressRoute= require("./address.route")
+const addressRoute= require("./address.route");
+const cartRoute= require("./cart.route");
+const fabricRoute= require("./fabric.route");
+const productFabricRoute= require("./productFabric.route");
+
+
+
 
 const router = express.Router();
 
@@ -74,6 +80,18 @@ const defaultRoutes = [
   {
     path: '/subSubCategory',
     route: subSubCategoryRoute
+  },
+  {
+    path: '/cart',
+    route: cartRoute
+  },
+  {
+    path: '/fabric',
+    route: fabricRoute
+  },
+  {
+    path: '/productFabric',
+    route: productFabricRoute
   }
   
 ];
