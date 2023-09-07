@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
               orderId: {
                   type: DataTypes.INTEGER
               },
+              productId:{
+                type: DataTypes.INTEGER
+      
+              },
               review:{
                   type:DataTypes.STRING
               },
@@ -24,5 +28,19 @@ module.exports = (sequelize, DataTypes) => {
             freezeTableName: true,
         }
     );
+
+    Ratings.associate = function (models) {
+        Ratings.belongsTo(models.Users, {
+          foreignKey: 'userId',
+          onDelete: 'SET NULL',
+          allowNull: true
+        });
+
+        Ratings.belongsTo(models.Product, {
+            foreignKey: 'productId',
+            onDelete: 'SET NULL',
+            allowNull: true
+          });
+    };
     return Ratings;
 };

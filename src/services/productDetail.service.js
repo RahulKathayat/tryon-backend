@@ -8,7 +8,7 @@ const createProductDetail = async (_userBody) => {
 const getProductDetail = async () => {
   try {
     const data = await ProductDetails.findAll({
-      where: {}
+      where: {status:true}
     });
     return data;
   } catch (error) {

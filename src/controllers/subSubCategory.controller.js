@@ -24,6 +24,16 @@ const getSubSubCategory = catchAsync(async (req, res) => {
   return data;
 });
 
+const getAllCategories = catchAsync(async (req, res) => {
+  const data = await subSubCategoryService.getAllCategories();
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'subSubCategory data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
+
 const getSubSubCategoryById = catchAsync(async (req, res) => {
   const data = await subSubCategoryService.getSubSubCategoryById(req.params.id);
   if (data) {
@@ -69,5 +79,6 @@ module.exports = {
     deleteSubSubCategory,
     getSubSubCategory,
     updateSubSubCategory,
-    getSubSubCategoryById
+    getSubSubCategoryById,
+    getAllCategories
 };

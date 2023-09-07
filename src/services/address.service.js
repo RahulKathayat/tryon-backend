@@ -11,7 +11,7 @@ const createAddress = async (_userBody) => {
 const getAddress= async () => {
   try {
     const data = await Address.findAll({
-      where: {}
+      where: {status:true}
     });
     return data;
   } catch (error) {

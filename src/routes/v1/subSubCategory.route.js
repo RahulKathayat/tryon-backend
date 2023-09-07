@@ -13,6 +13,8 @@ router
 .get(auth(),subSubCategoryController.getSubSubCategory)
 .post(auth(),validate(subSubCategoryValidation.createSubSubCategory),subSubCategoryController.createSubSubCategory)
 
+router.get('/allCategories',auth(),subSubCategoryController.getAllCategories)
+
 
 router
 .route('/:id')

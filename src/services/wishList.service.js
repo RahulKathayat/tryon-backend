@@ -1,4 +1,4 @@
-const { WishList } = require('../models');
+const { WishList,Product,Users } = require('../models');
 
 const createWishlist = async (_userBody) => {
   const userBody = _userBody;
@@ -11,7 +11,8 @@ const createWishlist = async (_userBody) => {
 const getWishlist = async () => {
   try {
     const data = await WishList.findAll({
-      where: {}
+      where: {status:true},
+      include:[{model:Product},{model:Users}]
     });
     return data;
   } catch (error) {
@@ -22,7 +23,9 @@ const getWishlist = async () => {
 const getWishlistById = async (id) => {
   try {
     const data = await WishList.findAll({
-      where: {id:id}
+      where: {id:id},
+      include:[{model:Product},{model:Users}]
+
     });
     return data;
   } catch (error) {

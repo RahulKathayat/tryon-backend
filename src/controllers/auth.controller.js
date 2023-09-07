@@ -12,8 +12,14 @@ const register = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
-  const tokens = await tokenService.generateAuthTokens(user);
-  res.send({ user, tokens });
+
+  if(user){
+    const tokens = await tokenService.generateAuthTokens(user);
+    res.send({message: "Login Successfully!!",user,tokens})
+}
+  else{
+    res.send({ message:"Invalid email or password",user, tokens });
+  }
 });
 
 const logout = catchAsync(async (req, res) => {

@@ -10,6 +10,10 @@ module.exports = {
         userId: {
           type: Sequelize.INTEGER
         },
+        productId:{
+          type: Sequelize.INTEGER
+
+        },
         orderId: {
             type: Sequelize.INTEGER
         },

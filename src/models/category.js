@@ -18,6 +18,20 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
       }
     );
+
+    Category.associate = function(models) {
+      Category.hasOne(models.SubCategory, {
+        foreignKey: 'categoryId' 
+      });
+      Category.hasMany(models.SubSubCategory, {
+        foreignKey: 'categoryId' 
+      });
+
+      Category.hasMany(models.Product, {
+        foreignKey: 'categoryId' 
+      });
+    };
+
      return Category;
   };
   

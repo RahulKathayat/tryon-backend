@@ -21,6 +21,20 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
       }
     );
+
+    WishList.associate = function (models) {
+      WishList.belongsTo(models.Product, {
+        foreignKey: 'productId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+
+      WishList.belongsTo(models.Users, {
+        foreignKey: 'userId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+    }
      return WishList;
   };
   

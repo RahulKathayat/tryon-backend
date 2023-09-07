@@ -1,4 +1,5 @@
-const { SubSubCategory } = require('../models');
+const { SubSubCategory,SubCategory,Category} = require('../models');
+// const SubSubCategory = require('../models/subSubCategory');
 
 const createSubSubCategory = async (_userBody) => {
   const userBody = _userBody;
@@ -11,7 +12,8 @@ const createSubSubCategory = async (_userBody) => {
 const getSubSubCategory = async () => {
   try {
     const data = await SubSubCategory.findAll({
-      where: {}
+      where: {status:true},
+      include:[{model:SubCategory},{ model:Category}]
     });
     return data;
   } catch (error) {
@@ -19,10 +21,24 @@ const getSubSubCategory = async () => {
   }
 };
 
+const getAllCategories = async () => {
+  try {
+    const data = await SubSubCategory.findAll({
+      where: {status:true},
+      include:[{model:SubCategory},{ model:Category}]
+    });
+    return data;
+  } catch (error) {
+    console.error('subSubcategory not found!!', error);
+  }
+};
+
+
 const getSubSubCategoryById = async (id) => {
   try {
     const data = await SubSubCategory.findAll({
-      where: {id:id}
+      where: {id:id},
+      include:[{model:SubCategory},{ model:Category}]
     });
     return data;
   } catch (error) {
@@ -65,6 +81,7 @@ module.exports = {
     getSubSubCategory,
     updateSubSubCategoryById,
     deleteSubSubCategoryById,
-    getSubSubCategoryById
+    getSubSubCategoryById,
+    getAllCategories
   
 };

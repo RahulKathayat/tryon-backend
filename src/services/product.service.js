@@ -1,4 +1,4 @@
-const { Product } = require('../models');
+const { Product,Category,SubCategory,SubSubCategory,ProductDetails } = require('../models');
 
 const createProduct = async (_userBody) => {
   const userBody = _userBody;
@@ -8,7 +8,8 @@ const createProduct = async (_userBody) => {
 const getProduct = async () => {
   try {
     const data = await Product.findAll({
-      where: {}
+      where: {status:true},
+      include:[{model:ProductDetails},{ model:Category},{model:SubCategory},{model:SubSubCategory}]
     });
     return data;
   } catch (error) {
@@ -19,7 +20,9 @@ const getProduct = async () => {
 const getProductById = async (id) => {
   try {
     const data = await Product.findAll({
-      where: {id:id}
+      where: {id:id},
+      include:[{model:ProductDetails},{ model:Category},{model:SubCategory},{model:SubSubCategory}]
+
     });
     return data;
   } catch (error) {

@@ -11,7 +11,7 @@ const createCategory = async (_userBody) => {
 const getCategory = async () => {
   try {
     const data = await Category.findAll({
-      where: {}
+      where: {status:true}
     });
     return data;
   } catch (error) {

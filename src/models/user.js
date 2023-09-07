@@ -49,6 +49,34 @@ module.exports = (sequelize, DataTypes) => {
     }
 
   );
+
+  User.associate = function (models) {
+    User.belongsTo(models.Address, {
+      foreignKey: 'addressId',
+      onDelete: 'SET NULL',
+      allowNull: true
+    });
+
+    User.hasOne(models.Cart, {
+      foreignKey: 'userId' 
+    });
+
+    User.hasMany(models.Orders, {
+      foreignKey: 'userId' 
+    });
+
+    User.hasMany(models.Ratings, {
+      foreignKey: 'userId' 
+    });
+
+    User.hasMany(models.Refund, {
+      foreignKey: 'userId' 
+    });
+
+    User.hasOne(models.WishList, {
+      foreignKey: 'userId' 
+    });
+  };
   
      return User;
 };

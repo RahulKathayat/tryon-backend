@@ -1,4 +1,4 @@
-const { Refund } = require('../models');
+const { Refund,Orders,Users } = require('../models');
 
 const createRefund = async (_userBody) => {
   const userBody = _userBody;
@@ -8,7 +8,8 @@ const createRefund = async (_userBody) => {
 const getRefund = async () => {
   try {
     const data = await Refund.findAll({
-      where: {}
+      where: {status:true},
+      include:[{model:Orders},{model:Users}]
     });
     return data;
   } catch (error) {
@@ -19,7 +20,8 @@ const getRefund = async () => {
 const getRefundById = async (id) => {
   try {
     const data = await Refund.findAll({
-      where: {id:id}
+      where: {id:id},
+      include:[{model:Orders},{model:Users}]
     });
     return data;
   } catch (error) {

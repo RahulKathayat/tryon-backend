@@ -18,7 +18,13 @@ module.exports = (sequelize, DataTypes) => {
         tableName: 'Address',
         freezeTableName: true,
       }
-    );
+        );
+      Address.associate = function(models) {
+      Address.hasMany(models.Users, {
+        foreignKey: 'addressId' 
+      });
+    };
+
      return Address;
   };
   

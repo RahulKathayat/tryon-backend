@@ -51,6 +51,40 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
       }
     );
+
+    Product.associate = function (models) {
+      Product.belongsTo(models.Category, {
+        foreignKey: 'categoryId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+      Product.belongsTo(models.SubCategory, {
+        foreignKey: 'subCategoryId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+      Product.belongsTo(models.SubSubCategory, {
+        foreignKey: 'subSubcategoryId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+
+      Product.hasOne(models.ProductDetails, {
+        foreignKey: 'productId' 
+      });
+
+      Product.hasMany(models.Ratings, {
+        foreignKey: 'productId' 
+      });
+
+      Product.hasMany(models.WishList, {
+        foreignKey: 'productId' 
+      });
+
+      Product.hasMany(models.Orders, {
+        foreignKey: 'productId' 
+      });
+    };
      return Product;
   };
   

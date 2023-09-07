@@ -11,7 +11,7 @@ const createFabric = async (_userBody) => {
 const getFabric = async () => {
   try {
     const data = await Fabric.findAll({
-      where: {}
+      where: {status:true}
     });
     return data;
   } catch (error) {

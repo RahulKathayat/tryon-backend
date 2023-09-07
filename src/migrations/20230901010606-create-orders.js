@@ -16,6 +16,9 @@ module.exports = {
         userId: {
             type: Sequelize.INTEGER
         },
+        orderDetailId: {
+          type: Sequelize.INTEGER
+      },
         status: {
           type: Sequelize.BOOLEAN
         },

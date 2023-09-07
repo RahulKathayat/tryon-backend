@@ -3,7 +3,6 @@ const Joi = require('joi');
 
 const createOrderDetails = {
   body: Joi.object().keys({
-    orderId:Joi.number().required(),
     type:Joi.string().required(),
     amount:Joi.number().required(),
     trackingId:Joi.string().required(),
@@ -16,7 +15,6 @@ const updateOrderDetails = {
   params: Joi.object().keys({
     id: Joi.number().required()
   }),
-  orderId:Joi.number().required(),
   type:Joi.string().required(),
   amount:Joi.number().required(),
   trackingId:Joi.string().required(),

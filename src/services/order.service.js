@@ -1,4 +1,5 @@
-const { Orders } = require('../models');
+const { Orders,OrderDetails,Users,Product } = require('../models');
+// const orderDetails = require('../models/orderDetails');
 
 const createOrder = async (_userBody) => {
   const userBody = _userBody;
@@ -11,7 +12,8 @@ const createOrder = async (_userBody) => {
 const getOrder = async () => {
   try {
     const data = await Orders.findAll({
-      where: {}
+      where: {status:true},
+      include:[{model:OrderDetails},{model:Users},{model:Product}]
     });
     return data;
   } catch (error) {
@@ -21,8 +23,10 @@ const getOrder = async () => {
 
 const getOrderById = async (id) => {
   try {
-    const data = await Orders.findAll({
-      where: {id:id}
+    const data = await Orders.findOne({
+      where: {id:id},
+      include:[{model:OrderDetails},{model:Users},{model:Product}]
+
     });
     return data;
   } catch (error) {

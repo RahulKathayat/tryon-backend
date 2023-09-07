@@ -5,6 +5,7 @@ const createRatings = {
   body: Joi.object().keys({
    userId:Joi.number().required(),
    orderId:Joi.number().required(),
+   productId:Joi.number().required(),
    review: Joi.string().optional(),
    ratings:Joi.number().optional(),
    status: Joi.boolean()
@@ -17,6 +18,7 @@ const updateRatings = {
   }),
   userId:Joi.number().required(),
   orderId:Joi.number().required(),
+  productId:Joi.number().required(),
   review: Joi.string().optional(),
   ratings:Joi.number().optional(),
   status: Joi.boolean()

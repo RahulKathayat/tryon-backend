@@ -30,6 +30,14 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true
       }
     );
+
+    Cart.associate = function (models) {
+      Cart.belongsTo(models.Users, {
+        foreignKey: 'userId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+    };
     return Cart;
   };
   

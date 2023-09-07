@@ -8,7 +8,7 @@ const createPayment = async (_userBody) => {
 const getPayment = async () => {
   try {
     const data = await Payment.findAll({
-      where: {}
+      where: {status:true}
     });
     return data;
   } catch (error) {

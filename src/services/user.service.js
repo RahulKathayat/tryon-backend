@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const bcrypt = require('bcryptjs');
-const { Users } = require('../models');
+const { Users,Address } = require('../models');
 
 const createUser = async (_userBody) => {
   try {
@@ -27,7 +27,12 @@ const getUserWithSecretFields=async()=>{
 }
 const getUser = async () => {
   try {
-    const data = await Users.findAll();
+    const data= await Users.findAll({
+      where: {status:true},
+      include:[{
+        model:Address
+      }]
+    });
     return data;
   } catch (error) {
     console.error('Error retrieving users:', error);
@@ -40,6 +45,9 @@ const getUserById=async(id)=>{
     console.log("id======================",id);
     const data= await Users.findOne({
       where: {id:id},
+      include:[{
+        model:Address
+      }]
     });
     return data;
   } catch (error) {

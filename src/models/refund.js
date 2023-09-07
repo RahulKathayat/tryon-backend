@@ -21,5 +21,18 @@ module.exports = (sequelize, DataTypes) => {
             freezeTableName: true,
         }
     );
+    Refund.associate = function (models) {
+        Refund.belongsTo(models.Orders, {
+          foreignKey: 'orderId',
+          onDelete: 'SET NULL',
+          allowNull: true
+        });
+
+        Refund.belongsTo(models.Users, {
+            foreignKey: 'userId',
+            onDelete: 'SET NULL',
+            allowNull: true
+          });
+    }
     return Refund;
 };

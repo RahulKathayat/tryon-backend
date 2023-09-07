@@ -1,4 +1,4 @@
-const { Ratings } = require('../models');
+const { Ratings,Users,Product } = require('../models');
 
 const createRatings = async (_userBody) => {
   const userBody = _userBody;
@@ -8,7 +8,8 @@ const createRatings = async (_userBody) => {
 const getRatings = async () => {
   try {
     const data = await Ratings.findAll({
-      where: {}
+      where: {status:true},
+      include:[{model:Users},{model:Product}]
     });
     return data;
   } catch (error) {
@@ -19,7 +20,8 @@ const getRatings = async () => {
 const getRatingsById = async (id) => {
   try {
     const data = await Ratings.findAll({
-      where: {id:id}
+      where: {id:id},
+      include:[{model:Users},{model:Product}]
     });
     return data;
   } catch (error) {

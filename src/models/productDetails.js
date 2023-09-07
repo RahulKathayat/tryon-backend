@@ -37,6 +37,15 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
       }
     );
+
+    ProductDetails.associate = function (models) {
+      ProductDetails.belongsTo(models.Product, {
+        foreignKey: 'productId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+    };
+
      return ProductDetails;
   };
   

@@ -9,7 +9,10 @@ const logger = require('../config/logger');
 
 const loginUserWithEmailAndPassword = async (email, password) => {
   const user = await userService.getUserByEmail(email);
-  console.log('user id', user);
+  console.log('user id ========', user);
+  if(user==null){
+    throw new Error('incorrect email or password');
+  }
   const userWithSecretFields = await userService.getUserWithSecretFieldsById(user.id);
   console.log('password', password);
   console.log('userWithSecretFields', userWithSecretFields);

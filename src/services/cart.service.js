@@ -1,4 +1,4 @@
-const { Cart } = require('../models');
+const { Cart,Users } = require('../models');
 
 const createCart = async (_userBody) => {
   const userBody = _userBody;
@@ -11,7 +11,8 @@ const createCart = async (_userBody) => {
 const getCart = async () => {
   try {
     const data = await Cart.findAll({
-      where: {}
+      where: {status:true},
+      include:[{model:Users}]
     });
     return data;
   } catch (error) {

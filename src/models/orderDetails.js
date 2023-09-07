@@ -2,9 +2,6 @@ module.exports = (sequelize, DataTypes) => {
     const OrderDetails = sequelize.define(
       'OrderDetails',
       {
-        orderId: {
-            type: DataTypes.INTEGER
-          },
           type:{
               type:DataTypes.STRING
           },
@@ -29,6 +26,13 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
       }
     );
+
+    OrderDetails.associate = function(models) {
+      OrderDetails.hasMany(models.Orders, {
+        foreignKey: 'orderDetailId' 
+      });
+    };
+    
      return OrderDetails;
   };
   

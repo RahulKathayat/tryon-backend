@@ -19,6 +19,24 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
       }
     );
+
+    SubCategory.associate = function (models) {
+      SubCategory.belongsTo(models.Category, {
+        foreignKey: 'categoryId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+
+      SubCategory.hasMany(models.SubSubCategory, {
+          foreignKey: 'subCategoryId' 
+        });
+  
+
+      SubCategory.hasMany(models.Product, {
+        foreignKey: 'subCategoryId' 
+      });
+    }
+
      return SubCategory;
   };
   

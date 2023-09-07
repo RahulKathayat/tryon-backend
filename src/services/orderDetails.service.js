@@ -11,7 +11,7 @@ const createOrderDetails = async (_userBody) => {
 const getOrderDetails = async () => {
   try {
     const data = await OrderDetails.findAll({
-      where: {}
+      where: {status:true},
     });
     return data;
   } catch (error) {
@@ -22,7 +22,8 @@ const getOrderDetails = async () => {
 const getOrderDetailsById = async (id) => {
   try {
     const data = await OrderDetails.findAll({
-      where: {id:id}
+      where: {id:id},
+
     });
     return data;
   } catch (error) {
