@@ -21,6 +21,22 @@ module.exports = (sequelize, DataTypes) => {
         freezeTableName: true,
       }
     );
+
+    ProductFabric.associate = function (models) {
+      ProductFabric.belongsTo(models.Fabric, {
+        foreignKey: 'fabricId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+
+      ProductFabric.belongsTo(models.Product, {
+        foreignKey: 'productId',
+        onDelete: 'SET NULL',
+        allowNull: true
+      });
+
+    }
+
      return ProductFabric;
   };
   

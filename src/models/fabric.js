@@ -48,5 +48,11 @@ module.exports = (sequelize, DataTypes) => {
       freezeTableName: true
     }
   );
+
+  Fabric.associate = function(models) {
+    Fabric.hasMany(models.ProductFabric, {
+      foreignKey: 'fabricId' 
+    });
+  };
   return Fabric;
 };

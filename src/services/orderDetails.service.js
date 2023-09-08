@@ -8,16 +8,19 @@ const createOrderDetails = async (_userBody) => {
    return data
 };
 
-const getOrderDetails = async () => {
-  try {
-    const data = await OrderDetails.findAll({
-      where: {status:true},
-    });
-    return data;
-  } catch (error) {
-    console.error('orderDetails not found!!', error);
-  }
+const getOrderDetails = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await OrderDetails.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    limit,
+    offset
+  });
+  return support;
 };
+
 
 const getOrderDetailsById = async (id) => {
   try {

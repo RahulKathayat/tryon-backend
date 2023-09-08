@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const paymentService = require('../services/payment.service');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+
 
 const   createPayment= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -15,7 +17,10 @@ const   createPayment= catchAsync(async (req, res) => {
 
 
 const getPayment = catchAsync(async (req, res) => {
-  const data = await paymentService.getPayment();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await paymentService.getPayment(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'payment data fetched successfully', data: data });
   } else {

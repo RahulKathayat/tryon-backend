@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const wishlistService = require('../services/wishList.service');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+
 
 const   createWishlist= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -15,7 +17,10 @@ const   createWishlist= catchAsync(async (req, res) => {
 
 
 const getWishlist = catchAsync(async (req, res) => {
-  const data = await wishlistService.getWishlist();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await wishlistService.getWishlist(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Wishlist data fetched successfully', data: data });
   } else {

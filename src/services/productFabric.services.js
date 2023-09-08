@@ -1,4 +1,4 @@
-const { ProductFabric } = require('../models');
+const { ProductFabric,Fabric,Product } = require('../models');
 
 const createProductFabric = async (_userBody) => {
   const userBody = _userBody;
@@ -8,21 +8,27 @@ const createProductFabric = async (_userBody) => {
    return data
 };
 
-const getProductFabric = async () => {
-  try {
-    const data = await ProductFabric.findAll({
-      where: {status:true}
-    });
-    return data;
-  } catch (error) {
-    console.error('productFabric not found!!', error);
-  }
+const getProductFabric = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await ProductFabric.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    include:[{model:Fabric},{model:Product}],
+    limit,
+    offset
+  });
+  return support;
 };
+
 
 const getProductFabricById = async (id) => {
   try {
     const data = await ProductFabric.findAll({
-      where: {id:id}
+      where: {id:id},
+      include:[{model:Fabric},{model:Product}]
+
     });
     return data;
   } catch (error) {

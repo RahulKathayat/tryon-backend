@@ -9,17 +9,20 @@ const createOrder = async (_userBody) => {
    return data
 };
 
-const getOrder = async () => {
-  try {
-    const data = await Orders.findAll({
-      where: {status:true},
-      include:[{model:OrderDetails},{model:Users},{model:Product}]
-    });
-    return data;
-  } catch (error) {
-    console.error('order not found!!', error);
-  }
+const getOrder = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Orders.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    include:[{model:OrderDetails},{model:Users},{model:Product}],
+    limit,
+    offset
+  });
+  return support;
 };
+
 
 const getOrderById = async (id) => {
   try {

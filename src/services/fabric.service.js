@@ -8,15 +8,17 @@ const createFabric = async (_userBody) => {
    return data
 };
 
-const getFabric = async () => {
-  try {
-    const data = await Fabric.findAll({
-      where: {status:true}
-    });
-    return data;
-  } catch (error) {
-    console.error('fabric not found!!', error);
-  }
+const getFabric = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Fabric.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    limit,
+    offset
+  });
+  return support;
 };
 
 const getFabricById = async (id) => {

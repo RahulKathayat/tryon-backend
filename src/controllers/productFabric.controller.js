@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const productFabricService = require('../services/productFabric.services');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+
 
 const   createProductFabric= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -15,7 +17,10 @@ const   createProductFabric= catchAsync(async (req, res) => {
 
 
 const getProductFabric = catchAsync(async (req, res) => {
-  const data = await productFabricService.getProductFabric();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await productFabricService.getProductFabric(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'ProductFabric data fetched successfully', data: data });
   } else {

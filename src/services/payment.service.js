@@ -5,15 +5,16 @@ const createPayment = async (_userBody) => {
   return Payment.create(userBody);
 };
 
-const getPayment = async () => {
-  try {
-    const data = await Payment.findAll({
-      where: {status:true}
-    });
-    return data;
-  } catch (error) {
-    console.error('payment not found!!', error);
-  }
+const getPayment = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Payment.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    offset
+  });
+  return support;
 };
 
 const getPaymentById = async (id) => {

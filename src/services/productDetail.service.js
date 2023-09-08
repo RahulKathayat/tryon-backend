@@ -1,19 +1,22 @@
-const { ProductDetails } = require('../models');
+const { ProductDetails,Product } = require('../models');
 
 const createProductDetail = async (_userBody) => {
   const userBody = _userBody;
   return ProductDetails.create(userBody);
 };
 
-const getProductDetail = async () => {
-  try {
-    const data = await ProductDetails.findAll({
-      where: {status:true}
-    });
-    return data;
-  } catch (error) {
-    console.error('card not found!!', error);
-  }
+const getProductDetail = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await ProductDetails.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    include:[{model:Product}],
+    limit,
+    offset
+  });
+  return support;
 };
 
 const getProductDetailById = async (id) => {

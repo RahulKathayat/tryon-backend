@@ -8,29 +8,34 @@ const createSubCategory = async (_userBody) => {
    return data
 };
 
-const getSubCategory = async () => {
-  try {
-    const data = await SubCategory.findAll({
-      where: {status:true},
-    });
-    return data;
-  } catch (error) {
-    console.error('Subcategory not found!!', error);
-  }
+const getSubCategory = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await SubCategory.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    limit,
+    offset
+  });
+  return support;
 };
 
-const getSubCategoryAndCategory = async (id) => {
-  try {
-     const data = await SubCategory.findAll({
-      where: {status:true},
-      include: [{ model: Category }]
-    });
-    console.log("data=============================",data);
-    return data;
-  } catch (error) {
-    console.error('Subcategory not found!!', error);
-  }
+
+const getSubCategoryAndCategory = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await SubCategory.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    include: [{ model: Category }],
+    limit,
+    offset
+  });
+  return support;
 };
+
 
 
 const getSubCategoryById = async (id) => {

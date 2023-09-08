@@ -5,17 +5,20 @@ const createRefund = async (_userBody) => {
   return Refund.create(userBody);
 };
 
-const getRefund = async () => {
-  try {
-    const data = await Refund.findAll({
-      where: {status:true},
-      include:[{model:Orders},{model:Users}]
-    });
-    return data;
-  } catch (error) {
-    console.error('refund not found!!', error);
-  }
+const getRefund = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Refund.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    include:[{model:Orders},{model:Users}],
+    limit,
+    offset
+  });
+  return support;
 };
+
 
 const getRefundById = async (id) => {
   try {

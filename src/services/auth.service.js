@@ -7,21 +7,32 @@ const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const logger = require('../config/logger');
 
+
 const loginUserWithEmailAndPassword = async (email, password) => {
-  const user = await userService.getUserByEmail(email);
-  console.log('user id ========', user);
-  if(user==null){
-    throw new Error('incorrect email or password');
+  try {
+    const user = await userService.getUserByEmail(email);
+    console.log('user id ========', user);
+    
+    if (user == null) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    }
+    
+    const userWithSecretFields = await userService.getUserWithSecretFieldsById(user.id);
+    console.log('password', password);
+    console.log('userWithSecretFields', userWithSecretFields);
+    logger.info('message');
+    
+    if (!user || !(await bcrypt.compare(password, userWithSecretFields.password))) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Incorrect email or password');
+    }
+    
+    return user;
+  } catch (error) {
+    console.error('Error in loginUserWithEmailAndPassword:', error);
+    throw error; 
   }
-  const userWithSecretFields = await userService.getUserWithSecretFieldsById(user.id);
-  console.log('password', password);
-  console.log('userWithSecretFields', userWithSecretFields);
-  logger.info('message');
-  if (!user || !(await bcrypt.compare(password, userWithSecretFields.password))) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Incorrect email or password');
-  }
-  return user;
 };
+
 
 const logout = async (refreshToken) => {
   const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });

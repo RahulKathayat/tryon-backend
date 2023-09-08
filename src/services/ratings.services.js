@@ -5,17 +5,20 @@ const createRatings = async (_userBody) => {
   return Ratings.create(userBody);
 };
 
-const getRatings = async () => {
-  try {
-    const data = await Ratings.findAll({
-      where: {status:true},
-      include:[{model:Users},{model:Product}]
-    });
-    return data;
-  } catch (error) {
-    console.error('ratings not found!!', error);
-  }
+const getRatings = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Ratings.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    include:[{model:Users},{model:Product}],
+    limit,
+    offset
+  });
+  return support;
 };
+
 
 const getRatingsById = async (id) => {
   try {

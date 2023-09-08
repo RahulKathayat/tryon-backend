@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const cartService = require('../services/cart.service');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+
 
 const   createCart= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -15,7 +17,10 @@ const   createCart= catchAsync(async (req, res) => {
 
 
 const getCart = catchAsync(async (req, res) => {
-  const data = await cartService.getCart();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await cartService.getCart(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'cart data fetched successfully', data: data });
   } else {

@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const categoryService = require('../services/category.service');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
 
 const   createCategory= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -15,7 +16,10 @@ const   createCategory= catchAsync(async (req, res) => {
 
 
 const getCategory = catchAsync(async (req, res) => {
-  const data = await categoryService.getCategory();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await categoryService.getCategory(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'category data fetched successfully', data: data });
   } else {

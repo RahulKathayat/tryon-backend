@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const addressService = require('../services/address.service');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+
 
 const   createAddress= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -15,7 +17,10 @@ const   createAddress= catchAsync(async (req, res) => {
 
 
 const getAddress = catchAsync(async (req, res) => {
-  const data = await addressService.getAddress();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await addressService.getAddress(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'address data fetched successfully', data: data });
   } else {

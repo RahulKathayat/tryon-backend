@@ -8,17 +8,20 @@ const createWishlist = async (_userBody) => {
    return data
 };
 
-const getWishlist = async () => {
-  try {
-    const data = await WishList.findAll({
-      where: {status:true},
-      include:[{model:Product},{model:Users}]
-    });
-    return data;
-  } catch (error) {
-    console.error('WishList not found!!', error);
-  }
+const getWishlist = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await WishList.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    include:[{model:Product},{model:Users}],
+    limit,
+    offset
+  });
+  return support;
 };
+
 
 const getWishlistById = async (id) => {
   try {

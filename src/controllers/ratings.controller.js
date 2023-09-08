@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const ratingsService = require('../services/ratings.services');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+
 
 const   createRatings= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -15,7 +17,10 @@ const   createRatings= catchAsync(async (req, res) => {
 
 
 const getRatings = catchAsync(async (req, res) => {
-  const data = await ratingsService.getRatings();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await ratingsService.getRatings(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'ratings data fetched successfully', data: data });
   } else {

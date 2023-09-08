@@ -3,12 +3,13 @@ const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const { authService, tokenService, userService } = require('../services');
 
-// const ApiError = require('../utils/ApiError');
+const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   res.status(httpStatus.CREATED).send({ user });
 });
+
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);

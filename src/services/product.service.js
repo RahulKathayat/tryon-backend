@@ -5,16 +5,18 @@ const createProduct = async (_userBody) => {
   return Product.create(userBody);
 };
 
-const getProduct = async () => {
-  try {
-    const data = await Product.findAll({
-      where: {status:true},
-      include:[{model:ProductDetails},{ model:Category},{model:SubCategory},{model:SubSubCategory}]
-    });
-    return data;
-  } catch (error) {
-    console.error('product not found!!', error);
-  }
+const getProduct = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Product.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    include:[{model:ProductDetails},{ model:Category},{model:SubCategory},{model:SubSubCategory}],
+    limit,
+    offset
+  });
+  return support;
 };
 
 const getProductById = async (id) => {

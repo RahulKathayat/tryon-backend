@@ -1,4 +1,4 @@
-const { Address } = require('../models');
+const { Address,Users} = require('../models');
 
 const createAddress = async (_userBody) => {
   const userBody = _userBody;
@@ -8,15 +8,18 @@ const createAddress = async (_userBody) => {
    return data
 };
 
-const getAddress= async () => {
-  try {
-    const data = await Address.findAll({
-      where: {status:true}
-    });
-    return data;
-  } catch (error) {
-    console.error('address not found!!', error);
-  }
+const getAddress = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Address.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    include:[{model:Users}],
+    limit,
+    offset
+  });
+  return support;
 };
 
 const getAddressById = async (id) => {

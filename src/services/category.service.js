@@ -8,16 +8,19 @@ const createCategory = async (_userBody) => {
    return data
 };
 
-const getCategory = async () => {
-  try {
-    const data = await Category.findAll({
-      where: {status:true}
-    });
-    return data;
-  } catch (error) {
-    console.error('category not found!!', error);
-  }
+const getCategory = async (query, options) => {
+
+  const limit = Number(options.limit) ;
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Category.findAndCountAll({
+    where:  query,
+    order: [['updatedAt', 'DESC']],
+    limit,
+    offset
+  });
+  return support;
 };
+
 
 const getCategoryById = async (id) => {
   try {

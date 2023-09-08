@@ -25,20 +25,21 @@ const getUserWithSecretFields=async()=>{
     console.log(err);
   }
 }
-const getUser = async () => {
-  try {
-    const data= await Users.findAll({
-      where: {status:true},
-      include:[{
-        model:Address
-      }]
+
+const getUser = async (query, options) => {
+
+    const limit = Number(options.limit) ;
+    const offset = options.page ? limit * (options.page - 1) : 0;
+    const support = await Users.findAndCountAll({
+      where:  query,
+      order: [['updatedAt', 'DESC']],
+      include:[{model:Address}],
+      limit,
+      offset
     });
-    return data;
-  } catch (error) {
-    console.error('Error retrieving users:', error);
-    throw error;
-  }
+    return support;
 };
+
 
 const getUserById=async(id)=>{
   try{

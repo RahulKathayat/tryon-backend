@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const userService = require('../services/user.service');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+
 
 
 //create user
@@ -17,7 +19,11 @@ const   createUser= catchAsync(async (req, res) => {
 
 //get user
 const getUser = catchAsync(async (req, res) => {
-  const data = await userService.getUser();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+  const data = await userService.getUser(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'user data fetched successfully', data: data });
   } else {
@@ -25,6 +31,9 @@ const getUser = catchAsync(async (req, res) => {
   }
   return data;
 });
+
+
+
 
 const getUserById=catchAsync(async (req,res)=>{
   const data = await userService.getUserById(req.params.id);

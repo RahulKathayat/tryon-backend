@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const productDetailService = require('../services/productDetail.service');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+
 
 const   createProductDetail= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -15,7 +17,10 @@ const   createProductDetail= catchAsync(async (req, res) => {
 
 
 const getProductDetail = catchAsync(async (req, res) => {
-  const data = await productDetailService.getProductDetail();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await productDetailService.getProductDetail(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'product detail data fetched successfully', data: data });
   } else {

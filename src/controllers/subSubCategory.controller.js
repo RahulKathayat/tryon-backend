@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/catchAsync');
 const subSubCategoryService = require('../services/subSubCategory.service');
 const httpStatus = require('http-status');
+const pick = require('../utils/pick');
+
 
 const   createSubSubCategory= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -15,7 +17,10 @@ const   createSubSubCategory= catchAsync(async (req, res) => {
 
 
 const getSubSubCategory = catchAsync(async (req, res) => {
-  const data = await subSubCategoryService.getSubSubCategory();
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await subSubCategoryService.getSubSubCategory(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'subSubCategory data fetched successfully', data: data });
   } else {
@@ -25,6 +30,7 @@ const getSubSubCategory = catchAsync(async (req, res) => {
 });
 
 const getAllCategories = catchAsync(async (req, res) => {
+  
   const data = await subSubCategoryService.getAllCategories();
   if (data) {
     res.status(httpStatus.OK).send({ message: 'subSubCategory data fetched successfully', data: data });
