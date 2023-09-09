@@ -11,8 +11,10 @@ const pick = (object, keys) => {
       // eslint-disable-next-line no-param-reassign
       obj[key] = object[key];
     }
-    obj.limit = obj.limit?obj.limit:10;
+    // obj.search = obj.search?obj.search:;
+    obj.limit = obj.limit?obj.limit:1000;
     obj.page = obj.page?obj.page:1;
+
     // obj.order=obj.order?obj.order:"updatedAt";
     return obj;
   }, {});

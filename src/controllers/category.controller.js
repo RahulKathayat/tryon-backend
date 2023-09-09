@@ -28,7 +28,20 @@ const getCategory = catchAsync(async (req, res) => {
   return data;
 });
 
+const getAllCategory = catchAsync(async (req, res) => {
+  const query={}
+  query.status = req.query.status?req.query.status:true;
+  const data = await categoryService.getAllCategory(query);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'Category data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
+
 const getCategoryById = catchAsync(async (req, res) => {
+  console.log("yyyyyyyyyyyyyyyyyyyyyyyyy");
   const data = await categoryService.getCategoryById(req.params.id);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'category data by id is fetched successfully', data: data });
@@ -73,5 +86,6 @@ module.exports = {
     deleteCategory,
     getCategory,
     updateCategory,
-    getCategoryById
+    getCategoryById,
+    getAllCategory
 };

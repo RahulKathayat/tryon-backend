@@ -2,6 +2,8 @@ const catchAsync = require('../utils/catchAsync');
 const fabricService = require('../services/fabric.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
+const { Op } = require('sequelize');
+
 
 
 const   createFabric= catchAsync(async (req, res) => {
@@ -20,7 +22,25 @@ const getFabric = catchAsync(async (req, res) => {
   const query ={};
   query.status = req.query.status?req.query.status:true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await fabricService.getFabric(query,options);
+
+  const { fabricType, weight, printType, usage, properties, handle,
+  construction,transparency,reflection,price,maxWidth,gsm } = req.query;
+  
+  fabricType ? (query.fabricType = { [Op.like]: `%${fabricType}%` }) : null;
+  weight ? (query.weight = { [Op.like]: `%${weight}%` }) : null;
+  printType ? (query.printType = { [Op.like]: `%${printType}%` }) : null;
+  usage ? (query.usage = { [Op.like]: `%${usage}%` }) : null;
+  properties ? (query.properties = { [Op.like]: `%${properties}%` }) : null;
+  handle ? (query.handle = { [Op.like]: `%${handle}%` }) : null;
+  construction ? (query.construction = { [Op.like]: `%${construction}%` }) : null;
+  transparency ? (query.transparency = { [Op.like]: `%${transparency}%` }) : null;
+  reflection ? (query.reflection = { [Op.like]: `%${reflection}%` }) : null;
+  price ? (query.price = { [Op.like]: `%${price}%` }) : null;
+  maxWidth ? (query.maxWidth = { [Op.like]: `%${maxWidth}%` }) : null;
+  gsm ? (query.gsm = { [Op.like]: `%${gsm}%` }) : null;
+ 
+
+const data = await fabricService.getFabric(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'fabric data fetched successfully', data: data });
   } else {

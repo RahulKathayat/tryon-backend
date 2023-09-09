@@ -15,12 +15,15 @@ router
 .get(auth(),subCategoryController.getSubCategory)
 .post(auth(),validate(subCategoryValidation.createSubCategory),subCategoryController.createSubCategory)
 
-router.get('/subcateoryAndCategory',auth(),subCategoryController.getSubCategoryAndCategory)
+router.get('/getAll',auth(),subCategoryController.getAllSubCategory)
+// router.get('/subcateoryAndCategory',auth(),subCategoryController.getSubCategoryAndCategory)
 router
 .route('/:id')
 .put(auth(),validate(subCategoryValidation.updateSubCategory),subCategoryController.updateSubCategory)
 .delete(auth(),subCategoryController.deleteSubCategory)
-.get(auth(),subCategoryController.getSubCategoryById)
+.get(auth(),subCategoryController.getSubCategoryById),
+
+
 
 
 

@@ -24,11 +24,10 @@ const getSubSubCategory = async (query, options) => {
 };
 
 
-const getAllCategories = async () => {
+const getAllSubSubCategories = async () => {
   try {
     const data = await SubSubCategory.findAll({
-      where: {status:true},
-      include:[{model:SubCategory},{ model:Category}]
+      where: {},
     });
     return data;
   } catch (error) {
@@ -85,6 +84,6 @@ module.exports = {
     updateSubSubCategoryById,
     deleteSubSubCategoryById,
     getSubSubCategoryById,
-    getAllCategories
+    getAllSubSubCategories
   
 };
