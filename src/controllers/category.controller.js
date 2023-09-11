@@ -3,7 +3,7 @@ const categoryService = require('../services/category.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 
-const   createCategory= catchAsync(async (req, res) => {
+const createCategory = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await categoryService.createCategory(userBody);
   if (data) {
@@ -13,13 +13,11 @@ const   createCategory= catchAsync(async (req, res) => {
   }
 });
 
-
-
 const getCategory = catchAsync(async (req, res) => {
-  const query ={};
-  query.status = req.query.status?req.query.status:true;
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await categoryService.getCategory(query,options);
+  const data = await categoryService.getCategory(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'category data fetched successfully', data: data });
   } else {
@@ -38,8 +36,6 @@ const getCategoryById = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
 const updateCategory = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
@@ -56,8 +52,6 @@ const updateCategory = catchAsync(async (req, res) => {
   }
 });
 
-
-
 const deleteCategory = catchAsync(async (req, res) => {
   const querry = req.params;
 
@@ -69,9 +63,9 @@ const deleteCategory = catchAsync(async (req, res) => {
   }
 });
 module.exports = {
-    createCategory,
-    deleteCategory,
-    getCategory,
-    updateCategory,
-    getCategoryById
+  createCategory,
+  deleteCategory,
+  getCategory,
+  updateCategory,
+  getCategoryById
 };

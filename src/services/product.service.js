@@ -1,4 +1,4 @@
-const { Product,Category,SubCategory,SubSubCategory,ProductDetails } = require('../models');
+const { Product, Category, SubCategory, SubSubCategory, ProductDetails } = require('../models');
 
 const createProduct = async (_userBody) => {
   const userBody = _userBody;
@@ -6,13 +6,12 @@ const createProduct = async (_userBody) => {
 };
 
 const getProduct = async (query, options) => {
-
-  const limit = Number(options.limit) ;
+  const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Product.findAndCountAll({
-    where:  query,
+    where: query,
     order: [['updatedAt', 'DESC']],
-    include:[{model:ProductDetails},{ model:Category},{model:SubCategory},{model:SubSubCategory}],
+    include: [{ model: ProductDetails }, { model: Category }, { model: SubCategory }, { model: SubSubCategory }],
     limit,
     offset
   });
@@ -22,9 +21,8 @@ const getProduct = async (query, options) => {
 const getProductById = async (id) => {
   try {
     const data = await Product.findAll({
-      where: {id:id},
-      include:[{model:ProductDetails},{ model:Category},{model:SubCategory},{model:SubSubCategory}]
-
+      where: { id: id },
+      include: [{ model: ProductDetails }, { model: Category }, { model: SubCategory }, { model: SubSubCategory }]
     });
     return data;
   } catch (error) {
@@ -41,19 +39,18 @@ const updateProductById = async (id, newData) => {
   } else {
     return;
   }
-}
-
+};
 
 const deleteProductById = async (Id) => {
   try {
-    const user = await Product.findOne({ where:   Id  });
+    const user = await Product.findOne({ where: Id });
 
     if (!user) {
       throw new Error('Product not found');
     }
     await user.update({ status: false });
 
-    console.log("Product deleted successfully");
+    console.log('Product deleted successfully');
 
     return { message: 'Product deleted successfully' };
   } catch (error) {
@@ -62,14 +59,10 @@ const deleteProductById = async (Id) => {
   }
 };
 
-
-
 module.exports = {
   createProduct,
   getProduct,
   updateProductById,
   deleteProductById,
-  getProductById,
-  
-  
+  getProductById
 };
