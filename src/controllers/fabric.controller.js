@@ -4,9 +4,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const { Op } = require('sequelize');
 
-
-
-const   createFabric= catchAsync(async (req, res) => {
+const createFabric = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await fabricService.createFabric(userBody);
   if (data) {
@@ -16,16 +14,26 @@ const   createFabric= catchAsync(async (req, res) => {
   }
 });
 
-
-
 const getFabric = catchAsync(async (req, res) => {
-  const query ={};
-  query.status = req.query.status?req.query.status:true;
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
-  const { fabricType, weight, printType, usage, properties, handle,
-  construction,transparency,reflection,price,maxWidth,gsm } = req.query;
-  
+  const {
+    fabricType,
+    weight,
+    printType,
+    usage,
+    properties,
+    handle,
+    construction,
+    transparency,
+    reflection,
+    price,
+    maxWidth,
+    gsm
+  } = req.query;
+
   fabricType ? (query.fabricType = { [Op.like]: `%${fabricType}%` }) : null;
   weight ? (query.weight = { [Op.like]: `%${weight}%` }) : null;
   printType ? (query.printType = { [Op.like]: `%${printType}%` }) : null;
@@ -38,9 +46,8 @@ const getFabric = catchAsync(async (req, res) => {
   price ? (query.price = { [Op.like]: `%${price}%` }) : null;
   maxWidth ? (query.maxWidth = { [Op.like]: `%${maxWidth}%` }) : null;
   gsm ? (query.gsm = { [Op.like]: `%${gsm}%` }) : null;
- 
 
-const data = await fabricService.getFabric(query,options);
+  const data = await fabricService.getFabric(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'fabric data fetched successfully', data: data });
   } else {
@@ -59,13 +66,11 @@ const getFabricById = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
 const updateFabric = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
     const newData = req.body;
-    const updatedUser = await fabricService.updatefabricById(userId, newData);
+    const updatedUser = await fabricService.updateFabricById(userId, newData);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'fabric updated successfully' });
     } else {
@@ -76,8 +81,6 @@ const updateFabric = catchAsync(async (req, res) => {
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
-
-
 
 const deleteFabric = catchAsync(async (req, res) => {
   const querry = req.params;
@@ -90,9 +93,9 @@ const deleteFabric = catchAsync(async (req, res) => {
   }
 });
 module.exports = {
-    createFabric,
-    deleteFabric,
-    getFabric,
-    updateFabric,
-    getFabricById
+  createFabric,
+  deleteFabric,
+  getFabric,
+  updateFabric,
+  getFabricById
 };

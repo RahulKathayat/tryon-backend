@@ -3,8 +3,7 @@ const subSubCategoryService = require('../services/subSubCategory.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 
-
-const   createSubSubCategory= catchAsync(async (req, res) => {
+const createSubSubCategory = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await subSubCategoryService.createSubSubCategory(userBody);
   if (data) {
@@ -14,13 +13,25 @@ const   createSubSubCategory= catchAsync(async (req, res) => {
   }
 });
 
+const uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({ message: 'You must select a file.' });
+    }
+    const originalFilePath = req.file.path;
 
+    return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
+  }
+};
 
 const getSubSubCategory = catchAsync(async (req, res) => {
-  const query ={};
-  query.status = req.query.status?req.query.status:true;
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await subSubCategoryService.getSubSubCategory(query,options);
+  const data = await subSubCategoryService.getSubSubCategory(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'subSubCategory data fetched successfully', data: data });
   } else {
@@ -30,7 +41,6 @@ const getSubSubCategory = catchAsync(async (req, res) => {
 });
 
 const getAllCategories = catchAsync(async (req, res) => {
-  
   const data = await subSubCategoryService.getAllSubSubCategories();
   if (data) {
     res.status(httpStatus.OK).send({ message: 'subSubCategory data fetched successfully', data: data });
@@ -50,8 +60,6 @@ const getSubSubCategoryById = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
 const updateSubSubCategory = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
@@ -68,8 +76,6 @@ const updateSubSubCategory = catchAsync(async (req, res) => {
   }
 });
 
-
-
 const deleteSubSubCategory = catchAsync(async (req, res) => {
   const querry = req.params;
 
@@ -81,10 +87,11 @@ const deleteSubSubCategory = catchAsync(async (req, res) => {
   }
 });
 module.exports = {
-    createSubSubCategory,
-    deleteSubSubCategory,
-    getSubSubCategory,
-    updateSubSubCategory,
-    getSubSubCategoryById,
-    getAllCategories
+  createSubSubCategory,
+  deleteSubSubCategory,
+  getSubSubCategory,
+  updateSubSubCategory,
+  getSubSubCategoryById,
+  getAllCategories,
+  uploadImage
 };

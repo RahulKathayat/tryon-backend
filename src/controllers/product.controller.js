@@ -17,43 +17,14 @@ const createProduct = catchAsync(async (req, res) => {
   }
 });
 
-const uploadImage = async (req, res) => {
+const uploadFeatureImage = async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).send({ message: 'You must select a file.' });
     }
     const originalFilePath = req.file.path;
-    console.log('originalFilePath==================== ', originalFilePath);
-    if (!fs.existsSync(originalFilePath)) {
-      return res.status(400).send({ message: 'Input file does not exist.' });
-    }
 
-    const originalFilename = req.file.filename;
-    const baseFileName = path.parse(originalFilename).name;
-    console.log('file name===============', originalFilename);
-
-    const resized100 = `${baseFileName}_100x100.png`;
-    await sharp(originalFilePath)
-      .resize(100, 100)
-      .png({ quality: 90 })
-      .toFile(path.resolve(__dirname + '/uploads', resized100));
-    console.log('dirName========================================', __dirname);
-
-    const resized300 = `${originalFilename}_300x300.png`;
-    await sharp(originalFilePath)
-      .resize(200, 200)
-      .png({ quality: 90 })
-      .toFile(path.resolve(__dirname + '/uploads', resized300));
-
-    const resized800 = `${originalFilename}`;
-    await sharp(originalFilePath)
-      .resize(800, 800)
-      .png({ quality: 90 })
-      .toFile(path.resolve(__dirname + '/uploads', resized800));
-
-    fs.unlinkSync(originalFilePath);
-
-    return res.status(200).send({ message: 'File has been uploaded and processed.', pic: originalFilename });
+    return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
   } catch (error) {
     console.log('error', error);
     return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
@@ -119,19 +90,27 @@ const deleteProduct = catchAsync(async (req, res) => {
   }
 });
 
-// // upload image
-// const uploadImage = async (req, res) => {
-//   try {
-//     console.log("request===datavalue===========================================",req.user)
-//     const image = req.file.filename;
-//     if (req.file === undefined) {
-//       return res.send(`You must select a file.`);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     return res.send(`Error when trying upload images: ${error}`);
-//   }
-// };
+const uploadImages = async (req, res) => {
+  try {
+    const images = req.files;
+    console.log('images==============', images);
+
+    if (!images || images.length === 0) {
+      return res.status(400).send('You must select at least one file.');
+    }
+
+    const fileInformation = images.map((file) => ({
+      filename: file.filename,
+      mimetype: file.mimetype,
+      size: file.size
+    }));
+
+    res.send({ message: 'Images uploaded successfully', fileInformation });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(`Error when trying to upload images: ${error}`);
+  }
+};
 
 //updateImage
 const updateImage = catchAsync(async (req, res) => {
@@ -146,7 +125,7 @@ const updateImage = catchAsync(async (req, res) => {
     const updatedUser = await productService.updateImage(userId, body.image);
     console.log('updateUser================', updatedUser);
     if (updatedUser) {
-      res.status(200).send({ data: updatedUser, message: 'User updated successfully' });
+      res.status(200).send({ data: updatedUser, message: 'image successfully' });
     } else {
       res.status(404).send({ message: 'User not found', status: 0 });
     }
@@ -162,7 +141,8 @@ module.exports = {
   getProduct,
   updateProduct,
   getProductById,
-  uploadImage,
+  uploadFeatureImage,
+  uploadImages,
   updateImage,
   getProductById
 };

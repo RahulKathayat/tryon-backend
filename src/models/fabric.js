@@ -2,11 +2,14 @@ module.exports = (sequelize, DataTypes) => {
   const Fabric = sequelize.define(
     'Fabric',
     {
+      fabricName: {
+        type: DataTypes.STRING
+      },
       fabricType: {
         type: DataTypes.STRING
       },
       weight: {
-        type: DataTypes.INTEGER
+        type: DataTypes.STRING
       },
       printType: {
         type: DataTypes.STRING
@@ -49,9 +52,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  Fabric.associate = function(models) {
+  Fabric.associate = function (models) {
     Fabric.hasMany(models.ProductFabric, {
-      foreignKey: 'fabricId' 
+      foreignKey: 'fabricId'
     });
   };
   return Fabric;

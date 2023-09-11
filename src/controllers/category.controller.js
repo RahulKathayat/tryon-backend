@@ -13,6 +13,20 @@ const createCategory = catchAsync(async (req, res) => {
   }
 });
 
+const uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({ message: 'You must select a file.' });
+    }
+    const originalFilePath = req.file.path;
+
+    return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
+  }
+};
+
 const getCategory = catchAsync(async (req, res) => {
   const query = {};
   query.status = req.query.status ? req.query.status : true;
@@ -86,5 +100,6 @@ module.exports = {
   getCategory,
   updateCategory,
   getCategoryById,
-  getAllCategory
+  getAllCategory,
+  uploadImage
 };

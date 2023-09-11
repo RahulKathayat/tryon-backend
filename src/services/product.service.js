@@ -59,10 +59,22 @@ const deleteProductById = async (Id) => {
   }
 };
 
+// const updateImage = async (id, newData) => {
+//   const findData = await Product.findOne({
+//     where: { id: id }
+//   });
+//   if (findData) {
+//     return Product.update({ image: newData }, { where: { id: id } });
+//   } else {
+//     return;
+//   }
+// };
+
 module.exports = {
   createProduct,
   getProduct,
   updateProductById,
   deleteProductById,
   getProductById
+  // updateImage
 };

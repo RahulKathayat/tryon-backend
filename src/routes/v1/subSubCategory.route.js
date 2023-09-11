@@ -7,22 +7,21 @@ const { subSubCategoryValidation } = require('../../validations');
 const { commonService } = require('../../services');
 // const auth = require('../../middlewares/auth');
 
+const upload = require('../../utils/upload');
+
 const router = express.Router();
+router.post('/image', upload.array('image', 5), subSubCategoryController.uploadImage);
 router
-.route('/')
-.get(auth(),subSubCategoryController.getSubSubCategory)
-.post(auth(),validate(subSubCategoryValidation.createSubSubCategory),subSubCategoryController.createSubSubCategory)
+  .route('/')
+  .get(auth(), subSubCategoryController.getSubSubCategory)
+  .post(auth(), validate(subSubCategoryValidation.createSubSubCategory), subSubCategoryController.createSubSubCategory);
 
-router.get('/getAll',auth(),subSubCategoryController.getAllCategories)
-
+router.get('/getAll', auth(), subSubCategoryController.getAllCategories);
 
 router
-.route('/:id')
-.put(auth(),validate(subSubCategoryValidation.updateSubSubCategory),subSubCategoryController.updateSubSubCategory)
-.delete(auth(),subSubCategoryController.deleteSubSubCategory)
-.get(auth(),subSubCategoryController.getSubSubCategoryById)
-
-
-
+  .route('/:id')
+  .put(auth(), validate(subSubCategoryValidation.updateSubSubCategory), subSubCategoryController.updateSubSubCategory)
+  .delete(auth(), subSubCategoryController.deleteSubSubCategory)
+  .get(auth(), subSubCategoryController.getSubSubCategoryById);
 
 module.exports = router;

@@ -12,8 +12,8 @@ const upload = require('../../utils/upload');
 const router = express.Router();
 router;
 
-router.post('/image', upload.single('image'), productController.uploadImage);
-router.put('/updateImage/:id', auth(), productController.updateImage);
+router.post('/images', upload.array('image', 5), productController.uploadImages);
+router.post('/featureImage', upload.single('image'), productController.uploadFeatureImage);
 
 router
   .route('/')
