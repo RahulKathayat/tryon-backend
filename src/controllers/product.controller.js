@@ -5,6 +5,7 @@ const pick = require('../utils/pick');
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
+const { Op } = require('sequelize');
 
 const createProduct = catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -63,6 +64,15 @@ const getProduct = catchAsync(async (req, res) => {
   const query = {};
   query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+  const { productName, productNumber, brandName, originalPrice, discountedPrice, productType } = req.query;
+  productName ? (query.productName = { [Op.like]: `%${productName}%` }) : null;
+  productNumber ? (query.productNumber = { [Op.like]: `%${productNumber}%` }) : null;
+  brandName ? (query.brandName = { [Op.like]: `%${brandName}%` }) : null;
+  originalPrice ? (query.originalPrice = { [Op.like]: `%${originalPrice}%` }) : null;
+  discountedPrice ? (query.discountedPrice = { [Op.like]: `%${discountedPrice}%` }) : null;
+  productType ? (query.productType = { [Op.like]: `%${productType}%` }) : null;
+
   const data = await productService.getProduct(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'product data fetched successfully', data: data });
@@ -153,5 +163,6 @@ module.exports = {
   updateProduct,
   getProductById,
   uploadImage,
-  updateImage
+  updateImage,
+  getProductById
 };

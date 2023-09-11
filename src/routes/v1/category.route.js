@@ -13,12 +13,15 @@ router
 .get(auth(),categoryController.getCategory)
 .post(auth(),validate(categoryValidation.createCategory),categoryController.createCategory)
 
+router.get('/getAll',auth(),categoryController.getAllCategory)
 
 router
 .route('/:id')
 .put(auth(),validate(categoryValidation.updateCategory),categoryController.updateCategory)
 .delete(auth(),categoryController.deleteCategory)
 .get(auth(),categoryController.getCategoryById)
+
+
 
 
 

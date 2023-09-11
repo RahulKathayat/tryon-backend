@@ -16,7 +16,7 @@ const updateSubSubCategory={
       }),
     body:Joi.object().keys({
         // categoryId:Joi.number().required(),
-        subCategoryId:Joi.number().required(),
+        // subCategoryId:Joi.number().required(),
         subSubCategoryName:Joi.string().required(),
         status:Joi.boolean()
     })

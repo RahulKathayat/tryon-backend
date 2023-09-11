@@ -31,7 +31,7 @@ const getSubSubCategory = catchAsync(async (req, res) => {
 
 const getAllCategories = catchAsync(async (req, res) => {
   
-  const data = await subSubCategoryService.getAllCategories();
+  const data = await subSubCategoryService.getAllSubSubCategories();
   if (data) {
     res.status(httpStatus.OK).send({ message: 'subSubCategory data fetched successfully', data: data });
   } else {

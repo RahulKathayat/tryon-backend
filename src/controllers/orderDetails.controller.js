@@ -2,6 +2,8 @@ const catchAsync = require('../utils/catchAsync');
 const orderDetailsService = require('../services/orderDetails.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
+const { Op } = require('sequelize');
+
 
 
 const createOrderDetails = catchAsync(async (req, res) => {
@@ -20,6 +22,13 @@ const getOrderDetails = catchAsync(async (req, res) => {
     const query ={};
     query.status = req.query.status?req.query.status:true;
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+    const { type,amount,trackingId,trackingLink,emailVerify,addressId,dob } = req.query;
+    type ? query.type = { [Op.like]: `%${type}%` } : null;
+    amount ? query.amount = { [Op.like]: `%${amount}%` } : null;
+    trackingId ? query.trackingId = { [Op.like]: `%${trackingId}%` } : null;
+    trackingLink ? query.trackingLink = { [Op.like]: `%${trackingLink}%` } : null;
+
     const data = await orderDetailsService.getOrderDetails(query,options);
     if (data) {
         res.status(httpStatus.OK).send({ message: 'order data fetched successfully', data: data });
