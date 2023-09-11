@@ -11,7 +11,7 @@ const { getSubCategoryAndCategory } = require('../../services/subCategory.servic
 const upload = require('../../utils/upload');
 
 const router = express.Router();
-router.post('/image', upload.array('image', 5), subCategoryController.uploadImage);
+router.post('/image', upload.single('image'), subCategoryController.uploadImage);
 
 router
   .route('/')
