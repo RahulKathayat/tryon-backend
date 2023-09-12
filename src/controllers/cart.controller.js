@@ -2,17 +2,29 @@ const catchAsync = require('../utils/catchAsync');
 const cartService = require('../services/cart.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
+const { userService } = require('../services');
 
 
-const   createCart= catchAsync(async (req, res) => {
-  let userBody = req.body;
-  const data = await cartService.createCart(userBody);
-  if (data) {
-    await res.status(200).send({ message: 'cart created successfully' });
-  } else {
-    await res.status(404).send({ message: 'cart not created' });
-  }
-});
+// const createCart = catchAsync(async (req, res) => {
+//   try {
+//     let userBody = req.body  
+
+//     if (data) {
+//       res.status(200).send({ message: 'Cart created successfully' });
+//     } else {
+//       res.status(404).send({ message: 'Cart not created' });
+//     }
+//   } catch (error) {
+//     console.error("Error:", error);
+//     res.status(500).send({ message: 'Internal server error' });
+//   }
+// });
+
+// Execute createCart after a delay using setTimeout
+// setTimeout((req,res) => {
+//   createCart(req, res);
+// }, 1000); 
+
 
 
 
@@ -70,7 +82,7 @@ const deleteCart = catchAsync(async (req, res) => {
   }
 });
 module.exports = {
-    createCart,
+    // createCart,
     deleteCart,
     getCart,
     updateCart,

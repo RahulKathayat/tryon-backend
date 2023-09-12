@@ -1,12 +1,21 @@
 const { Cart,Users } = require('../models');
 
+
 const createCart = async (_userBody) => {
   const userBody = _userBody;
-  console.log("===============",userBody);
-   const data= await Cart.create(userBody);
-   console.log("data",data);
-   return data
+  const existingCart = await Cart.findOne({
+    where: { userId: userBody }
+  });
+
+  if (!existingCart) {
+
+    return Cart.create({ userId: userBody });
+  }
+  return existingCart;
 };
+
+
+
 
 const getCart = async (query, options) => {
 

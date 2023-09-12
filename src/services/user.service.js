@@ -8,6 +8,7 @@ const createUser = async (_userBody) => {
     const userBody = _userBody;
     userBody.password = await bcrypt.hash(userBody.password, 8);
     const createdUser = await Users.create(userBody);
+    
     return createdUser;
   } catch (error) {
     console.error('Error creating user:', error);

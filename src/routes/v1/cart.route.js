@@ -11,7 +11,7 @@ const router = express.Router();
 router
 .route('/')
 .get(auth(),cartController.getCart)
-.post(auth(),validate(cartValidation.createCart),cartController.createCart)
+// .post(auth(),validate(cartValidation.createCart),cartController.createCart)
 
 
 router

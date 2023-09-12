@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/image', upload.single('image'), categoryController.uploadImage);
 router
   .route('/')
-  .get(auth(), categoryController.getCategory)
+  .get(categoryController.getCategory)
   .post(auth(), validate(categoryValidation.createCategory), categoryController.createCategory);
 
 router.get('/getAll', auth(), categoryController.getAllCategory);

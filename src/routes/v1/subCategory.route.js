@@ -15,7 +15,7 @@ router.post('/image', upload.single('image'), subCategoryController.uploadImage)
 
 router
   .route('/')
-  .get(auth(), subCategoryController.getSubCategory)
+  .get(subCategoryController.getSubCategory)
   .post(auth(), validate(subCategoryValidation.createSubCategory), subCategoryController.createSubCategory);
 
 router.get('/getAll', auth(), subCategoryController.getAllSubCategory);

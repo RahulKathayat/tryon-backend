@@ -10,7 +10,7 @@ const { commonService } = require('../../services');
 const router = express.Router();
 router
 .route('/')
-.get(auth(),fabricController.getFabric)
+.get(fabricController.getFabric)
 .post(auth(),validate(fabricValidation.createFabric),fabricController.createFabric)
 
 
