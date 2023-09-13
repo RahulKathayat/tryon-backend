@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
-const { authService, tokenService, userService } = require('../services');
+const { authService, tokenService, userService, cartService } = require('../services');
 
 const ApiError = require('../utils/ApiError');
 
@@ -14,12 +14,13 @@ const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
 
-  if(user){
+  if (user) {
+    console.log('userIDDDDDDDDDDDDDDDDDDD', user.id);
+    const data = await cartService.createCart(user.id);
     const tokens = await tokenService.generateAuthTokens(user);
-    res.send({message: "Login Successfully!!",user,tokens})
-}
-  else{
-    res.send({ message:"Invalid email or password",user, tokens });
+    res.send({ message: 'Login Successfully!!', user, tokens });
+  } else {
+    res.send({ message: 'Invalid email or password', user, tokens });
   }
 });
 

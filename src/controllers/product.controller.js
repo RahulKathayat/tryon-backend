@@ -22,7 +22,7 @@ const uploadFeatureImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).send({ message: 'You must select a file.' });
     }
-    const originalFilePath = req.file.path;
+    const originalFilePath = req.file.path.trim();
 
     return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
   } catch (error) {
@@ -93,6 +93,7 @@ const deleteProduct = catchAsync(async (req, res) => {
 const uploadImages = async (req, res) => {
   try {
     const images = req.files;
+    console.log('===============================', req.file);
     console.log('images==============', images);
 
     if (!images || images.length === 0) {
@@ -100,8 +101,8 @@ const uploadImages = async (req, res) => {
     }
 
     const fileInformation = images.map((file) => ({
-      filename: file.filename,
-      mimetype: file.mimetype,
+      filename: file.filename.trim(),
+      mimetype: file.mimetype.trim(),
       size: file.size
     }));
 

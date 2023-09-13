@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       image: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       featuredImage: {
         type: Sequelize.STRING
