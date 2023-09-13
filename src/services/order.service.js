@@ -1,35 +1,32 @@
-const { Orders,OrderDetails,Users,Product } = require('../models');
+const { Orders, OrderDetails, Users, Product } = require('../models');
 // const orderDetails = require('../models/orderDetails');
 
 const createOrder = async (_userBody) => {
   const userBody = _userBody;
-  console.log("===============",userBody);
-   const data= await Orders.create(userBody);
-   console.log("data",data);
-   return data
+  console.log('===============', userBody);
+  const data = await Orders.create(userBody);
+  console.log('data', data);
+  return data;
 };
 
 const getOrder = async (query, options) => {
-
-  const limit = Number(options.limit) ;
+  const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Orders.findAndCountAll({
-    where:  query,
+    where: query,
     order: [['updatedAt', 'DESC']],
-    include:[{model:OrderDetails},{model:Users},{model:Product}],
+    include: [{ model: OrderDetails }, { model: Users }, { model: Product }],
     limit,
     offset
   });
   return support;
 };
 
-
 const getOrderById = async (id) => {
   try {
     const data = await Orders.findOne({
-      where: {id:id},
-      include:[{model:OrderDetails},{model:Users},{model:Product}]
-
+      where: { id: id },
+      include: [{ model: OrderDetails }, { model: Users }, { model: Product }]
     });
     return data;
   } catch (error) {
@@ -46,19 +43,18 @@ const updateOrderById = async (id, newData) => {
   } else {
     return;
   }
-}
-
+};
 
 const deleteOrderById = async (Id) => {
   try {
-    const user = await Orders.findOne({ where:   Id  });
+    const user = await Orders.findOne({ where: Id });
 
     if (!user) {
       throw new Error('Orders not found');
     }
     await user.update({ status: false });
 
-    console.log("Orders deleted successfully");
+    console.log('Orders deleted successfully');
 
     return { message: 'Orders deleted successfully' };
   } catch (error) {
@@ -68,10 +64,9 @@ const deleteOrderById = async (Id) => {
 };
 
 module.exports = {
-    createOrder,
-    getOrder,
-    updateOrderById,
-    deleteOrderById,
-    getOrderById
-  
+  createOrder,
+  getOrder,
+  updateOrderById,
+  deleteOrderById,
+  getOrderById
 };

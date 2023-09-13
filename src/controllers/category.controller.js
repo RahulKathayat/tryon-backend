@@ -3,7 +3,7 @@ const categoryService = require('../services/category.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 
-const createCategory = catchAsync(async (req, res) => {
+const   createCategory= catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await categoryService.createCategory(userBody);
   if (data) {
@@ -13,25 +13,13 @@ const createCategory = catchAsync(async (req, res) => {
   }
 });
 
-const uploadImage = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).send({ message: 'You must select a file.' });
-    }
-    const originalFilePath = req.file.path;
 
-    return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
-  } catch (error) {
-    console.log('error', error);
-    return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
-  }
-};
 
 const getCategory = catchAsync(async (req, res) => {
-  const query = {};
-  query.status = req.query.status ? req.query.status : true;
+  const query ={};
+  query.status = req.query.status?req.query.status:true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await categoryService.getCategory(query, options);
+  const data = await categoryService.getCategory(query,options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'category data fetched successfully', data: data });
   } else {
@@ -41,8 +29,8 @@ const getCategory = catchAsync(async (req, res) => {
 });
 
 const getAllCategory = catchAsync(async (req, res) => {
-  const query = {};
-  query.status = req.query.status ? req.query.status : true;
+  const query={}
+  query.status = req.query.status?req.query.status:true;
   const data = await categoryService.getAllCategory(query);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Category data fetched successfully', data: data });
@@ -53,7 +41,6 @@ const getAllCategory = catchAsync(async (req, res) => {
 });
 
 const getCategoryById = catchAsync(async (req, res) => {
-  console.log('yyyyyyyyyyyyyyyyyyyyyyyyy');
   const data = await categoryService.getCategoryById(req.params.id);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'category data by id is fetched successfully', data: data });
@@ -62,6 +49,8 @@ const getCategoryById = catchAsync(async (req, res) => {
   }
   return data;
 });
+
+
 
 const updateCategory = catchAsync(async (req, res) => {
   try {
@@ -79,6 +68,8 @@ const updateCategory = catchAsync(async (req, res) => {
   }
 });
 
+
+
 const deleteCategory = catchAsync(async (req, res) => {
   const querry = req.params;
 
@@ -89,17 +80,26 @@ const deleteCategory = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in category delete' });
   }
 });
+
+const uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({ message: 'You must select a file.' });
+    }
+    const originalFilePath = req.file.path;
+
+    return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
+  }
+};
 module.exports = {
-  createCategory,
-  deleteCategory,
-  getCategory,
-  updateCategory,
-  getCategoryById,
-  createCategory,
-  deleteCategory,
-  getCategory,
-  updateCategory,
-  getCategoryById,
-  getAllCategory,
-  uploadImage
+    createCategory,
+    deleteCategory,
+    getCategory,
+    updateCategory,
+    getCategoryById,
+    getAllCategory,
+    uploadImage
 };

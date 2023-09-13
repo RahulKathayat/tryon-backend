@@ -19,10 +19,11 @@ const createProduct = catchAsync(async (req, res) => {
 
 const uploadFeatureImage = async (req, res) => {
   try {
+    console.log('======================', req.file);
     if (!req.file) {
       return res.status(400).send({ message: 'You must select a file.' });
     }
-    const originalFilePath = req.file.path.trim();
+    const originalFilePath = req.file.filename.trim();
 
     return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
   } catch (error) {

@@ -10,7 +10,7 @@ const { commonService } = require('../../services');
 const router = express.Router();
 router
 .route('/')
-.get(auth(),productDetailController.getProductDetail)
+.get(productDetailController.getProductDetail)
 .post(auth(),validate(productDetailValidation.createProductDetail),productDetailController.createProductDetail)
 
 

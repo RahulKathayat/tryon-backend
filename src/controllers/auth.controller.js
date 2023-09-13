@@ -1,12 +1,16 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
-const { authService, tokenService, userService, cartService } = require('../services');
+const { authService, tokenService, userService, cartService, emailService } = require('../services');
+const config = require('../config/config');
 
 const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
+  const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
+  const host = config.email.customerHost;
+  await emailService.sendVerificationEmail(req.body.email, verifyEmailToken, host);
   res.status(httpStatus.CREATED).send({ user });
 });
 
@@ -39,10 +43,32 @@ const generatePassword = catchAsync(async (req, res) => {
   res.send({ password });
 });
 
+const sendVerificationEmail = catchAsync(async (req, res) => {
+  if (!req.user.isEmailVerified) {
+    const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
+    let host = config.email.customerHost;
+    if (req.user.role === 'Admin') {
+      host = config.email.AdminHost;
+    } else if (req.user.role === 'Customer') {
+      host = config.email.CustomerHost;
+    }
+    await emailService.sendVerificationEmail(req.user.email, verifyEmailToken, host);
+    res.status(httpStatus.NO_CONTENT).send();
+  } else {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Email already verified');
+  }
+});
+
+const verifyEmail = catchAsync(async (req, res) => {
+  await authService.verifyEmail(req.query.token);
+  res.status(httpStatus.NO_CONTENT).send();
+});
 module.exports = {
   register,
   login,
   logout,
   refreshTokens,
-  generatePassword
+  generatePassword,
+  sendVerificationEmail,
+  verifyEmail
 };

@@ -17,7 +17,7 @@ router.post('/featureImage', upload.single('image'), productController.uploadFea
 
 router
   .route('/')
-  .get(auth(), productController.getProduct)
+  .get(productController.getProduct)
   .post(auth(), validate(productValidation.createProduct), productController.createProduct);
 
 router

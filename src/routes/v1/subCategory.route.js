@@ -11,11 +11,11 @@ const { getSubCategoryAndCategory } = require('../../services/subCategory.servic
 const upload = require('../../utils/upload');
 
 const router = express.Router();
-router.post('/image', upload.array('image', 5), subCategoryController.uploadImage);
+router.post('/image', upload.single('image'), subCategoryController.uploadImage);
 
 router
   .route('/')
-  .get(auth(), subCategoryController.getSubCategory)
+  .get(subCategoryController.getSubCategory)
   .post(auth(), validate(subCategoryValidation.createSubCategory), subCategoryController.createSubCategory);
 
 router.get('/getAll', auth(), subCategoryController.getAllSubCategory);

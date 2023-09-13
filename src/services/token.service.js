@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
-// const httpStatus = require('http-status');
+const httpStatus = require('http-status');
 const config = require('../config/config');
 const { Token } = require('../models');
-// const ApiError = require('../utils/ApiError');
+const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 
 const generateToken = (userId, role, expires, type, secret = config.jwt.secret) => {
+  console.log('============================================',expires)
   const payload = {
     sub: userId,
     role,
@@ -60,9 +61,24 @@ const generateAuthTokens = async (user) => {
   };
 };
 
+/**
+ * Generate verify email token
+ * @param {Users} user
+ * @returns {Promise<string>}
+ */
+
+const generateVerifyEmailToken = async (user) => {
+  const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
+  console.log("email-======================================================",expires);
+  const verifyEmailToken = generateToken(user.id, user.role,expires, tokenTypes.VERIFY_EMAIL);
+  await saveToken(verifyEmailToken, user.id, user.role, expires, tokenTypes.VERIFY_EMAIL);
+  return verifyEmailToken;
+};
+
 module.exports = {
   generateToken,
   saveToken,
   verifyToken,
-  generateAuthTokens
+  generateAuthTokens,
+  generateVerifyEmailToken
 };

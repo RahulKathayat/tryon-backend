@@ -22,7 +22,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
     logger.info('message');
 
     if (!user || !(await bcrypt.compare(password, userWithSecretFields.password))) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'Incorrect email or password');
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
     }
 
     return user;
@@ -54,8 +54,31 @@ const refreshAuth = async (refreshToken) => {
   }
 };
 
+
+/**
+ * Verify email
+ * @param {string} verifyEmailToken
+ * @returns {Promise}
+ */
+const verifyEmail = async (verifyEmailToken) => {
+  try {
+    const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
+    const user = await userService.getUserById(verifyEmailTokenDoc.user);
+    if (!user) {
+      throw new Error();
+    }
+    // await Token.destroy({ where: { user: user.id, type: tokenTypes.VERIFY_EMAIL }, force: true });
+    await userService.updateUserById(user.id, { emailVerify: true });
+    console.log("User verify======================================",emailVerify);
+  } catch (error) {
+    logger.error(error);
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
+  }
+};
+
 module.exports = {
   loginUserWithEmailAndPassword,
   logout,
-  refreshAuth
+  refreshAuth,
+  verifyEmail
 };

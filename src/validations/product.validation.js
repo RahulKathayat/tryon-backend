@@ -10,8 +10,8 @@ const createProduct = {
     categoryId: Joi.number().required(),
     subCategoryId: Joi.number().required(),
     subSubCategoryId: Joi.number().required(),
-    image: Joi.optional(),
-    // featuredImage:Joi.string().required(),
+    image: Joi.array().optional(),
+    featuredImage: Joi.optional(),
     productType: Joi.number().valid(0, 1, 2).required(), //0=newProduct, 1=hotDeals, 2=bestSeller
     length: Joi.number().required(),
     status: Joi.boolean()
@@ -31,7 +31,7 @@ const updateProduct = {
   subCategoryId: Joi.number().required(),
   subSubCategoryId: Joi.number().required(),
   image: Joi.optional(),
-  // featuredImage:Joi.string().required(),
+  featuredImage: Joi.optional(),
   productType: Joi.number().valid(0, 1, 2).required(), //0=newProduct, 1=hotDeals, 2=bestSeller
   length: Joi.number().required(),
   status: Joi.boolean()

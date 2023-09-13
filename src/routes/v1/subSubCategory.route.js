@@ -10,10 +10,10 @@ const { commonService } = require('../../services');
 const upload = require('../../utils/upload');
 
 const router = express.Router();
-router.post('/image', upload.array('image', 5), subSubCategoryController.uploadImage);
+router.post('/image', upload.single('image'), subSubCategoryController.uploadImage);
 router
   .route('/')
-  .get(auth(), subSubCategoryController.getSubSubCategory)
+  .get(subSubCategoryController.getSubSubCategory)
   .post(auth(), validate(subSubCategoryValidation.createSubSubCategory), subSubCategoryController.createSubSubCategory);
 
 router.get('/getAll', auth(), subSubCategoryController.getAllCategories);
