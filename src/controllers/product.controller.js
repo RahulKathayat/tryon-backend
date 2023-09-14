@@ -11,9 +11,9 @@ const createProduct = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await productService.createProduct(userBody);
   if (data) {
-    await res.status(200).send({ message: 'card created successfully' });
+    await res.status(200).send({ message: 'Product created successfully' });
   } else {
-    await res.status(404).send({ message: 'card not created' });
+    await res.status(404).send({ message: 'Product not created' });
   }
 });
 
@@ -73,10 +73,10 @@ const updateProduct = catchAsync(async (req, res) => {
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'product updated successfully' });
     } else {
-      res.status(404).send({ message: 'card not found', status: 0 });
+      res.status(404).send({ message: 'Product not found', status: 0 });
     }
   } catch (error) {
-    console.error('Error updating card:', error);
+    console.error('Error updating Product:', error);
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
@@ -88,27 +88,30 @@ const deleteProduct = catchAsync(async (req, res) => {
   if (deleteUser) {
     res.status(httpStatus.OK).send({ message: 'product deleted successfully' });
   } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in card delete' });
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in Product delete' });
   }
 });
 
 const uploadImages = async (req, res) => {
   try {
     const images = req.files;
-    console.log('===============================', req.file);
     console.log('images==============', images);
 
     if (!images || images.length === 0) {
       return res.status(400).send('You must select at least one file.');
     }
 
-    const fileInformation = images.map((file) => ({
-      filename: file.filename.trim(),
-      mimetype: file.mimetype.trim(),
-      size: file.size
-    }));
+    const fileInformation = images.map((file) => {
+      console.log(file.file);
+      return file.filename.trim()
+     
+    });
+    // const fileInformation= image.map((item)=>{
+    // return item.filename
+    // })
+    // console.log("file===========",image);
 
-    res.send({ message: 'Images uploaded successfully', fileInformation });
+    res.send({ message: 'Images uploaded successfully', fileInformation:fileInformation});
   } catch (error) {
     console.error(error);
     return res.status(500).send(`Error when trying to upload images: ${error}`);

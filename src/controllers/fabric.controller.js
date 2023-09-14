@@ -92,10 +92,26 @@ const deleteFabric = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fabric delete' });
   }
 });
+
+const uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({ message: 'You must select a file.' });
+    }
+    const originalFilePath = req.file.filename;
+
+    return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
+  }
+};
+
 module.exports = {
   createFabric,
   deleteFabric,
   getFabric,
   updateFabric,
-  getFabricById
+  getFabricById,
+  uploadImage
 };

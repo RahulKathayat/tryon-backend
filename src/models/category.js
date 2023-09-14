@@ -26,9 +26,9 @@ module.exports = (sequelize, DataTypes) => {
     Category.hasOne(models.SubCategory, {
       foreignKey: 'categoryId'
     });
-    Category.hasMany(models.SubSubCategory, {
-      foreignKey: 'categoryId'
-    });
+    // Category.hasMany(models.SubSubCategory, {
+    //   foreignKey: 'categoryId'
+    // });
 
     Category.hasMany(models.Product, {
       foreignKey: 'categoryId'

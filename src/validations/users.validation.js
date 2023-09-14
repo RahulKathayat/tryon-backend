@@ -24,7 +24,7 @@ const updateUser = {
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
     phoneNumber: Joi.number().required(),
-    email: Joi.string().required().email(),
+    // email: Joi.string().required().email(),
     emailVerify: Joi.boolean().required(),
     password: Joi.string().required(),
     addressId: Joi.number().required(),

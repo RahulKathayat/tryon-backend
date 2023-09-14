@@ -41,6 +41,9 @@ module.exports = (sequelize, DataTypes) => {
       gsm: {
         type: DataTypes.INTEGER
       },
+      image: {
+        type: DataTypes.STRING
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

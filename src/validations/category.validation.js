@@ -4,6 +4,7 @@ const createCategory={
     body:Joi.object().keys({
         categoryName:Joi.string().required(),
         popularCategory:Joi.boolean().required(),
+        image:Joi.string().optional(),
         status:Joi.boolean()
     })
 }
@@ -16,7 +17,7 @@ const updateCategory={
     body:Joi.object().keys({
         categoryName:Joi.string().required(),
         popularCategory:Joi.boolean().required(),
-
+        image:Joi.string().optional(),
         status:Joi.boolean()
     })
 }

@@ -29,7 +29,7 @@ const createSubCategory = catchAsync(async (req, res) => {
 const uploadImage = async (req, res) => {
   try {
     if (req.file) {
-      const originalFilePath = req.file.path;
+      const originalFilePath = req.file.filename;
       return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath })
     }else{
     return res.status(400).send({ message: 'You must select a file.' });

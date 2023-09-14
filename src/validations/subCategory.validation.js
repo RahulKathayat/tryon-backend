@@ -4,6 +4,7 @@ const createSubCategory={
     body:Joi.object().keys({
         categoryId:Joi.number().required(),
         subCategoryName:Joi.string().required(),
+        image:Joi.string().optional(),
         status:Joi.boolean()
     })
 }
@@ -16,6 +17,7 @@ const updateSubCategory={
     body:Joi.object().keys({
         // categoryId:Joi.number().required(),
         subCategoryName:Joi.string().required(),
+        image:Joi.string().optional(),
         status:Joi.boolean()
     })
 }

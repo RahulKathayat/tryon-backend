@@ -2,9 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const SubSubCategory = sequelize.define(
     'SubSubCategory',
     {
-      categoryId: {
-        type: DataTypes.INTEGER
-      },
       subSubCategoryName: {
         type: DataTypes.STRING
       },
@@ -32,11 +29,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     });
 
-    SubSubCategory.belongsTo(models.Category, {
-      foreignKey: 'categoryId',
-      onDelete: 'SET NULL',
-      allowNull: true
-    });
+    // SubSubCategory.belongsTo(models.Category, {
+    //   foreignKey: 'categoryId',
+    //   onDelete: 'SET NULL',
+    //   allowNull: true
+    // });
 
     SubSubCategory.hasMany(models.Product, {
       foreignKey: 'subSubCategoryId'

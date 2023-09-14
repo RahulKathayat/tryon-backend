@@ -62,7 +62,7 @@ const updateProductDetail = catchAsync(async (req, res) => {
 const deleteProductDetail = catchAsync(async (req, res) => {
   const querry = req.params;
 
-  const deleteUser = await productDetailService.deleteProductDetailsById(querry);
+  const deleteUser = await productDetailService.deleteProductDetailById(querry);
   if (deleteUser) {
     res.status(httpStatus.OK).send({ message: 'product detail deleted successfully' });
   } else {
