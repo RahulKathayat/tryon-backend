@@ -67,6 +67,7 @@ const getProductById = catchAsync(async (req, res) => {
 const updateProduct = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
+    console.log('user id================', userId);
     const newData = req.body;
     const updatedUser = await productService.updateProductById(userId, newData);
     if (updatedUser) {
