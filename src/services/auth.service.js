@@ -69,7 +69,6 @@ const verifyEmail = async (verifyEmailToken) => {
     }
     // await Token.destroy({ where: { user: user.id, type: tokenTypes.VERIFY_EMAIL }, force: true });
     await userService.updateUserById(user.id, { emailVerify: true });
-    console.log("User verify======================================",emailVerify);
   } catch (error) {
     logger.error(error);
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');

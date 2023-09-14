@@ -22,7 +22,7 @@ const uploadFeatureImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).send({ message: 'You must select a file.' });
     }
-    const originalFilePath = req.file.path;
+    const originalFilePath = req.file.path.trim();
 
     return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
   } catch (error) {
