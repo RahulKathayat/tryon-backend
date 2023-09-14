@@ -31,13 +31,17 @@ const getProductById = async (id) => {
 };
 
 const updateProductById = async (id, newData) => {
-  const findData = await Product.findOne({
-    where: id
-  });
-  if (findData) {
-    return Product.update(newData, { where: id });
-  } else {
-    return;
+  try {
+    const findData = await Product.findOne({
+      where: id
+    });
+    if (findData) {
+      return Product.update(newData, { where: id });
+    } else {
+      return;
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 

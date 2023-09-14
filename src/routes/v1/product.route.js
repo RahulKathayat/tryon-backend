@@ -12,7 +12,7 @@ const upload = require('../../utils/upload');
 const router = express.Router();
 router;
 
-router.post('/images', upload.array('image', 5), productController.uploadImages);
+router.post('/images', upload.array('image', 15), productController.uploadImages);
 router.post('/featureImage', upload.single('image'), productController.uploadFeatureImage);
 // router.put('/featureImage/:id', upload.single('image'), productController.uploadFeatureImage);
 

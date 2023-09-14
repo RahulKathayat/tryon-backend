@@ -1,21 +1,21 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const bcrypt = require('bcryptjs');
-const { Users,Address } = require('../models');
+const { Users, Address } = require('../models');
 
 const createUser = async (_userBody) => {
   try {
     const userBody = _userBody;
     userBody.password = await bcrypt.hash(userBody.password, 8);
     const createdUser = await Users.create(userBody);
-    
+
     return createdUser;
   } catch (error) {
     console.error('Error creating user:', error);
     throw error;
   }
 };
-const getUserWithSecretFields=async()=>{
+const getUserWithSecretFields = async () => {
   try {
     const { email, password } = req.body;
     const user = await authService.loginUserWithEmailAndPassword(email, password);
@@ -25,31 +25,31 @@ const getUserWithSecretFields=async()=>{
   } catch (err) {
     console.log(err);
   }
-}
-
-const getUser = async (query, options) => {
-
-    const limit = Number(options.limit) ;
-    const offset = options.page ? limit * (options.page - 1) : 0;
-    const support = await Users.findAndCountAll({
-      where:  query,
-      order: [['updatedAt', 'DESC']],
-      include:[{model:Address}],
-      limit,
-      offset
-    });
-    return support;
 };
 
+const getUser = async (query, options) => {
+  const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Users.findAndCountAll({
+    where: query,
+    order: [['updatedAt', 'DESC']],
+    include: [{ model: Address }],
+    limit,
+    offset
+  });
+  return support;
+};
 
-const getUserById=async(id)=>{
-  try{
-    console.log("id======================",id);
-    const data= await Users.findOne({
-      where: {id:id},
-      include:[{
-        model:Address
-      }]
+const getUserById = async (id) => {
+  try {
+    console.log('id======================', id);
+    const data = await Users.findOne({
+      where: { id: id },
+      include: [
+        {
+          model: Address
+        }
+      ]
     });
     return data;
   } catch (error) {
@@ -58,12 +58,11 @@ const getUserById=async(id)=>{
   }
 };
 
-
 const getUserByEmail = async (email) => {
   try {
-    console.log("email=============",email);
+    console.log('email=============', email);
     const data = await Users.findOne({
-      where: {email:email}
+      where: { email: email }
     });
     return data;
   } catch (error) {
@@ -72,29 +71,28 @@ const getUserByEmail = async (email) => {
   }
 };
 
-
 //update user
 const updateUserById = async (id, newData) => {
   const findData = await Users.findOne({
-    where: id
+    where: { id: id }
   });
   if (findData) {
-    return Users.update(newData, { where: id });
+    return Users.update(newData, { where: { id: id } });
   } else {
     return;
   }
-}
+};
 
 const deleteUserById = async (userId) => {
   try {
-    const user = await Users.findOne({ where:   userId  });
+    const user = await Users.findOne({ where: userId });
 
     if (!user) {
       throw new Error('User not found');
     }
     await user.update({ status: false });
 
-    console.log("User deleted successfully");
+    console.log('User deleted successfully');
 
     return { message: 'User deleted successfully' };
   } catch (error) {
@@ -102,8 +100,6 @@ const deleteUserById = async (userId) => {
     throw error;
   }
 };
-
-
 
 const getUserWithSecretFieldsById = async (id) => {
   try {
@@ -127,5 +123,4 @@ module.exports = {
   getUserByEmail,
   getUserById,
   getUserWithSecretFields
-
 };

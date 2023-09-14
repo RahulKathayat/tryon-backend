@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   Orders.associate = function (models) {
     Orders.belongsTo(models.OrderDetails, {
       foreignKey: 'orderDetailId',
+      // targetKey: 'id'
       onDelete: 'SET NULL',
       allowNull: true
     });
@@ -39,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Orders.hasMany(models.Refund, {
-      foreignKey: 'orderId' 
+      foreignKey: 'orderId'
     });
 
     Orders.belongsTo(models.Product, {
