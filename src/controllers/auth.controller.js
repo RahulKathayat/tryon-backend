@@ -21,7 +21,6 @@ const login = catchAsync(async (req, res) => {
   const user = await authService.loginUserWithEmailAndPassword(email, password);
 
   if (user) {
-    console.log('userIDDDDDDDDDDDDDDDDDDD', user.id);
     const data = await cartService.createCart(user.id);
     const tokens = await tokenService.generateAuthTokens(user);
     res.send({ message: 'Login Successfully!!', user, tokens });

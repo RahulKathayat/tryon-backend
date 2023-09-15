@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       trackingLink: {
         type: DataTypes.STRING
       },
+      totalQuantity:{
+        type:DataTypes.INTEGER
+
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

@@ -7,6 +7,8 @@ const createOrder = {
     productDetailId:Joi.number().required(),
     userId:Joi.number().required(),
     orderDetailId:Joi.number().required(),
+    totalItems:Joi.number().required(),
+    totalQuantity:Joi.number().required(),
     status: Joi.boolean()
   })
 };
@@ -19,6 +21,8 @@ const updateOrder = {
     productDetailId:Joi.number().required(),
     userId:Joi.number().required(),
     orderDetailId:Joi.number().required(),
+    totalItems:Joi.number().required(),
+    totalQuantity:Joi.number().required(),
     status: Joi.boolean()
 };
 

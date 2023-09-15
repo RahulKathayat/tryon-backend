@@ -19,6 +19,14 @@ module.exports = {
         orderDetailId: {
           type: Sequelize.INTEGER
       },
+      totalItems:{
+        type: Sequelize.INTEGER
+
+      },
+      totalQuantity:{
+        type: Sequelize.INTEGER
+
+      },
         status: {
           type: Sequelize.BOOLEAN
         },
