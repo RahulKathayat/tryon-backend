@@ -1,42 +1,25 @@
 const { Cart, Users } = require('../models');
 
-// const createCart = async (_userBody) => {
-//   const userBody = _userBody;
-//   console.log("===============",userBody);
-//    const data= await Cart.create(userBody);
-//    console.log("data",data);
-//    return data
-// };
-// const createCart = async (_userBody) => {
-//   const userBody = _userBody;
-//   console.log('userBody==============================', userBody);
-//   const findData = await Cart.findAll({
-//     where: { userId: userBody }
-//   });
-//   console.log('finddataaaaaaaaa======================', findData);
-//   if (findData) {
-//     findData.map((item) => {
-//       console.log('item.dataValues.userId======================', item.dataValues.userId);
-//       if (item.dataValues.userId == userBody) {
-//         return null;
-//       } else {
-//         return Cart.create({ userId: userBody });
-//       }
-//     });
-//   }
-// }
 
 const createCart = async (_userBody) => {
   const userBody = _userBody;
   const existingCart = await Cart.findOne({
-    where: { userId: userBody }
+    where: { userId: userBody}
   });
-
   if (!existingCart) {
-    return Cart.create({ userId: userBody });
+    const data= await Users.findOne({
+      where:{
+       id:userBody, role:"Customer"
+      }
+     })
+     if(data){
+      return Cart.create({ userId: userBody });
+     }
+     else{
+      return "user role does not matched"
+     }  
   }
-  return existingCart;
-};
+}
 
 const getCart = async (query, options) => {
   const limit = Number(options.limit);

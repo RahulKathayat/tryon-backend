@@ -47,14 +47,14 @@ const generatePassword = catchAsync(async (req, res) => {
 const sendVerificationEmail = catchAsync(async (req, res) => {
   if (!req.user.isEmailVerified) {
     const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
-    let host = config.email.customerHost;
     if (req.user.role === 'Admin') {
-      host = config.email.AdminHost;
+      host = config.email.adminHost;
     } else if (req.user.role === 'Customer') {
-      host = config.email.CustomerHost;
+      host = config.email.customerHost;
     }
     await emailService.sendVerificationEmail(req.user.email, verifyEmailToken, host);
-    res.status(httpStatus.NO_CONTENT).send();
+    // res.status(httpStatus.NO_CONTENT).send();
+    res.send("Verification Email is sent successfully!!")
   } else {
     throw new ApiError(httpStatus.FORBIDDEN, 'Email already verified');
   }
@@ -64,6 +64,41 @@ const verifyEmail = catchAsync(async (req, res) => {
   await authService.verifyEmail(req.query.token);
   res.status(httpStatus.NO_CONTENT).send();
 });
+
+const forgotPassword = catchAsync(async (req, res) => {
+  const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
+  if (req.body.role === 'Admin') {
+    host = config.email.adminHost;
+  } else if (req.body.role === 'Customer') {
+    host = config.email.customerHost;
+  }
+  const data=await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken, host);
+  // res.status(httpStatus.NO_CONTENT).send();
+  res.send({message:"Email sent successfully!!"})
+});
+
+const resetPassword = catchAsync(async (req, res) => {
+  const data=await authService.resetPassword(req.query.token, req.body.password);
+  console.log("reset-password================================================",req.query.token)
+  console.log("DATA******************************",data);
+  // res.status(httpStatus.NO_CONTENT).send();
+  res.send(data)
+});
+
+const changePassword = catchAsync(async (req, res) => {
+  const userWithSecretFields = await userService.getUserWithSecretFieldsById(req.user.datavalues.id);
+  const password = req.body.oldPassword;
+  if (!(await bcrypt.compare(password, userWithSecretFields.password))) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Incorrect password!');
+  } else {
+    const userBody = {
+      password: await bcrypt.hash(req.body.newPassword, 8)
+    };
+    await userService.updateUserPasswordById(req.user.datavalues.id, userBody);
+  }
+  res.status(httpStatus.OK).send({ message: 'Password Changed Successfully' });
+});
+
 module.exports = {
   register,
   login,
@@ -71,5 +106,8 @@ module.exports = {
   refreshTokens,
   generatePassword,
   sendVerificationEmail,
-  verifyEmail
+  verifyEmail,
+  forgotPassword,
+  resetPassword,
+  changePassword
 };

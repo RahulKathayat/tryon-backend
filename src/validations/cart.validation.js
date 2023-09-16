@@ -8,6 +8,7 @@ const createCart={
         totalItems:Joi.number().required(),
         totalQuantity:Joi.number().required(),
         discountCode:Joi.string().required(),
+        role:Joi.string().valid("Customer").required(),
         status:Joi.boolean()
     })
 }

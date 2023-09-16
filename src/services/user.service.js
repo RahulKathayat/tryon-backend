@@ -34,13 +34,13 @@ const getUserWithSecretFields=async()=>{
   try {
     const { email, password } = req.body;
     const user = await authService.loginUserWithEmailAndPassword(email, password);
-    console.log('user==========================', user);
     const tokens = await tokenService.generateAuthTokens(user);
     res.send({ user, tokens });
   } catch (err) {
     console.log(err);
   }
 }
+
 
 const getUser = async (query, options) => {
 
@@ -59,7 +59,6 @@ const getUser = async (query, options) => {
 
 const getUserById=async(id)=>{
   try{
-    console.log("id======================",id);
     const data= await Users.findOne({
       where: {id:id},
       include:[{
@@ -75,10 +74,9 @@ const getUserById=async(id)=>{
 
 
 const getUserByEmail = async (email) => {
-  try {
-    console.log("email=============",email);
+  try {;
     const data = await Users.findOne({
-      where: {email:email}
+      where: {email:email,status:true}
     });
     return data;
   } catch (error) {
@@ -88,17 +86,24 @@ const getUserByEmail = async (email) => {
 };
 
 
-//update user
+// update user
 const updateUserById = async (id, newData) => {
   const findData = await Users.findOne({
     where: id
   });
   if (findData) {
-    return Users.update(newData, { where: id });
-  } else {
+    return findData.update(newData, { where: id });
+  }
+   else {
     return;
   }
 }
+
+const updateUserPasswordById = async (id, updateBody) => {
+  return Users.update(updateBody, {
+    where: { id }
+  });
+};
 
 const deleteUserById = async (userId) => {
   try {
@@ -141,6 +146,7 @@ module.exports = {
   getUserWithSecretFieldsById,
   getUserByEmail,
   getUserById,
-  getUserWithSecretFields
-
+  getUserWithSecretFields,
+  updateUserPasswordById
+  
 };

@@ -92,7 +92,7 @@ const updateUser = catchAsync(async (req, res) => {
     const newData = req.body;
     const updatedUser = await userService.updateUserById(userId, newData);
     if (updatedUser) {
-      res.status(200).send({ data: updatedUser, message: 'user updated successfully' });
+      res.status(200).send({message: 'user updated successfully' });
     } else {
       res.status(404).send({ message: 'user not found', status: 0 });
     }

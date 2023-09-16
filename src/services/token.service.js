@@ -5,6 +5,7 @@ const config = require('../config/config');
 const { Token } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
+const userService=require('../services/user.service')
 
 const generateToken = (userId, role, expires, type, secret = config.jwt.secret) => {
   console.log('============================================',expires)
@@ -75,10 +76,27 @@ const generateVerifyEmailToken = async (user) => {
   return verifyEmailToken;
 };
 
+/**
+ * Generate reset password token
+ * @param {string} email
+ * @returns {Promise<string>}
+ */
+const generateResetPasswordToken = async (email) => {
+  const user = await userService.getUserByEmail(email);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
+  }
+  const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
+  const resetPasswordToken = generateToken(user.id,user.role, expires, tokenTypes.RESET_PASSWORD);
+  await saveToken(resetPasswordToken, user.id,user.role,expires, tokenTypes.RESET_PASSWORD);
+  return resetPasswordToken;
+};
+
 module.exports = {
   generateToken,
   saveToken,
   verifyToken,
   generateAuthTokens,
-  generateVerifyEmailToken
+  generateVerifyEmailToken,
+  generateResetPasswordToken
 };

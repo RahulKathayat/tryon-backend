@@ -67,8 +67,8 @@ const sendResetPasswordEmail = async (to, token, host) => {
 <body class="" style="background:#fff;">
     <table width="600" style="background: #F8F8F8;font-family: 'Poppins';margin:0 auto;padding:0px 0px;" cellspacing="0">
       <tr>
-        <td style="width:100%;position: relative;clear: both;text-align: center;padding: 40px 20px 20px 20px;background:#FF179C;">
-          <img src="https://www.obeytina.com/img/logo-icon.f83f6185.svg" alt="" style="width:130px;height: 130px;margin-bottom:-85px;position: relative;background-color: #ffffff;border-radius: 50%;object-fit: scale-down;">
+        <td style="width:100%;position: relative;clear: both;text-align: center;padding: 40px 20px 20px 20px;background:#e39926ed;">
+          <img src="https://www.obeytina.com/img/logo-icon.f83f61.svg" alt="" style="width:130px;height: 130px;margin-bottom:-85px;position: relative;background-color: #ffffff;border-radius: 50%;object-fit: scale-down;">
         </td>
       </tr>
       <tr>
@@ -79,7 +79,7 @@ const sendResetPasswordEmail = async (to, token, host) => {
           received information that you
           forgot your password. No
           worries, you can reset your
-          Obey Tina password by
+          KoraKagaj password by
           clicking the link below. Your
           email is: ${to}
           (This link is valid for 24 hours).
@@ -87,9 +87,9 @@ const sendResetPasswordEmail = async (to, token, host) => {
           password reset, feel free to
           ignore this email and we wish
           you a good day! All the best,
-          Obey Tina Team
+          KoraKagaj Team
           </p>
-          <a href=${resetPasswordUrl} type="button" style="font-weight: 500;text-transform: uppercase;border-radius: 4px;background: #FF179C;color:white;padding: 10px;cursor: pointer;outline: none;border: none;">reset Password</a>
+          <a href=${resetPasswordUrl} type="button" style="font-weight: 500;text-transform: uppercase;border-radius: 4px;background: #e39926ed;color:white;padding: 10px;cursor: pointer;outline: none;border: none;">reset Password</a>
         </td>
       </tr>
       <tr>
@@ -97,8 +97,8 @@ const sendResetPasswordEmail = async (to, token, host) => {
             <table style="width: 100%;border-top: 1px solid #EEEEEE;padding: 10px 0px;">
               <tr>
                 <td style="text-align: left;">
-                  <h6 style="font-size:14px;font-weight: 700;color: #1E1142;margin: 0px;">The ObeyTina Team</h6>
-                  <a href="JavaScript:Void(0);" style="color: #717972;font-size: 10px;font-weight: 400;text-decoration: none;">info@ObeyTina.com</a>
+                  <h6 style="font-size:14px;font-weight: 700;color: #1E1142;margin: 0px;">The KoraKagaj Team</h6>
+                  <a href="JavaScript:Void(0);" style="color: #717972;font-size: 10px;font-weight: 400;text-decoration: none;">info@korakagaj.com</a>
                 </td>
               </tr>
             </table>
@@ -154,46 +154,46 @@ const sendVerificationEmail = async (to, token, host) => {
   </style>
   </head>
   <body class="" style="background:#fff;">
-      <table width="600" style="background: #F8F8F8;font-family: 'Poppins';margin:0 auto;padding:0px 0px;" cellspacing="0">
-        <tr>
-          <td style="width:100%;position: relative;clear: both;text-align: center;padding: 40px 20px 20px 20px;background:#FF179C;">
-            <img src="https://www.obeytina.com/img/logo-icon.f83f6185.svg" alt="" style="width:130px;height: 130px;margin-bottom:-85px;position: relative;background-color: #ffffff;border-radius: 50%;object-fit: scale-down;">
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:60px 40px 100px 40px;text-align: left;">
-            <h6 style="color: #1E1142;font-weight: 500;font-size: 20px;margin:0px 0px 16px 0px;">Hello!</h6>
-            <p style="color: #717972;font-size: 16px;font-weight: 400;margin-bottom: 35px;margin-top:0rem;line-height: 28px;">
-           
-            Welcome to Obey Tina! To 
+  <table width="600" style="background: #F8F8F8;font-family: 'Poppins';margin:0 auto;padding:0px 0px;" cellspacing="0">
+    <tr>
+      <td style="width:100%;position: relative;clear: both;text-align: center;padding: 40px 20px 20px 20px;background:#e39926ed;">
+      <img src="https://www.obeytina.com/img/logo-icon.f83f5.svg" alt="" style="width:130px;height: 130px;margin-bottom:-85px;position: relative;background-color: #ffffff;border-radius: 50%;object-fit: scale-down;">
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:60px 40px 100px 40px;text-align: left;">
+        <h6 style="color: #1E1142;font-weight: 500;font-size: 20px;margin:0px 0px 16px 0px;">Hello!</h6>
+        <p style="color: #717972;font-size: 16px;font-weight: 400;margin-bottom: 35px;margin-top:0rem;line-height: 28px;">
+       
+        Welcome to KoraKagaj! To 
 ensure a safe and secure 
-experience in Obey Tina, 
+experience in KoraKagaj, 
 kindly verify your email by 
 clicking the link below. 
- You didn’t request for 
+You didn’t request for 
 email verification? No 
 problem! Feel free to ignore 
 this email and we wish you a 
-good day! Regards, Obey Tina 
+good day! Regards, KoraKagaj
 Team
-            </p>
-            <a href=${verificationEmailUrl} type="button" style="font-weight: 500;text-transform: uppercase;border-radius: 4px;background: #FF179C;color:white;padding: 10px;cursor: pointer;outline: none;border: none;">Verify Email</a>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:0px 40px 0px 40px;text-align: center;background-color: #F8F8F8;">
-              <table style="width: 100%;border-top: 1px solid #EEEEEE;padding: 10px 0px;">
-                <tr>
-                  <td style="text-align: left;">
-                    <h6 style="font-size:14px;font-weight: 700;color: #1E1142;margin: 0px;">The ObeyTina Team</h6>
-                    <a href="JavaScript:Void(0);" style="color: #717972;font-size: 10px;font-weight: 400;text-decoration: none;">info@ObeyTina.com</a>
-                  </td>
-                </tr>
-              </table>
-          </td>
-        </tr>
-      </table>
-  </body>
+        </p>
+        <a href=${verificationEmailUrl} type="button" style="font-weight: 500;text-transform: uppercase;border-radius: 4px;background: #e39926ed;color:white;padding: 10px;cursor: pointer;outline: none;border: none;">Verify Email</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0px 40px 0px 40px;text-align: center;background-color: #F8F8F8;">
+          <table style="width: 100%;border-top: 1px solid #EEEEEE;padding: 10px 0px;">
+            <tr>
+              <td style="text-align: left;">
+                <h6 style="font-size:14px;font-weight: 700;color: #1E1142;margin: 0px;">The KoraKagaj Team</h6>
+                <a href="JavaScript:Void(0);" style="color: #717972;font-size: 10px;font-weight: 400;text-decoration: none;">info@korakagaj.com</a>
+              </td>
+            </tr>
+          </table>
+      </td>
+    </tr>
+  </table>
+</body>
   </html>
   `;
   await sendEmail(to, subject, text);
