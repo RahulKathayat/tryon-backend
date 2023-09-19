@@ -11,7 +11,7 @@ const createUser = {
     password: Joi.string().required(),
     addressId: Joi.number().required(),
     dob: Joi.date().required(),
-    role: Joi.string().required(),
+    role: Joi.string().required().valid('Admin', 'Customer'),
     status: Joi.boolean()
   })
 };
@@ -31,7 +31,6 @@ const updateUser = {
     dob: Joi.date().required(),
     role: Joi.string().required(),
     status: Joi.boolean()
-
   })
 };
 
