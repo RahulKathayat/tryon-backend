@@ -8,6 +8,7 @@ const createCart={
         totalItems:Joi.number().required(),
         totalQuantity:Joi.number().required(),
         discountCode:Joi.string().required(),
+        role:Joi.string().valid("Customer").required(),
         status:Joi.boolean()
     })
 }
@@ -18,7 +19,7 @@ const updateCart={
         id: Joi.number().required()
       }),
     body:Joi.object().keys({
-        userId:Joi.number().required(),
+        // userId:Joi.number().required(),
         cartDetail:Joi.object().required(),
         totalAmount:Joi.number().required(),
         totalItems:Joi.number().required(),

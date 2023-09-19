@@ -2,12 +2,28 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const bcrypt = require('bcryptjs');
 const { Users,Address } = require('../models');
+const logger = require('../config/logger');
+const messages = require('../constant/message.json');
+
+
+
+
+const getExistingEmais = async (email) => {
+  logger.info(email);
+  return Users.findOne({ where: { email, status: true } });
+};
+
+
 
 const createUser = async (_userBody) => {
   try {
     const userBody = _userBody;
+    if (await getExistingEmais(userBody.email)) {
+      throw new ApiError(httpStatus.BAD_REQUEST, messages.EMAIL_ALREADY_EXISTS);
+    }
     userBody.password = await bcrypt.hash(userBody.password, 8);
     const createdUser = await Users.create(userBody);
+    
     return createdUser;
   } catch (error) {
     console.error('Error creating user:', error);
@@ -18,13 +34,13 @@ const getUserWithSecretFields=async()=>{
   try {
     const { email, password } = req.body;
     const user = await authService.loginUserWithEmailAndPassword(email, password);
-    console.log('user==========================', user);
     const tokens = await tokenService.generateAuthTokens(user);
     res.send({ user, tokens });
   } catch (err) {
     console.log(err);
   }
 }
+
 
 const getUser = async (query, options) => {
 
@@ -43,7 +59,6 @@ const getUser = async (query, options) => {
 
 const getUserById=async(id)=>{
   try{
-    console.log("id======================",id);
     const data= await Users.findOne({
       where: {id:id},
       include:[{
@@ -59,10 +74,9 @@ const getUserById=async(id)=>{
 
 
 const getUserByEmail = async (email) => {
-  try {
-    console.log("email=============",email);
+  try {;
     const data = await Users.findOne({
-      where: {email:email}
+      where: {email:email,status:true}
     });
     return data;
   } catch (error) {
@@ -72,17 +86,24 @@ const getUserByEmail = async (email) => {
 };
 
 
-//update user
+// update user
 const updateUserById = async (id, newData) => {
   const findData = await Users.findOne({
     where: id
   });
   if (findData) {
-    return Users.update(newData, { where: id });
-  } else {
+    return findData.update(newData, { where: id });
+  }
+   else {
     return;
   }
 }
+
+const updateUserPasswordById = async (id, updateBody) => {
+  return Users.update(updateBody, {
+    where: { id }
+  });
+};
 
 const deleteUserById = async (userId) => {
   try {
@@ -125,6 +146,7 @@ module.exports = {
   getUserWithSecretFieldsById,
   getUserByEmail,
   getUserById,
-  getUserWithSecretFields
-
+  getUserWithSecretFields,
+  updateUserPasswordById
+  
 };

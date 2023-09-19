@@ -1,7 +1,12 @@
 const catchAsync = require('../utils/catchAsync');
 const userService = require('../services/user.service');
+const cartService = require('../services/cart.service');
+
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
+const { Op } = require('sequelize');
+// const { cartService } = require('../services');
+
 
 
 
@@ -9,6 +14,8 @@ const pick = require('../utils/pick');
 const   createUser= catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await userService.createUser(userBody);
+  console.log("object=====================",req.user.id);
+  const createCart=await cartService.createCart(req.user.id);
   if (data) {
     await res.status(200).send({ message: 'user created successfully' });
   } else {
@@ -19,9 +26,27 @@ const   createUser= catchAsync(async (req, res) => {
 
 //get user
 const getUser = catchAsync(async (req, res) => {
-  const query ={};
+  let query ={};
+  query.role="Customer";
   query.status = req.query.status?req.query.status:true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const filter = pick(req.query, ['role']);
+
+  if (filter) {
+    if (filter.role) {
+      query.role = filter.role;
+    }
+  }
+
+  const { firstName,lastName,phoneNumber,email,emailVerify,addressId,dob } = req.query;
+  firstName ? query.firstName = { [Op.like]: `%${firstName}%` } : null;
+  lastName ? query.lastName = { [Op.like]: `%${lastName}%` } : null;
+  phoneNumber ? query.phoneNumber = { [Op.like]: `%${phoneNumber}%` } : null;
+  email ? query.email = { [Op.like]: `%${email}%` } : null;
+  emailVerify ? query.emailVerify = { [Op.like]: `%${emailVerify}%` } : null;
+  addressId ? query.addressId = { [Op.like]: `%${addressId}%` } : null;
+  dob ? query.dob = { [Op.like]: `%${dob}%` } : null;
+
 
   const data = await userService.getUser(query,options);
   if (data) {
@@ -31,6 +56,8 @@ const getUser = catchAsync(async (req, res) => {
   }
   return data;
 });
+
+
 
 
 
@@ -65,7 +92,7 @@ const updateUser = catchAsync(async (req, res) => {
     const newData = req.body;
     const updatedUser = await userService.updateUserById(userId, newData);
     if (updatedUser) {
-      res.status(200).send({ data: updatedUser, message: 'user updated successfully' });
+      res.status(200).send({message: 'user updated successfully' });
     } else {
       res.status(404).send({ message: 'user not found', status: 0 });
     }

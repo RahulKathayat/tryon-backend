@@ -21,6 +21,17 @@ const getCategory = async (query, options) => {
   return support;
 };
 
+const getAllCategory = async () => {
+  try {
+    const data = await Category.findAll({
+      where: {},
+    });
+    return data;
+  } catch (error) {
+    console.error('category not found!!', error);
+  }
+};
+
 
 const getCategoryById = async (id) => {
   try {
@@ -69,6 +80,7 @@ module.exports = {
     getCategory,
     updateCategoryById,
     deleteCategoryById,
-    getCategoryById
+    getCategoryById,
+    getAllCategory
   
 };

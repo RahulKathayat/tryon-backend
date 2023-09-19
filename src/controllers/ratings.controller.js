@@ -62,7 +62,7 @@ const updateRatings = catchAsync(async (req, res) => {
 const deleteRatings = catchAsync(async (req, res) => {
   const querry = req.params;
 
-  const deleteUser = await ratingsService.deleteRefundById(querry);
+  const deleteUser = await ratingsService.deleteRatingsById(querry);
   if (deleteUser) {
     res.status(httpStatus.OK).send({ message: 'ratings deleted successfully' });
   } else {

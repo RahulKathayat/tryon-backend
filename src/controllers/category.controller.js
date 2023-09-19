@@ -28,6 +28,18 @@ const getCategory = catchAsync(async (req, res) => {
   return data;
 });
 
+const getAllCategory = catchAsync(async (req, res) => {
+  const query={}
+  query.status = req.query.status?req.query.status:true;
+  const data = await categoryService.getAllCategory(query);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'Category data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
+
 const getCategoryById = catchAsync(async (req, res) => {
   const data = await categoryService.getCategoryById(req.params.id);
   if (data) {
@@ -68,10 +80,26 @@ const deleteCategory = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in category delete' });
   }
 });
+
+const uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({ message: 'You must select a file.' });
+    }
+    const originalFilePath = req.file.filename;
+
+    return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
+  }
+};
 module.exports = {
     createCategory,
     deleteCategory,
     getCategory,
     updateCategory,
-    getCategoryById
+    getCategoryById,
+    getAllCategory,
+    uploadImage
 };

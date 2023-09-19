@@ -2,9 +2,9 @@ const catchAsync = require('../utils/catchAsync');
 const fabricService = require('../services/fabric.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
+const { Op } = require('sequelize');
 
-
-const   createFabric= catchAsync(async (req, res) => {
+const createFabric = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await fabricService.createFabric(userBody);
   if (data) {
@@ -14,13 +14,40 @@ const   createFabric= catchAsync(async (req, res) => {
   }
 });
 
-
-
 const getFabric = catchAsync(async (req, res) => {
-  const query ={};
-  query.status = req.query.status?req.query.status:true;
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await fabricService.getFabric(query,options);
+
+  const {
+    fabricType,
+    weight,
+    printType,
+    usage,
+    properties,
+    handle,
+    construction,
+    transparency,
+    reflection,
+    price,
+    maxWidth,
+    gsm
+  } = req.query;
+
+  fabricType ? (query.fabricType = { [Op.like]: `%${fabricType}%` }) : null;
+  weight ? (query.weight = { [Op.like]: `%${weight}%` }) : null;
+  printType ? (query.printType = { [Op.like]: `%${printType}%` }) : null;
+  usage ? (query.usage = { [Op.like]: `%${usage}%` }) : null;
+  properties ? (query.properties = { [Op.like]: `%${properties}%` }) : null;
+  handle ? (query.handle = { [Op.like]: `%${handle}%` }) : null;
+  construction ? (query.construction = { [Op.like]: `%${construction}%` }) : null;
+  transparency ? (query.transparency = { [Op.like]: `%${transparency}%` }) : null;
+  reflection ? (query.reflection = { [Op.like]: `%${reflection}%` }) : null;
+  price ? (query.price = { [Op.like]: `%${price}%` }) : null;
+  maxWidth ? (query.maxWidth = { [Op.like]: `%${maxWidth}%` }) : null;
+  gsm ? (query.gsm = { [Op.like]: `%${gsm}%` }) : null;
+
+  const data = await fabricService.getFabric(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'fabric data fetched successfully', data: data });
   } else {
@@ -39,13 +66,11 @@ const getFabricById = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
 const updateFabric = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
     const newData = req.body;
-    const updatedUser = await fabricService.updatefabricById(userId, newData);
+    const updatedUser = await fabricService.updateFabricById(userId, newData);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'fabric updated successfully' });
     } else {
@@ -57,8 +82,6 @@ const updateFabric = catchAsync(async (req, res) => {
   }
 });
 
-
-
 const deleteFabric = catchAsync(async (req, res) => {
   const querry = req.params;
 
@@ -69,10 +92,26 @@ const deleteFabric = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fabric delete' });
   }
 });
+
+const uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({ message: 'You must select a file.' });
+    }
+    const originalFilePath = req.file.filename;
+
+    return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
+  }
+};
+
 module.exports = {
-    createFabric,
-    deleteFabric,
-    getFabric,
-    updateFabric,
-    getFabricById
+  createFabric,
+  deleteFabric,
+  getFabric,
+  updateFabric,
+  getFabricById,
+  uploadImage
 };

@@ -1,4 +1,4 @@
-const { SubSubCategory,SubCategory,Category} = require('../models');
+const { SubSubCategory,SubCategory} = require('../models');
 // const SubSubCategory = require('../models/subSubCategory');
 
 const createSubSubCategory = async (_userBody) => {
@@ -16,7 +16,7 @@ const getSubSubCategory = async (query, options) => {
   const support = await SubSubCategory.findAndCountAll({
     where:  query,
     order: [['updatedAt', 'DESC']],
-    include:[{model:SubCategory},{ model:Category}],
+    include:[{model:SubCategory}],
     limit,
     offset
   });
@@ -24,11 +24,10 @@ const getSubSubCategory = async (query, options) => {
 };
 
 
-const getAllCategories = async () => {
+const getAllSubSubCategories = async () => {
   try {
     const data = await SubSubCategory.findAll({
-      where: {status:true},
-      include:[{model:SubCategory},{ model:Category}]
+      where: {},
     });
     return data;
   } catch (error) {
@@ -41,7 +40,7 @@ const getSubSubCategoryById = async (id) => {
   try {
     const data = await SubSubCategory.findAll({
       where: {id:id},
-      include:[{model:SubCategory},{ model:Category}]
+      include:[{model:SubCategory}]
     });
     return data;
   } catch (error) {
@@ -85,6 +84,6 @@ module.exports = {
     updateSubSubCategoryById,
     deleteSubSubCategoryById,
     getSubSubCategoryById,
-    getAllCategories
+    getAllSubSubCategories
   
 };

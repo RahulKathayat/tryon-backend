@@ -2,25 +2,50 @@ const catchAsync = require('../utils/catchAsync');
 const productService = require('../services/product.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
+const sharp = require('sharp');
+const fs = require('fs');
+const path = require('path');
+const { Op } = require('sequelize');
 
-
-const   createProduct= catchAsync(async (req, res) => {
+const createProduct = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await productService.createProduct(userBody);
   if (data) {
-    await res.status(200).send({ message: 'card created successfully' });
+    await res.status(200).send({ message: 'Product created successfully' });
   } else {
-    await res.status(404).send({ message: 'card not created' });
+    await res.status(404).send({ message: 'Product not created' });
   }
 });
 
+const uploadFeatureImage = async (req, res) => {
+  try {
+    console.log('======================', req.file);
+    if (!req.file) {
+      return res.status(400).send({ message: 'You must select a file.' });
+    }
+    const originalFilePath = req.file.filename.trim();
 
+    return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
+  }
+};
 
 const getProduct = catchAsync(async (req, res) => {
-  const query ={};
-  query.status = req.query.status?req.query.status:true;
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await productService.getProduct(query,options);
+
+  const { productName, productNumber, brandName, originalPrice, discountedPrice, productType } = req.query;
+  productName ? (query.productName = { [Op.like]: `%${productName}%` }) : null;
+  productNumber ? (query.productNumber = { [Op.like]: `%${productNumber}%` }) : null;
+  brandName ? (query.brandName = { [Op.like]: `%${brandName}%` }) : null;
+  originalPrice ? (query.originalPrice = { [Op.like]: `%${originalPrice}%` }) : null;
+  discountedPrice ? (query.discountedPrice = { [Op.like]: `%${discountedPrice}%` }) : null;
+  productType ? (query.productType = { [Op.like]: `%${productType}%` }) : null;
+
+  const data = await productService.getProduct(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'product data fetched successfully', data: data });
   } else {
@@ -39,25 +64,22 @@ const getProductById = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
 const updateProduct = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
+    console.log('user id================', userId);
     const newData = req.body;
     const updatedUser = await productService.updateProductById(userId, newData);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'product updated successfully' });
     } else {
-      res.status(404).send({ message: 'card not found', status: 0 });
+      res.status(404).send({ message: 'Product not found', status: 0 });
     }
   } catch (error) {
-    console.error('Error updating card:', error);
+    console.error('Error updating Product:', error);
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
-
-
 
 const deleteProduct = catchAsync(async (req, res) => {
   const querry = req.params;
@@ -66,57 +88,67 @@ const deleteProduct = catchAsync(async (req, res) => {
   if (deleteUser) {
     res.status(httpStatus.OK).send({ message: 'product deleted successfully' });
   } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in card delete' });
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in Product delete' });
   }
 });
 
-// // upload image 
-// const uploadImage = async (req, res) => {
-//   try {
-//     console.log("request===datavalue===========================================",req.user)
-//     const image = req.file.filename;
-//     if (req.file === undefined) {
-//       return res.send(`You must select a file.`);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     return res.send(`Error when trying upload images: ${error}`);
-//   }
-// };
+const uploadImages = async (req, res) => {
+  try {
+    const images = req.files;
+    console.log('images==============', images);
 
+    if (!images || images.length === 0) {
+      return res.status(400).send('You must select at least one file.');
+    }
+
+    const fileInformation = images.map((file) => {
+      console.log(file.file);
+      return file.filename.trim()
+     
+    });
+    // const fileInformation= image.map((item)=>{
+    // return item.filename
+    // })
+    // console.log("file===========",image);
+
+    res.send({ message: 'Images uploaded successfully', fileInformation:fileInformation});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send(`Error when trying to upload images: ${error}`);
+  }
+};
 
 //updateImage
-// const updateImage = catchAsync(async (req, res) => {
-//   try {
-//     console.log("id Req================",req.user);
-//     const userId=req.user.id
-//     const body={}
-//     if(req.body.image){
-//       body.image=req.body.image   
-//     }
-//     console.log("body data======================",body.image);
-//     const updatedUser = await productService.updateImage(userId, body.image);
-//     console.log("updateUser================",updatedUser);
-//     if (updatedUser) {
-//       res.status(200).send({ data: updatedUser, message: 'User updated successfully' });
-//     } else {
-//       res.status(404).send({ message: 'User not found', status: 0 });
-//     }
-//   } catch (error) {
-//     console.error('Error updating user:', error);
-//     res.status(500).send({ message: 'Internal server error', status: -1 });
-//   }
-// });
-
+const updateImage = catchAsync(async (req, res) => {
+  try {
+    console.log('id Req================', req.user);
+    const userId = req.user.id;
+    const body = {};
+    if (req.body.image) {
+      body.image = req.body.image;
+    }
+    console.log('body data======================', body.image);
+    const updatedUser = await productService.updateImage(userId, body.image);
+    console.log('updateUser================', updatedUser);
+    if (updatedUser) {
+      res.status(200).send({ data: updatedUser, message: 'image successfully' });
+    } else {
+      res.status(404).send({ message: 'User not found', status: 0 });
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).send({ message: 'Internal server error', status: -1 });
+  }
+});
 
 module.exports = {
-    createProduct,
+  createProduct,
   deleteProduct,
   getProduct,
   updateProduct,
   getProductById,
-  // uploadImage,
-  // updateImage
+  uploadFeatureImage,
+  uploadImages,
+  updateImage,
+  getProductById
 };
-
-

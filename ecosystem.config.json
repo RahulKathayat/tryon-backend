@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "Multi brand app",
+      "name": "Korakagaj API",
       "script": "src/index.js",
       "instances": 1,
       "autorestart": true,

@@ -6,11 +6,16 @@ const authValidation = require('../../validations/auth.validation');
 const { fabricValidation } = require('../../validations');
 const { commonService } = require('../../services');
 // const auth = require('../../middlewares/auth');
+const upload = require('../../utils/upload');
+
 
 const router = express.Router();
+
+router.post('/image', upload.single('image'), fabricController.uploadImage);
+
 router
 .route('/')
-.get(auth(),fabricController.getFabric)
+.get(fabricController.getFabric)
 .post(auth(),validate(fabricValidation.createFabric),fabricController.createFabric)
 
 

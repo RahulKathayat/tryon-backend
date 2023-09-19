@@ -1,16 +1,17 @@
 const multer = require('multer');
 const { v4 } = require('uuid');
 const docFilter = (req, file, cb) => {
-  if (
-    file.mimetype === 'application/pdf' ||
-    file.mimetype === 'image/png' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/jpeg'
-  ) {
-    cb(null, true);
-  } else {
-    cb('Please upload only selected formats', false);
-  }
+  cb(null, true);
+  // if (
+  //   file.mimetype === 'application/pdf' ||
+  //   file.mimetype === 'image/png' ||
+  //   file.mimetype === 'image/jpg' ||
+  //   file.mimetype === 'image/jpeg'
+  // ) {
+  //   cb(null, true);
+  // } else {
+  //   cb('Please upload only selected formats', false);
+  // }
 };
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
