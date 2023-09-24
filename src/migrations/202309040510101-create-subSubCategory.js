@@ -1,3 +1,5 @@
+const { subCategoryController } = require('../controllers');
+
 module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('SubSubCategory', {
@@ -8,7 +10,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       subCategoryId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelte: 'SET Null',
+        reference: {
+          model: 'SubCategory',
+          key: 'id'
+        }
       },
       subSubCategoryName: {
         type: Sequelize.STRING

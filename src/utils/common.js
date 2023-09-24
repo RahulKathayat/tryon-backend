@@ -11,6 +11,18 @@ function getCurrentDateTime() {
   const dateTime = year + month + day + hours + minutes + seconds;
   return dateTime;
 }
+
+function base64EncodeString(str) {
+  //return  Buffer.from(str).toString("base64");
+  return encodeURI(Buffer.from(str.toString()).toString('base64'));
+}
+function base64DecodeString(str) {
+  let buff = new Buffer.from(str, 'base64');
+  return decodeURI(buff.toString('ascii'));
+}
+
 module.exports = {
-  getCurrentDateTime
+  getCurrentDateTime,
+  base64EncodeString,
+  base64DecodeString
 };

@@ -13,23 +13,22 @@ module.exports = {
       lastName: {
         type: Sequelize.STRING
       },
-      phoneNumber:{
+      phoneNumber: {
         type: Sequelize.INTEGER
       },
       email: {
         type: Sequelize.STRING
       },
-      emailVerify:{
+      emailVerify: {
         type: Sequelize.STRING
-
       },
       password: {
         type: Sequelize.STRING
       },
-      addressId:{
+      addressId: {
         type: Sequelize.STRING
       },
-      dob:{
+      dob: {
         type: Sequelize.DATE
       },
       role: {

@@ -10,10 +10,10 @@ const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const data = await cartService.createCart(user.id);
 
-  const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
-  const host = config.email.customerHost;
-  await emailService.sendVerificationEmail(req.body.email, verifyEmailToken, host);
-  res.status(httpStatus.CREATED).send({ user });
+  // const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
+  // const host = config.email.customerHost;
+  // await emailService.sendVerificationEmail(req.body.email, verifyEmailToken, host);
+  res.status(200).send({ message: 'register successfully', user });
 });
 
 const login = catchAsync(async (req, res) => {
@@ -54,7 +54,7 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
     }
     await emailService.sendVerificationEmail(req.user.email, verifyEmailToken, host);
     // res.status(httpStatus.NO_CONTENT).send();
-    res.send("Verification Email is sent successfully!!")
+    res.send('Verification Email is sent successfully!!');
   } else {
     throw new ApiError(httpStatus.FORBIDDEN, 'Email already verified');
   }
@@ -72,17 +72,17 @@ const forgotPassword = catchAsync(async (req, res) => {
   } else if (req.body.role === 'Customer') {
     host = config.email.customerHost;
   }
-  const data=await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken, host);
+  const data = await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken, host);
   // res.status(httpStatus.NO_CONTENT).send();
-  res.send({message:"Email sent successfully!!"})
+  res.send({ message: 'Email sent successfully!!' });
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  const data=await authService.resetPassword(req.query.token, req.body.password);
-  console.log("reset-password================================================",req.query.token)
-  console.log("DATA******************************",data);
+  const data = await authService.resetPassword(req.query.token, req.body.password);
+  console.log('reset-password================================================', req.query.token);
+  console.log('DATA******************************', data);
   // res.status(httpStatus.NO_CONTENT).send();
-  res.send(data)
+  res.send(data);
 });
 
 const changePassword = catchAsync(async (req, res) => {

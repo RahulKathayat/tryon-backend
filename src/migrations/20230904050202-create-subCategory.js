@@ -8,7 +8,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       categoryId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelte: 'SET Null',
+        reference: {
+          model: 'Category',
+          key: 'id'
+        }
       },
       subCategoryName: {
         type: Sequelize.STRING
