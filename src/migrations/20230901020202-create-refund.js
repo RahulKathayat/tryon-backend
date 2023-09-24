@@ -24,7 +24,12 @@ module.exports = {
         }
       },
       orderDetailId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelete: 'SET Null',
+        references: {
+          model: 'OrderDetails',
+          key: 'id'
+        }
       },
       status: {
         type: Sequelize.BOOLEAN

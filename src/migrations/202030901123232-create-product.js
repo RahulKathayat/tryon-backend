@@ -23,13 +23,28 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       categoryId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelte: 'SET Null',
+        reference: {
+          model: 'Category',
+          key: 'id'
+        }
       },
       subCategoryId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelte: 'SET Null',
+        reference: {
+          model: 'SubCategory',
+          key: 'id'
+        }
       },
       subSubCategoryId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelte: 'SET Null',
+        reference: {
+          model: 'SubSubCategory',
+          key: 'id'
+        }
       },
       image: {
         type: Sequelize.JSON
