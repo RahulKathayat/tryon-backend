@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       subSubCategoryId: {
         type: DataTypes.INTEGER
       },
-      image: {  
+      image: {
         type: DataTypes.JSON
       },
       featuredImage: {

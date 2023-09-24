@@ -7,21 +7,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      productName: {
-        type: Sequelize.STRING
-      },
-      productNumber: {
-        type: Sequelize.INTEGER
-      },
-      brandName: {
-        type: Sequelize.STRING
-      },
-      originalPrice: {
-        type: Sequelize.INTEGER
-      },
-      discountedPrice: {
-        type: Sequelize.INTEGER
-      },
       categoryId: {
         type: Sequelize.INTEGER,
         onDelte: 'SET Null',
@@ -45,6 +30,21 @@ module.exports = {
           model: 'SubSubCategory',
           key: 'id'
         }
+      },
+      productName: {
+        type: Sequelize.STRING
+      },
+      productNumber: {
+        type: Sequelize.INTEGER
+      },
+      brandName: {
+        type: Sequelize.STRING
+      },
+      originalPrice: {
+        type: Sequelize.INTEGER
+      },
+      discountedPrice: {
+        type: Sequelize.INTEGER
       },
       image: {
         type: Sequelize.JSON
