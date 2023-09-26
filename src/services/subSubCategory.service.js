@@ -1,33 +1,42 @@
-const { SubSubCategory,SubCategory} = require('../models');
+const { SubSubCategory, SubCategory } = require('../models');
 // const SubSubCategory = require('../models/subSubCategory');
 
 const createSubSubCategory = async (_userBody) => {
   const userBody = _userBody;
-  console.log("===============",userBody);
-   const data= await SubSubCategory.create(userBody);
-   console.log("data",data);
-   return data
+  console.log('===============', userBody);
+  const data = await SubSubCategory.create(userBody);
+  console.log('data', data);
+  return data;
 };
 
-const getSubSubCategory = async (query, options) => {
-
-  const limit = Number(options.limit) ;
+const getSubSubCategory = async (query, options, subCategoryId) => {
+  const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
-  const support = await SubSubCategory.findAndCountAll({
-    where:  query,
-    order: [['updatedAt', 'DESC']],
-    include:[{model:SubCategory}],
-    limit,
-    offset
-  });
-  return support;
+  if (subCategoryId == null) {
+    const support = await SubSubCategory.findAndCountAll({
+      where: query,
+      order: [['updatedAt', 'DESC']],
+      include: [{ model: SubCategory }],
+      limit,
+      offset
+    });
+    return support;
+  } else {
+    const support = await SubSubCategory.findAndCountAll({
+      where: { ...query, subCategoryId: subCategoryId },
+      order: [['updatedAt', 'DESC']],
+      include: [{ model: SubCategory }],
+      limit,
+      offset
+    });
+    return support;
+  }
 };
-
 
 const getAllSubSubCategories = async () => {
   try {
     const data = await SubSubCategory.findAll({
-      where: {},
+      where: {}
     });
     return data;
   } catch (error) {
@@ -35,12 +44,11 @@ const getAllSubSubCategories = async () => {
   }
 };
 
-
 const getSubSubCategoryById = async (id) => {
   try {
     const data = await SubSubCategory.findAll({
-      where: {id:id},
-      include:[{model:SubCategory}]
+      where: { id: id },
+      include: [{ model: SubCategory }]
     });
     return data;
   } catch (error) {
@@ -57,19 +65,18 @@ const updateSubSubCategoryById = async (id, newData) => {
   } else {
     return;
   }
-}
-
+};
 
 const deleteSubSubCategoryById = async (Id) => {
   try {
-    const user = await SubSubCategory.findOne({ where:   Id  });
+    const user = await SubSubCategory.findOne({ where: Id });
 
     if (!user) {
       throw new Error('SubSubCategory not found');
     }
     await user.update({ status: false });
 
-    console.log("SubSubCategory deleted successfully");
+    console.log('SubSubCategory deleted successfully');
 
     return { message: 'SubSubCategory deleted successfully' };
   } catch (error) {
@@ -79,11 +86,10 @@ const deleteSubSubCategoryById = async (Id) => {
 };
 
 module.exports = {
-    createSubSubCategory,
-    getSubSubCategory,
-    updateSubSubCategoryById,
-    deleteSubSubCategoryById,
-    getSubSubCategoryById,
-    getAllSubSubCategories
-  
+  createSubSubCategory,
+  getSubSubCategory,
+  updateSubSubCategoryById,
+  deleteSubSubCategoryById,
+  getSubSubCategoryById,
+  getAllSubSubCategories
 };

@@ -9,7 +9,7 @@ module.exports = {
       },
       categoryId: {
         type: Sequelize.INTEGER,
-        onDelte: 'SET Null',
+        onDelete: 'SET Null',
         reference: {
           model: 'Category',
           key: 'id'
@@ -17,7 +17,7 @@ module.exports = {
       },
       subCategoryId: {
         type: Sequelize.INTEGER,
-        onDelte: 'SET Null',
+        onDelete: 'SET Null',
         reference: {
           model: 'SubCategory',
           key: 'id'
@@ -25,9 +25,17 @@ module.exports = {
       },
       subSubCategoryId: {
         type: Sequelize.INTEGER,
-        onDelte: 'SET Null',
+        onDelete: 'SET Null',
         reference: {
           model: 'SubSubCategory',
+          key: 'id'
+        }
+      },
+      fabricId: {
+        type: Sequelize.STRING,
+        onDelete: 'SET Null',
+        reference: {
+          model: 'Fabric',
           key: 'id'
         }
       },
@@ -40,11 +48,11 @@ module.exports = {
       brandName: {
         type: Sequelize.STRING
       },
-      originalPrice: {
+      basePrice: {
         type: Sequelize.INTEGER
       },
-      discountedPrice: {
-        type: Sequelize.INTEGER
+      discountPercentage: {
+        type: Sequelize.REAL
       },
       image: {
         type: Sequelize.JSON
@@ -56,6 +64,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       length: {
+        type: Sequelize.INTEGER
+      },
+      totalPrice: {
         type: Sequelize.INTEGER
       },
 

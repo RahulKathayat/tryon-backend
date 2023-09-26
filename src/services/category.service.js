@@ -2,18 +2,17 @@ const { Category } = require('../models');
 
 const createCategory = async (_userBody) => {
   const userBody = _userBody;
-  console.log("===============",userBody);
-   const data= await Category.create(userBody);
-   console.log("data",data);
-   return data
+  console.log('===============', userBody);
+  const data = await Category.create(userBody);
+  console.log('data', data);
+  return data;
 };
 
 const getCategory = async (query, options) => {
-
-  const limit = Number(options.limit) ;
+  const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Category.findAndCountAll({
-    where:  query,
+    where: query,
     order: [['updatedAt', 'DESC']],
     limit,
     offset
@@ -24,7 +23,7 @@ const getCategory = async (query, options) => {
 const getAllCategory = async () => {
   try {
     const data = await Category.findAll({
-      where: {},
+      where: {}
     });
     return data;
   } catch (error) {
@@ -32,11 +31,10 @@ const getAllCategory = async () => {
   }
 };
 
-
 const getCategoryById = async (id) => {
   try {
     const data = await Category.findAll({
-      where: {id:id}
+      where: { id: id }
     });
     return data;
   } catch (error) {
@@ -53,20 +51,18 @@ const updateCategoryById = async (id, newData) => {
   } else {
     return;
   }
-}
-
-
+};
 
 const deleteCategoryById = async (Id) => {
   try {
-    const user = await Category.findOne({ where:   Id  });
+    const user = await Category.findOne({ where: Id });
 
     if (!user) {
       throw new Error('Category not found');
     }
     await user.update({ status: false });
 
-    console.log("Category deleted successfully");
+    console.log('Category deleted successfully');
 
     return { message: 'Category deleted successfully' };
   } catch (error) {
@@ -76,11 +72,10 @@ const deleteCategoryById = async (Id) => {
 };
 
 module.exports = {
-    createCategory,
-    getCategory,
-    updateCategoryById,
-    deleteCategoryById,
-    getCategoryById,
-    getAllCategory
-  
+  createCategory,
+  getCategory,
+  updateCategoryById,
+  deleteCategoryById,
+  getCategoryById,
+  getAllCategory
 };

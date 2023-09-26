@@ -9,7 +9,7 @@ module.exports = {
       },
       fabricId: {
         type: Sequelize.INTEGER,
-        onDelte: 'SET Null',
+        onDelete: 'SET Null',
         reference: {
           model: 'Fabric',
           key: 'id'
@@ -17,7 +17,7 @@ module.exports = {
       },
       productId: {
         type: Sequelize.INTEGER,
-        onDelte: 'SET Null',
+        onDelete: 'SET Null',
         reference: {
           model: 'Product',
           key: 'id'

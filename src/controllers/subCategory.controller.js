@@ -30,11 +30,11 @@ const uploadImage = async (req, res) => {
   try {
     if (req.file) {
       const originalFilePath = req.file.filename;
-      return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath })
-    }else{
-    return res.status(400).send({ message: 'You must select a file.' });
-    } 
-  }catch(error){
+      return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
+    } else {
+      return res.status(400).send({ message: 'You must select a file.' });
+    }
+  } catch (error) {
     console.log('error', error);
     return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
   }
@@ -43,14 +43,23 @@ const uploadImage = async (req, res) => {
 const getSubCategory = catchAsync(async (req, res) => {
   const query = {};
   query.status = req.query.status ? req.query.status : true;
+
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await subCategoryService.getSubCategory(query, options);
-  if (data) {
-    res.status(httpStatus.OK).send({ message: 'subCategory data fetched successfully', data: data });
-  } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  const { categoryId } = req.query;
+
+  try {
+    const data = await subCategoryService.getSubCategory(query, options, categoryId);
+
+    if (data) {
+      return res.status(httpStatus.OK).send({ message: 'subCategory data fetched successfully', data: data });
+    } else {
+      return res.status(httpStatus.NO_CONTENT).send({ message: 'No data found' });
+    }
+  } catch (error) {
+    // Handle any potential errors here.
+    console.error(error);
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'An error occurred while fetching data' });
   }
-  return data;
 });
 
 const getAllSubCategory = catchAsync(async (req, res) => {

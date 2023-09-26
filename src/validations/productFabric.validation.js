@@ -2,10 +2,10 @@ const Joi = require('joi');
 
 const createProductFabric = {
   body: Joi.object().keys({
-   fabricId:Joi.number().required(),
-   productId:Joi.number().required(),
-   defaultFabric: Joi.string().optional(),
-   status: Joi.boolean()
+    fabricId: Joi.number(),
+    productId: Joi.number(),
+    defaultFabric: Joi.string().optional(),
+    status: Joi.boolean()
   })
 };
 
@@ -14,13 +14,13 @@ const updateProductFabric = {
     id: Joi.number().required()
   }),
   body: Joi.object().keys({
-    fabricId:Joi.number().required(),
-    productId:Joi.number().required(),
+    fabricId: Joi.number().required(),
+    productId: Joi.number().required(),
     defaultFabric: Joi.string().optional(),
     status: Joi.boolean()
-})
-}
+  })
+};
 module.exports = {
-    createProductFabric,
-    updateProductFabric
+  createProductFabric,
+  updateProductFabric
 };

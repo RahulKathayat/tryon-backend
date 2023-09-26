@@ -2,6 +2,9 @@ module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
     'Product',
     {
+      fabricId: {
+        type: DataTypes.STRING
+      },
       productName: {
         type: DataTypes.STRING
       },
@@ -11,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       brandName: {
         type: DataTypes.STRING
       },
-      originalPrice: {
-        type: DataTypes.INTEGER
+      basePrice: {
+        type: DataTypes.BIGINT
       },
-      discountedPrice: {
-        type: DataTypes.INTEGER
+      discountPercentage: {
+        type: DataTypes.REAL
       },
       categoryId: {
         type: DataTypes.INTEGER
@@ -38,7 +41,9 @@ module.exports = (sequelize, DataTypes) => {
       length: {
         type: DataTypes.INTEGER
       },
-
+      totalPrice: {
+        type: DataTypes.BIGINT
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

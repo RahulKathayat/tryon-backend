@@ -8,23 +8,22 @@ module.exports = (sequelize, DataTypes) => {
       lastName: {
         type: DataTypes.STRING
       },
-      phoneNumber:{
-        type: DataTypes.INTEGER
+      phoneNumber: {
+        type: DataTypes.BIGINT
       },
       email: {
         type: DataTypes.STRING
       },
-      emailVerify:{
+      emailVerify: {
         type: DataTypes.STRING
-
       },
       password: {
         type: DataTypes.STRING
       },
-      addressId:{
+      addressId: {
         type: DataTypes.STRING
       },
-      dob:{
+      dob: {
         type: DataTypes.DATE
       },
       role: {
@@ -32,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.BOOLEAN,
-        defaultValue:true
-      },
+        defaultValue: true
+      }
     },
     {
       tableName: 'Users',
@@ -47,7 +46,6 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     }
-
   );
 
   User.associate = function (models) {
@@ -58,25 +56,25 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     User.hasOne(models.Cart, {
-      foreignKey: 'userId' 
+      foreignKey: 'userId'
     });
 
     User.hasMany(models.Orders, {
-      foreignKey: 'userId' 
+      foreignKey: 'userId'
     });
 
     User.hasMany(models.Ratings, {
-      foreignKey: 'userId' 
+      foreignKey: 'userId'
     });
 
     User.hasMany(models.Refund, {
-      foreignKey: 'userId' 
+      foreignKey: 'userId'
     });
 
     User.hasOne(models.WishList, {
-      foreignKey: 'userId' 
+      foreignKey: 'userId'
     });
   };
-  
-     return User;
+
+  return User;
 };

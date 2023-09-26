@@ -11,7 +11,7 @@ module.exports = {
       },
       subCategoryId: {
         type: Sequelize.INTEGER,
-        onDelte: 'SET Null',
+        onDelete: 'SET Null',
         reference: {
           model: 'SubCategory',
           key: 'id'

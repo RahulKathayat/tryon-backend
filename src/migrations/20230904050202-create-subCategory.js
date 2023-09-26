@@ -9,7 +9,7 @@ module.exports = {
       },
       categoryId: {
         type: Sequelize.INTEGER,
-        onDelte: 'SET Null',
+        onDelete: 'SET Null',
         reference: {
           model: 'Category',
           key: 'id'

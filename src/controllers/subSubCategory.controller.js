@@ -31,7 +31,10 @@ const getSubSubCategory = catchAsync(async (req, res) => {
   const query = {};
   query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await subSubCategoryService.getSubSubCategory(query, options);
+
+  const { subCategoryId } = req.query;
+
+  const data = await subSubCategoryService.getSubSubCategory(query, options, subCategoryId);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'subSubCategory data fetched successfully', data: data });
   } else {
