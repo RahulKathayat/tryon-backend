@@ -37,12 +37,12 @@ const getProduct = catchAsync(async (req, res) => {
   query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
-  const { productName, productNumber, brandName, originalPrice, discountedPrice, productType } = req.query;
+  const { productName, productNumber, brandName, originalPrice, discountPercentage, productType } = req.query;
   productName ? (query.productName = { [Op.like]: `%${productName}%` }) : null;
   productNumber ? (query.productNumber = { [Op.like]: `%${productNumber}%` }) : null;
   brandName ? (query.brandName = { [Op.like]: `%${brandName}%` }) : null;
   originalPrice ? (query.originalPrice = { [Op.like]: `%${originalPrice}%` }) : null;
-  discountedPrice ? (query.discountedPrice = { [Op.like]: `%${discountedPrice}%` }) : null;
+  discountPercentage ? (query.discountPercentage = { [Op.like]: `%${discountPercentage}%` }) : null;
   productType ? (query.productType = { [Op.like]: `%${productType}%` }) : null;
 
   const data = await productService.getProduct(query, options);

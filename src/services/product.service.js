@@ -6,6 +6,7 @@ const createProduct = async (_userBody) => {
 };
 
 const getProduct = async (query, options) => {
+  console.log("===============================",query)
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Product.findAndCountAll({

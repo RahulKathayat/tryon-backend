@@ -99,10 +99,14 @@ const updateUserById = async (id, newData) => {
   }
 }
 
-const updateUserPasswordById = async (id, updateBody) => {
-  return Users.update(updateBody, {
-    where: { id }
-  });
+// const updateUserPasswordById = async (id, updateBody) => {
+//   return Users.update(updateBody, {
+//     where: { id }
+//   });
+// };
+
+const updateUserPasswordById = async (id) => {
+  return Users.scope('withSecretColumns').findOne({ where: { id: id } });
 };
 
 const deleteUserById = async (userId) => {
@@ -137,6 +141,9 @@ const getUserWithSecretFieldsById = async (id) => {
     throw error;
   }
 };
+// const getUserWithSecretFieldsById = async (id) => {
+//   return Users.scope('withSecretColumns').findOne({ where: { id: id } });
+// };
 
 module.exports = {
   createUser,

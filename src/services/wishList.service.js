@@ -1,12 +1,32 @@
 const { WishList,Product,Users } = require('../models');
 
+// const createWishlist = async (_userBody) => {
+//   const userBody = _userBody;
+//   console.log("===============",userBody);
+//    const data= await WishList.create(userBody);
+//    console.log("data",data);
+//    return data
+// };
+
 const createWishlist = async (_userBody) => {
   const userBody = _userBody;
-  console.log("===============",userBody);
-   const data= await WishList.create(userBody);
-   console.log("data",data);
-   return data
-};
+  const existingCart = await WishList.findOne({
+    where: { userId: userBody}
+  });
+  if (!existingCart) {
+    const data= await Users.findOne({
+      where:{
+       id:userBody, role:"Customer"
+      }
+     })
+     if(data){
+      return WishList.create({ userId: userBody });
+     }
+     else{
+      return "user role does not matched"
+     }  
+  }
+}
 
 const getWishlist = async (query, options) => {
 

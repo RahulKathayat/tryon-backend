@@ -17,6 +17,7 @@ const addressRoute= require("./address.route");
 const cartRoute= require("./cart.route");
 const fabricRoute= require("./fabric.route");
 const productFabricRoute= require("./productFabric.route");
+const subscribedUserRoute=require("./subscribedUser.route")
 
 
 
@@ -92,6 +93,10 @@ const defaultRoutes = [
   {
     path: '/productFabric',
     route: productFabricRoute
+  },
+  {
+    path: '/subscribedUser',
+    route: subscribedUserRoute
   }
   
 ];

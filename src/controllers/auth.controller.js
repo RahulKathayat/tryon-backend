@@ -1,14 +1,15 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
-const { authService, tokenService, userService, cartService, emailService } = require('../services');
+const { authService, tokenService, userService, cartService, emailService,wishlistService } = require('../services');
 const config = require('../config/config');
 
 const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  const data = await cartService.createCart(user.id);
+  const cartData = await cartService.createCart(user.id);
+  const wishlistData=await wishlistService.createWishlist(user.id);
 
   // const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
   // const host = config.email.customerHost;
@@ -85,16 +86,17 @@ const resetPassword = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+
 const changePassword = catchAsync(async (req, res) => {
-  const userWithSecretFields = await userService.getUserWithSecretFieldsById(req.user.datavalues.id);
+  const userWithSecretFields = await userService.getUserWithSecretFieldsById(req.user.dataValues.id);
   const password = req.body.oldPassword;
   if (!(await bcrypt.compare(password, userWithSecretFields.password))) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Incorrect password!');
+    res.status(httpStatus.FORBIDDEN).send({ message: 'Incorrect password!' });
   } else {
     const userBody = {
       password: await bcrypt.hash(req.body.newPassword, 8)
     };
-    await userService.updateUserPasswordById(req.user.datavalues.id, userBody);
+    await userService.updateUserById(req.user.dataValues.id, userBody);
   }
   res.status(httpStatus.OK).send({ message: 'Password Changed Successfully' });
 });

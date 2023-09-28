@@ -16,6 +16,8 @@ module.exports.addressController=require('./address.controller');
 module.exports.cartController=require('./cart.controller');
 module.exports.fabricController=require('./fabric.controller');
 module.exports.productFabricController=require('./productFabric.controller');
+module.exports.subscribedUserController=require('./subscribedUser.controller');
+
 
 
 

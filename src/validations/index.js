@@ -14,6 +14,8 @@ module.exports.addressValidation = require('./address.validation');
 module.exports.cartValidation = require('./cart.validation');
 module.exports.fabricValidation = require('./fabric.validation');
 module.exports.productFabricValidation = require('./fabric.validation');
+module.exports.subscribedUserValidation = require('./subscribedUser.validation');
+
 
 
 

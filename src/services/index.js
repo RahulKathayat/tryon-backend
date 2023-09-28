@@ -17,6 +17,8 @@ module.exports.subSubCategoryService = require('./subSubCategory.service');
 module.exports.cartService = require('./cart.service');
 module.exports.fabricService = require('./fabric.service');
 module.exports.productFabricService = require('./productFabric.services');
+module.exports.subscribedUserService = require('./subscribedUser.service');
+
 
 
 
