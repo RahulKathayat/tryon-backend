@@ -3,6 +3,7 @@ const Joi = require('joi');
 const createProduct = {
   body: Joi.object().keys({
     fabricId: Joi.string().optional(),
+    designerName: Joi.string().optional(),
     productName: Joi.string().required(),
     productNumber: Joi.number().required(),
     brandName: Joi.string().required(),

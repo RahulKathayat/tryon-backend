@@ -39,6 +39,9 @@ module.exports = {
           key: 'id'
         }
       },
+      designerName: {
+        type: Sequelize.STRING
+      },
       productName: {
         type: Sequelize.STRING
       },

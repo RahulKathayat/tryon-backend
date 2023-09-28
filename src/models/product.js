@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
       fabricId: {
         type: DataTypes.STRING
       },
+      designerName: {
+        type: DataTypes.STRING
+      },
       productName: {
         type: DataTypes.STRING
       },
