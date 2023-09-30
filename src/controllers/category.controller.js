@@ -2,6 +2,8 @@ const catchAsync = require('../utils/catchAsync');
 const categoryService = require('../services/category.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
+const { Op } = require('sequelize');
+
 
 const   createCategory= catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -13,20 +15,43 @@ const   createCategory= catchAsync(async (req, res) => {
   }
 });
 
-
-
 const getCategory = catchAsync(async (req, res) => {
-  const query ={};
-  query.status = req.query.status?req.query.status:true;
+  let query = {};
+  query.status = req.query.status ? req.query.status : true;
+
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await categoryService.getCategory(query,options);
+
+  const filterParameters = [
+    'categoryName', 
+    'popularCategory', 
+];
+
+  filterParameters.forEach(param => {
+    if (req.query[param]) {
+      if (req.query[param].includes(',')) {
+        const values = req.query[param].split(',');
+        query[param] = {
+          [Op.or]: values.map(value => ({
+            [Op.like]: `%${value.trim()}%`,
+          })),
+        };
+      } else {
+        query[param] = {
+          [Op.like]: `%${req.query[param]}%`,
+        };
+      }
+    }
+  });
+
+  const data = await categoryService.getCategory(query, options);
+
   if (data) {
     res.status(httpStatus.OK).send({ message: 'category data fetched successfully', data: data });
   } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
-  return data;
 });
+
 
 const getAllCategory = catchAsync(async (req, res) => {
   const query={}

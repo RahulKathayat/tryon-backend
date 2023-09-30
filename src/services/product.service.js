@@ -19,6 +19,9 @@ const getProduct = async (query, options) => {
   return support;
 };
 
+
+
+
 const getProductById = async (id) => {
   try {
     const data = await Product.findAll({

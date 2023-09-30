@@ -72,7 +72,9 @@ module.exports = {
       totalPrice: {
         type: Sequelize.INTEGER
       },
-
+      currentStock:{
+        type: Sequelize.INTEGER
+      },
       status: {
         type: Sequelize.BOOLEAN
       },

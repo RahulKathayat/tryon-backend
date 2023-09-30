@@ -47,6 +47,9 @@ module.exports = (sequelize, DataTypes) => {
       totalPrice: {
         type: DataTypes.BIGINT
       },
+      currentStock:{
+        type: DataTypes.INTEGER
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

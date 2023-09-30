@@ -81,10 +81,25 @@ const deleteCart = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in cart delete' });
   }
 });
+
+const clearCart = catchAsync(async (req, res) => {
+  const cart = await cartService.getCartById(req.user.dataValues.id);
+  console.log("cartt==============================",cart);
+  if (!cart) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Cart not found');
+  }
+  const cartUpdate = await cartService.clearCartByUserId(req.user.dataValues.id);
+  if (cartUpdate) {
+    res.status(httpStatus.OK).send({ message: 'Cart Cleared Successfully' });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in Clearing Cart' });
+  }
+});
 module.exports = {
-    // createCart,
-    deleteCart,
-    getCart,
-    updateCart,
-  getCartById
+  // createCart,
+  deleteCart,
+  getCart,
+  updateCart,
+  getCartById,
+  clearCart
 };

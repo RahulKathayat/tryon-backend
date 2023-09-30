@@ -17,6 +17,7 @@ const createProduct = {
     productType: Joi.number().valid(0, 1, 2, 3).required(), //0=newProduct, 1=hotDeals, 2=bestSeller, 3=isUpComing
     length: Joi.number().required(),
     totalPrice: Joi.number().required(),
+    currentStock:Joi.number().required(),
     status: Joi.boolean()
   })
 };
@@ -40,6 +41,7 @@ const updateProduct = {
   productType: Joi.number().valid(0, 1, 2, 3).required(), //0=newProduct, 1=hotDeals, 2=bestSeller, 3=isUpComing
   length: Joi.number().required(),
   totalPrice: Joi.number().required(),
+  currentStock:Joi.number().required(),
   status: Joi.boolean()
 };
 
