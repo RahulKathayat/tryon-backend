@@ -52,8 +52,12 @@ const getProduct = catchAsync(async (req, res) => {
     'fabricId',
     'categoryId',
     'subCategoryId',
-    'subSubCategoryId'
-
+    'subSubCategoryId',
+    'sku',
+    'tags',
+    'fabric',
+    'size',
+    'colour'
   ];
 
   filterParameters.forEach(param => {

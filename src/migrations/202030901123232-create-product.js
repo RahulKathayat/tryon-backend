@@ -75,6 +75,27 @@ module.exports = {
       currentStock:{
         type: Sequelize.INTEGER
       },
+      description: {
+        type: Sequelize.STRING
+      },
+      additionalInformation: {
+        type: Sequelize.STRING
+      },
+      sku: {
+        type: Sequelize.STRING
+      },
+      tags: {
+        type: Sequelize.STRING
+      },
+      fabric: {
+        type: Sequelize.STRING
+      },
+      size: {
+        type: Sequelize.JSON
+      },
+      colour: {
+        type: Sequelize.JSON
+      },
       status: {
         type: Sequelize.BOOLEAN
       },

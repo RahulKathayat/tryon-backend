@@ -1,4 +1,4 @@
-const { Product, Category, SubCategory, SubSubCategory, ProductDetails } = require('../models');
+const { Product, Category, SubCategory, SubSubCategory } = require('../models');
 
 const createProduct = async (_userBody) => {
   const userBody = _userBody;
@@ -12,7 +12,7 @@ const getProduct = async (query, options) => {
   const support = await Product.findAndCountAll({
     where: query,
     order: [['updatedAt', 'DESC']],
-    include: [{ model: ProductDetails }, { model: Category }, { model: SubCategory }, { model: SubSubCategory }],
+    include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
     limit,
     offset
   });
@@ -26,7 +26,7 @@ const getProductById = async (id) => {
   try {
     const data = await Product.findAll({
       where: { id: id },
-      include: [{ model: ProductDetails }, { model: Category }, { model: SubCategory }, { model: SubSubCategory }]
+      include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }]
     });
     return data;
   } catch (error) {

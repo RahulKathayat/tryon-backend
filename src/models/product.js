@@ -50,6 +50,27 @@ module.exports = (sequelize, DataTypes) => {
       currentStock:{
         type: DataTypes.INTEGER
       },
+      description: {
+        type: DataTypes.STRING
+      },
+      additionalInformation: {
+        type: DataTypes.STRING
+      },
+      sku: {
+        type: DataTypes.STRING
+      },
+      tags: {
+        type: DataTypes.STRING
+      },
+      fabric: {
+        type: DataTypes.STRING
+      },
+      size: {
+        type: DataTypes.JSON
+      },
+      colour: {
+        type: DataTypes.JSON
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
@@ -76,10 +97,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'subSubcategoryId',
       onDelete: 'SET NULL',
       allowNull: true
-    });
-
-    Product.hasOne(models.ProductDetails, {
-      foreignKey: 'productId'
     });
 
     Product.hasMany(models.Ratings, {

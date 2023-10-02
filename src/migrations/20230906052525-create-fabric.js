@@ -46,6 +46,9 @@ module.exports = {
       gsm: {
         type: Sequelize.INTEGER
       },
+      quantity:{
+        type:Sequelize.INTEGER
+      },
       image: {
         type: Sequelize.STRING
       },

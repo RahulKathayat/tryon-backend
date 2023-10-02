@@ -33,7 +33,8 @@ const getFabric = catchAsync(async (req, res) => {
     'reflection',
     'price',
     'maxWidth',
-    'gsm'
+    'gsm',
+    'quantity'
 
   ];
 
