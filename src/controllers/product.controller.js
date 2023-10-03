@@ -33,25 +33,56 @@ const uploadFeatureImage = async (req, res) => {
 };
 
 const getProduct = catchAsync(async (req, res) => {
-  const query = {};
+  let query = {};
   query.status = req.query.status ? req.query.status : true;
+
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
-  const { productName, productNumber, brandName, originalPrice, discountPercentage, productType } = req.query;
-  productName ? (query.productName = { [Op.eq]: `%${productName}%` }) : null;
-  productNumber ? (query.productNumber = { [Op.like]: `%${productNumber}%` }) : null;
-  brandName ? (query.brandName = { [Op.like]: `%${brandName}%` }) : null;
-  originalPrice ? (query.originalPrice = { [Op.like]: `%${originalPrice}%` }) : null;
-  discountPercentage ? (query.discountPercentage = { [Op.like]: `%${discountPercentage}%` }) : null;
-  productType ? (query.productType = { [Op.like]: `%${productType}%` }) : null;
+  const filterParameters = [
+    'productName',
+    'productNumber',
+    'brandName',
+    'discountPercentage',
+    'productType',
+    'designerName',
+    'basePrice',
+    'totalPrice',
+    'currentStock',
+    'fabricId',
+    'categoryId',
+    'subCategoryId',
+    'subSubCategoryId',
+    'sku',
+    'tags',
+    'fabric',
+    'size',
+    'colour'
+  ];
+
+  filterParameters.forEach((param) => {
+    if (req.query[param]) {
+      if (req.query[param].includes(',')) {
+        const values = req.query[param].split(',');
+        query[param] = {
+          [Op.or]: values.map((value) => ({
+            [Op.like]: `%${value.trim()}%`
+          }))
+        };
+      } else {
+        query[param] = {
+          [Op.like]: `%${req.query[param]}%`
+        };
+      }
+    }
+  });
 
   const data = await productService.getProduct(query, options);
+
   if (data) {
-    res.status(httpStatus.OK).send({ message: 'product data fetched successfully', data: data });
+    res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
   } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
-  return data;
 });
 
 const getProductById = catchAsync(async (req, res) => {

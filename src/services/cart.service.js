@@ -35,6 +35,7 @@ const getCart = async (query, options) => {
 };
 
 const getCartById = async (id) => {
+  console.log("cart id==================================",id);
   try {
     const data = await Cart.findAll({
       where: { id: id }
@@ -74,10 +75,21 @@ const deleteCartById = async (Id) => {
   }
 };
 
+const clearCartByUserId = async (userId) => {
+  console.log("userID&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",userId)
+  return Cart.update(
+    { cartDetail: null, totalAmount: 0, totalItems: 0, totalQuantity: 0, discountCode: null },
+    {
+      where: { userId, status: true }
+    }
+  );
+};
+
 module.exports = {
   createCart,
   getCart,
   updateCartById,
   deleteCartById,
-  getCartById
+  getCartById,
+  clearCartByUserId
 };

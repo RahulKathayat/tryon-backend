@@ -15,46 +15,55 @@ const createFabric = catchAsync(async (req, res) => {
 });
 
 const getFabric = catchAsync(async (req, res) => {
-  const query = {};
+  let query = {};
   query.status = req.query.status ? req.query.status : true;
+
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
-  const {
-    fabricType,
-    weight,
-    printType,
-    usage,
-    properties,
-    handle,
-    construction,
-    transparency,
-    reflection,
-    price,
-    maxWidth,
-    gsm
-  } = req.query;
+  const filterParameters = [
+    'fabricName',
+    'fabricType',
+    'weight',
+    'printType',
+    'usage',
+    'properties',
+    'handle',
+    'construction',
+    'transparency',
+    'reflection',
+    'price',
+    'maxWidth',
+    'gsm',
+    'quantity'
 
-  fabricType ? (query.fabricType = { [Op.like]: `%${fabricType}%` }) : null;
-  weight ? (query.weight = { [Op.like]: `%${weight}%` }) : null;
-  printType ? (query.printType = { [Op.like]: `%${printType}%` }) : null;
-  usage ? (query.usage = { [Op.like]: `%${usage}%` }) : null;
-  properties ? (query.properties = { [Op.like]: `%${properties}%` }) : null;
-  handle ? (query.handle = { [Op.like]: `%${handle}%` }) : null;
-  construction ? (query.construction = { [Op.like]: `%${construction}%` }) : null;
-  transparency ? (query.transparency = { [Op.like]: `%${transparency}%` }) : null;
-  reflection ? (query.reflection = { [Op.like]: `%${reflection}%` }) : null;
-  price ? (query.price = { [Op.like]: `%${price}%` }) : null;
-  maxWidth ? (query.maxWidth = { [Op.like]: `%${maxWidth}%` }) : null;
-  gsm ? (query.gsm = { [Op.like]: `%${gsm}%` }) : null;
+  ];
+
+  filterParameters.forEach(param => {
+    if (req.query[param]) {
+      if (req.query[param].includes(',')) {
+        const values = req.query[param].split(',');
+        query[param] = {
+          [Op.or]: values.map(value => ({
+            [Op.like]: `%${value.trim()}%`,
+          })),
+        };
+      } else {
+        query[param] = {
+          [Op.like]: `%${req.query[param]}%`,
+        };
+      }
+    }
+  });
 
   const data = await fabricService.getFabric(query, options);
+
   if (data) {
-    res.status(httpStatus.OK).send({ message: 'fabric data fetched successfully', data: data });
+    res.status(httpStatus.OK).send({ message: 'Fabric data fetched successfully', data: data });
   } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
-  return data;
 });
+
 
 const getFabricById = catchAsync(async (req, res) => {
   const data = await fabricService.getFabricById(req.params.id);

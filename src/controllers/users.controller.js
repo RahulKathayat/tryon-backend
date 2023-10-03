@@ -37,15 +37,41 @@ const getUser = catchAsync(async (req, res) => {
       query.role = filter.role;
     }
   }
+  const filterParameters = [
+    'firstName',
+    'lastName',
+    'phoneNumber',
+    'email',
+    'emailVerify',
+    'addressId',
+    'dob'
+];
 
-  const { firstName,lastName,phoneNumber,email,emailVerify,addressId,dob } = req.query;
-  firstName ? query.firstName = { [Op.like]: `%${firstName}%` } : null;
-  lastName ? query.lastName = { [Op.like]: `%${lastName}%` } : null;
-  phoneNumber ? query.phoneNumber = { [Op.like]: `%${phoneNumber}%` } : null;
-  email ? query.email = { [Op.like]: `%${email}%` } : null;
-  emailVerify ? query.emailVerify = { [Op.like]: `%${emailVerify}%` } : null;
-  addressId ? query.addressId = { [Op.like]: `%${addressId}%` } : null;
-  dob ? query.dob = { [Op.like]: `%${dob}%` } : null;
+  filterParameters.forEach(param => {
+    if (req.query[param]) {
+      if (req.query[param].includes(',')) {
+        const values = req.query[param].split(',');
+        query[param] = {
+          [Op.or]: values.map(value => ({
+            [Op.like]: `%${value.trim()}%`,
+          })),
+        };
+      } else {
+        query[param] = {
+          [Op.like]: `%${req.query[param]}%`,
+        };
+      }
+    }
+  });
+
+  // const { firstName,lastName,phoneNumber,email,emailVerify,addressId,dob } = req.query;
+  // firstName ? query.firstName = { [Op.like]: `%${firstName}%` } : null;
+  // lastName ? query.lastName = { [Op.like]: `%${lastName}%` } : null;
+  // phoneNumber ? query.phoneNumber = { [Op.like]: `%${phoneNumber}%` } : null;
+  // email ? query.email = { [Op.like]: `%${email}%` } : null;
+  // emailVerify ? query.emailVerify = { [Op.like]: `%${emailVerify}%` } : null;
+  // addressId ? query.addressId = { [Op.like]: `%${addressId}%` } : null;
+  // dob ? query.dob = { [Op.like]: `%${dob}%` } : null;
 
 
   const data = await userService.getUser(query,options);

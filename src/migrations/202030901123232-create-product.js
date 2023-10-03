@@ -45,9 +45,7 @@ module.exports = {
       productName: {
         type: Sequelize.STRING
       },
-      productNumber: {
-        type: Sequelize.INTEGER
-      },
+
       brandName: {
         type: Sequelize.STRING
       },
@@ -72,9 +70,36 @@ module.exports = {
       totalPrice: {
         type: Sequelize.INTEGER
       },
-      // averageRating: {
-      //   type: Sequelize.DOUBLE
-      // },
+      currentStock: {
+        type: Sequelize.INTEGER
+      },
+      description: {
+        type: Sequelize.STRING
+      },
+      additionalInformation: {
+        type: Sequelize.STRING
+      },
+      sku: {
+        type: Sequelize.STRING
+      },
+      tags: {
+        type: Sequelize.STRING
+      },
+      fabric: {
+        type: Sequelize.STRING
+      },
+      size: {
+        type: Sequelize.JSON
+      },
+      colour: {
+        type: Sequelize.JSON
+      },
+      quantity: {
+        type: Sequelize.INTEGER
+      },
+      upComingDate: {
+        type: Sequelize.JSON
+      },
       status: {
         type: Sequelize.BOOLEAN
       },

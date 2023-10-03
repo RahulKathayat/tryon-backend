@@ -29,4 +29,6 @@ const updateCart={
     })
 }
 
-module.exports={createCart,updateCart}
+const clearCart={}
+
+module.exports={createCart,updateCart,clearCart}

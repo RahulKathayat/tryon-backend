@@ -2,6 +2,8 @@ const catchAsync = require('../utils/catchAsync');
 const subCategoryService = require('../services/subCategory.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
+const { Op } = require('sequelize');
+
 
 const createSubCategory = catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -13,19 +15,7 @@ const createSubCategory = catchAsync(async (req, res) => {
   }
 });
 
-// const uploadImage = async (req, res) => {
-//   try {
-//     if (!req.file) {
-//       return res.status(400).send({ message: 'You must select a file.' });
-//     }
-//     const originalFilePath = req.file.path;
 
-//     return res.status(200).send({ message: 'File has been uploaded ', pic: originalFilePath });
-//   } catch (error) {
-//     console.log('error', error);
-//     return res.status(500).send({ message: `Error when trying to upload and process images: ${error.message}` });
-//   }
-// };
 const uploadImage = async (req, res) => {
   try {
     if (req.file) {
@@ -41,26 +31,44 @@ const uploadImage = async (req, res) => {
 };
 
 const getSubCategory = catchAsync(async (req, res) => {
-  const query = {};
+  let query = {};
   query.status = req.query.status ? req.query.status : true;
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const { categoryId } = req.query;
 
-  try {
-    const data = await subCategoryService.getSubCategory(query, options, categoryId);
+  const filterParameters = [
+    'subCategoryName', 
+    'categoryId', 
+];
 
-    if (data) {
-      return res.status(httpStatus.OK).send({ message: 'subCategory data fetched successfully', data: data });
-    } else {
-      return res.status(httpStatus.NO_CONTENT).send({ message: 'No data found' });
+  filterParameters.forEach(param => {
+    if (req.query[param]) {
+      if (req.query[param].includes(',')) {
+        const values = req.query[param].split(',');
+        query[param] = {
+          [Op.or]: values.map(value => ({
+            [Op.like]: `%${value.trim()}%`,
+          })),
+        };
+      } else {
+        query[param] = {
+          [Op.like]: `%${req.query[param]}%`,
+        };
+      }
     }
-  } catch (error) {
-    // Handle any potential errors here.
-    console.error(error);
-    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'An error occurred while fetching data' });
+  });
+
+  const data = await subCategoryService.getSubCategory(query, options);
+
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'category data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
 });
+
+
+
 
 const getAllSubCategory = catchAsync(async (req, res) => {
   const query = {};
