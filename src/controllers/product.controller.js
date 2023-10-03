@@ -38,7 +38,7 @@ const getProduct = catchAsync(async (req, res) => {
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
   const { productName, productNumber, brandName, originalPrice, discountPercentage, productType } = req.query;
-  productName ? (query.productName = { [Op.like]: `%${productName}%` }) : null;
+  productName ? (query.productName = { [Op.eq]: `%${productName}%` }) : null;
   productNumber ? (query.productNumber = { [Op.like]: `%${productNumber}%` }) : null;
   brandName ? (query.brandName = { [Op.like]: `%${brandName}%` }) : null;
   originalPrice ? (query.originalPrice = { [Op.like]: `%${originalPrice}%` }) : null;
@@ -103,15 +103,14 @@ const uploadImages = async (req, res) => {
 
     const fileInformation = images.map((file) => {
       console.log(file.file);
-      return file.filename.trim()
-     
+      return file.filename.trim();
     });
     // const fileInformation= image.map((item)=>{
     // return item.filename
     // })
     // console.log("file===========",image);
 
-    res.send({ message: 'Images uploaded successfully', fileInformation:fileInformation});
+    res.send({ message: 'Images uploaded successfully', fileInformation: fileInformation });
   } catch (error) {
     console.error(error);
     return res.status(500).send(`Error when trying to upload images: ${error}`);

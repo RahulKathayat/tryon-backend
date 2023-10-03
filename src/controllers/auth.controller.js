@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
-const { authService, tokenService, userService, cartService, emailService,wishlistService } = require('../services');
+const { authService, tokenService, userService, cartService, emailService, wishlistService } = require('../services');
 const config = require('../config/config');
 
 const ApiError = require('../utils/ApiError');
@@ -9,7 +9,7 @@ const ApiError = require('../utils/ApiError');
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const cartData = await cartService.createCart(user.id);
-  const wishlistData=await wishlistService.createWishlist(user.id);
+  const wishlistData = await wishlistService.createWishlist(user.id);
 
   // const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
   // const host = config.email.customerHost;
@@ -85,7 +85,6 @@ const resetPassword = catchAsync(async (req, res) => {
   // res.status(httpStatus.NO_CONTENT).send();
   res.send(data);
 });
-
 
 const changePassword = catchAsync(async (req, res) => {
   const userWithSecretFields = await userService.getUserWithSecretFieldsById(req.user.dataValues.id);

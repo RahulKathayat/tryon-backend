@@ -47,6 +47,9 @@ module.exports = (sequelize, DataTypes) => {
       totalPrice: {
         type: DataTypes.BIGINT
       },
+      // averageRating: {
+      //   type: DataTypes.DOUBLE
+      // },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

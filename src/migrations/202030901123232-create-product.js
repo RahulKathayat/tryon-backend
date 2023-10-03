@@ -72,7 +72,9 @@ module.exports = {
       totalPrice: {
         type: Sequelize.INTEGER
       },
-
+      // averageRating: {
+      //   type: Sequelize.DOUBLE
+      // },
       status: {
         type: Sequelize.BOOLEAN
       },

@@ -14,13 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       orderDetailId: {
         type: DataTypes.INTEGER
       },
-      totalItems:{
+      totalItems: {
         type: DataTypes.INTEGER
-
       },
-      totalQuantity:{
+      totalQuantity: {
         type: DataTypes.INTEGER
-
       },
       status: {
         type: DataTypes.BOOLEAN,
