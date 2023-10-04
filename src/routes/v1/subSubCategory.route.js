@@ -16,7 +16,7 @@ router
   .get(subSubCategoryController.getSubSubCategory)
   .post(auth(), validate(subSubCategoryValidation.createSubSubCategory), subSubCategoryController.createSubSubCategory);
 
-router.get('/getAll', auth(), subSubCategoryController.getAllCategories);
+router.get('/getAll', subSubCategoryController.getAllCategories);
 
 router
   .route('/:id')

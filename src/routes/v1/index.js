@@ -17,6 +17,7 @@ const cartRoute= require("./cart.route");
 const fabricRoute= require("./fabric.route");
 const productFabricRoute= require("./productFabric.route");
 const subscribedUserRoute=require("./subscribedUser.route")
+const shipRocketRoute=require("./shipRocket.route")
 
 
 
@@ -92,6 +93,10 @@ const defaultRoutes = [
   {
     path: '/subscribedUser',
     route: subscribedUserRoute
+  },
+  {
+    path: '/shipRocket',
+    route: shipRocketRoute
   }
   
 ];

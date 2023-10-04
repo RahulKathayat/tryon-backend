@@ -79,4 +79,8 @@ module.exports = {
     host: envVars.DB_HOST,
     dialect: envVars.DB_DIALECT
   },
+  shipRocket:{
+    username: envVars.SR_USER,
+    password:envVars.SR_PASS
+  }
 };
