@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT
       },
       discountPercentage: {
-        type: DataTypes.REAL
+        type: DataTypes.REAL,
+        defaultValue: 0
       },
       categoryId: {
         type: DataTypes.INTEGER
