@@ -17,6 +17,7 @@ module.exports.cartService = require('./cart.service');
 module.exports.fabricService = require('./fabric.service');
 module.exports.productFabricService = require('./productFabric.services');
 module.exports.subscribedUserService = require('./subscribedUser.service');
+module.exports.shipRocketService=require('./shipRocket.service');
 
 
 

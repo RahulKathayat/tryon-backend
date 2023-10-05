@@ -140,6 +140,21 @@ const deleteUser = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in User delete' });
   }
 });
+
+const getUserDataByUserId = catchAsync(async (req, res) => {
+  try {
+    const query = req.user.id;
+    const data = await userService.getUserDataByUserId(query);
+    if (data) {
+      res.status(httpStatus.OK).send({ message: 'user data by id is fetched successfully', data: data });
+    } else {
+      res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: 'Invalid input data', error: err.message });
+  }
+});
 module.exports = {
   createUser,
   deleteUser,
@@ -147,4 +162,5 @@ module.exports = {
   updateUser,
   getUserById,
   getUserByEmail,
+  getUserDataByUserId
 }

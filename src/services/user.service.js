@@ -145,6 +145,18 @@ const getUserWithSecretFieldsById = async (id) => {
 //   return Users.scope('withSecretColumns').findOne({ where: { id: id } });
 // };
 
+const getUserDataByUserId = async (id) => {
+  try {
+    const data = await Users.findOne({
+      where: { id: id }
+    });
+    return data;
+  } catch (error) {
+    console.error('Error retrieving user by id:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   createUser,
   getUser,
@@ -154,6 +166,7 @@ module.exports = {
   getUserByEmail,
   getUserById,
   getUserWithSecretFields,
-  updateUserPasswordById
+  updateUserPasswordById,
+  getUserDataByUserId
   
 };
