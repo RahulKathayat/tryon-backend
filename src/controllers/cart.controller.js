@@ -4,10 +4,9 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const { userService } = require('../services');
 
-
 // const createCart = catchAsync(async (req, res) => {
 //   try {
-//     let userBody = req.body  
+//     let userBody = req.body
 
 //     if (data) {
 //       res.status(200).send({ message: 'Cart created successfully' });
@@ -23,16 +22,13 @@ const { userService } = require('../services');
 // Execute createCart after a delay using setTimeout
 // setTimeout((req,res) => {
 //   createCart(req, res);
-// }, 1000); 
-
-
-
+// }, 1000);
 
 const getCart = catchAsync(async (req, res) => {
-  const query ={};
-  query.status = req.query.status?req.query.status:true;
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await cartService.getCart(query,options);
+  const data = await cartService.getCart(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'cart data fetched successfully', data: data });
   } else {
@@ -51,8 +47,6 @@ const getCartById = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
 const updateCart = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
@@ -69,8 +63,6 @@ const updateCart = catchAsync(async (req, res) => {
   }
 });
 
-
-
 const deleteCart = catchAsync(async (req, res) => {
   const querry = req.params;
 
@@ -84,7 +76,7 @@ const deleteCart = catchAsync(async (req, res) => {
 
 const clearCart = catchAsync(async (req, res) => {
   const cart = await cartService.getCartById(req.user.dataValues.id);
-  console.log("cartt==============================",cart);
+  console.log('cartt==============================', cart);
   if (!cart) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Cart not found');
   }
