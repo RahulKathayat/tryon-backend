@@ -19,6 +19,7 @@ const getFabric = catchAsync(async (req, res) => {
   query.status = req.query.status ? req.query.status : true;
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const between = pick(req.query, ['priceFrom', 'priceTo']);
 
   const filterParameters = [
     'fabricName',
@@ -55,7 +56,7 @@ const getFabric = catchAsync(async (req, res) => {
     }
   });
 
-  const data = await fabricService.getFabric(query, options);
+  const data = await fabricService.getFabric(query, options,between);
 
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Fabric data fetched successfully', data: data });

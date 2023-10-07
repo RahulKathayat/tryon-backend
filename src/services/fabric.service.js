@@ -1,4 +1,6 @@
 const { Fabric } = require('../models');
+const { Op } = require('sequelize');
+
 
 const createFabric = async (_userBody) => {
   const userBody = _userBody;
@@ -8,10 +10,25 @@ const createFabric = async (_userBody) => {
    return data
 };
 
-const getFabric = async (query, options) => {
+const getFabric = async (query, options,between) => {
 
   const limit = Number(options.limit) ;
   const offset = options.page ? limit * (options.page - 1) : 0;
+
+  if (between.priceFrom && between.priceTo) {
+    query.price = {
+      [Op.between]: [between.priceFrom, between.priceTo]
+    };
+  } else if (between.priceFrom) {
+    query.price = {
+      [Op.gte]: between.priceFrom
+    };
+  } else if (between.priceTo) {
+    query.price = {
+      [Op.lte]: between.priceTo
+    };
+  }
+
   const support = await Fabric.findAndCountAll({
     where:  query,
     order: [['updatedAt', 'DESC']],

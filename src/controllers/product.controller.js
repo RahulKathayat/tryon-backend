@@ -37,6 +37,7 @@ const getProduct = catchAsync(async (req, res) => {
   query.status = req.query.status ? req.query.status : true;
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const between = pick(req.query, ['priceFrom', 'priceTo']);
 
   const filterParameters = [
     'productName',
@@ -76,7 +77,7 @@ const getProduct = catchAsync(async (req, res) => {
     }
   });
 
-  const data = await productService.getProduct(query, options);
+  const data = await productService.getProduct(query, options, between);
 
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });

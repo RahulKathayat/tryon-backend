@@ -1,14 +1,31 @@
 const { Product, Category, SubCategory, SubSubCategory } = require('../models');
+const { Op } = require('sequelize');
+
 
 const createProduct = async (_userBody) => {
   const userBody = _userBody;
   return Product.create(userBody);
 };
 
-const getProduct = async (query, options) => {
+const getProduct = async (query, options,between) => {
   console.log('===============================', query);
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
+
+  if (between.priceFrom && between.priceTo) {
+    query.totalPrice = {
+      [Op.between]: [between.priceFrom, between.priceTo]
+    };
+  } else if (between.priceFrom) {
+    query.totalPrice = {
+      [Op.gte]: between.priceFrom
+    };
+  } else if (between.priceTo) {
+    query.totalPrice = {
+      [Op.lte]: between.priceTo
+    };
+  }
+
   const support = await Product.findAndCountAll({
     where: query,
     order: [['updatedAt', 'DESC']],

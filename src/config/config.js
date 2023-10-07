@@ -82,5 +82,10 @@ module.exports = {
   shipRocket:{
     username: envVars.SR_USER,
     password:envVars.SR_PASS
+  },
+
+  razorPay:{
+    keyId:envVars.RAZORPAY_API_KEY,
+    keySecret:envVars.RAZORPAY_API_SECRET
   }
 };
