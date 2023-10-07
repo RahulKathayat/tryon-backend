@@ -53,7 +53,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       discountPercentage: {
-        type: Sequelize.REAL
+        type: Sequelize.REAL,
+        defaultValue: 0
       },
       image: {
         type: Sequelize.JSON
