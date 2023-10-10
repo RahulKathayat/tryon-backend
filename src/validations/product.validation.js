@@ -25,7 +25,7 @@ const createProduct = {
     fabric: Joi.string().required(),
     size: Joi.array().required(),
     colour: Joi.array().required(),
-    quantity:Joi.number().required(),
+    // quantity:Joi.number().required(),
     upComingDate: Joi.string().allow(''),
     status: Joi.boolean()
   })
@@ -58,7 +58,7 @@ const updateProduct = {
   fabric: Joi.string().required(),
   size: Joi.array().required(),
   colour: Joi.array().required(),
-  quantity:Joi.number().required(),
+  // quantity:Joi.number().required(),
   upComingDate: Joi.string().allow(''),
   status: Joi.boolean()
 };

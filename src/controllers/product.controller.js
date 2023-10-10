@@ -39,6 +39,7 @@ const getProduct = catchAsync(async (req, res) => {
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
 
+
   const filterParameters = [
     'productName',
     'productNumber',
@@ -78,12 +79,14 @@ const getProduct = catchAsync(async (req, res) => {
   });
 
   const data = await productService.getProduct(query, options, between);
+  console.log("Colour Data==============================",data.dataValues);
 
   if (data) {
-    res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
+    res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data});
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
+
 });
 
 const getProductById = catchAsync(async (req, res) => {

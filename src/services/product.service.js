@@ -12,6 +12,7 @@ const getProduct = async (query, options,between) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
 
+
   if (between.priceFrom && between.priceTo) {
     query.totalPrice = {
       [Op.between]: [between.priceFrom, between.priceTo]
@@ -26,13 +27,29 @@ const getProduct = async (query, options,between) => {
     };
   }
 
-  const support = await Product.findAndCountAll({
+  // if (colour) {
+  //   console.log("COLOUR++++++++++++++++++++++++++++++++",colour,query.colour,"@@@@@@@@@@@@@@@@@@@@");
+  //   query.colour = {
+  //     [Op.overlap]: [colour],
+  //   };
+  //   if(colour==query.colour)
+  //   {
+  //     console.log("MATCHED=======================================");
+  //   }
+  // }
+
+
+
+  const support = await Product.findAll({
     where: query,
+    // attributes:['colour'],
     order: [['updatedAt', 'DESC']],
     include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
     limit,
-    offset
+    offset,
+  
   });
+  console.log("support====================================",support);
   return support;
 };
 

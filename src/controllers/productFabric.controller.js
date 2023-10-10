@@ -45,7 +45,7 @@ const updateProductFabric = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
     const newData = req.body;
-    const updatedUser = await productFabricService.updateProductfabricById(userId, newData);
+    const updatedUser = await productFabricService.updateProductFabricById(userId, newData);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'ProductFabric updated successfully' });
     } else {

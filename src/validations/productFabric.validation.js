@@ -4,7 +4,7 @@ const createProductFabric = {
   body: Joi.object().keys({
     fabricId: Joi.number(),
     productId: Joi.number(),
-    defaultFabric: Joi.string().optional(),
+    defaultFabric: Joi.boolean().optional(),
     status: Joi.boolean()
   })
 };
@@ -16,7 +16,7 @@ const updateProductFabric = {
   body: Joi.object().keys({
     fabricId: Joi.number().required(),
     productId: Joi.number().required(),
-    defaultFabric: Joi.string().optional(),
+    defaultFabric: Joi.boolean().optional(),
     status: Joi.boolean()
   })
 };
