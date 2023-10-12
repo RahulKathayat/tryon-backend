@@ -19,10 +19,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelete: 'SET Null',
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
       },
       orderDetailId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelete: 'SET Null',
+        references: {
+          model: 'Refund',
+          key: 'id'
+        }
       },
       totalItems: {
         type: Sequelize.INTEGER

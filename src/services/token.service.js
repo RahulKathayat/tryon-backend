@@ -5,10 +5,10 @@ const config = require('../config/config');
 const { Token } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
-const userService=require('../services/user.service')
+const userService = require('../services/user.service');
 
 const generateToken = (userId, role, expires, type, secret = config.jwt.secret) => {
-  console.log('============================================',expires)
+  console.log('============================================', expires);
   const payload = {
     sub: userId,
     role,
@@ -35,7 +35,7 @@ const saveToken = async (token, userId, role, expires, type, blacklisted = false
 const verifyToken = async (token, type) => {
   const payload = jwt.verify(token, config.jwt.secret);
   const tokenDoc = await Token.findOne({ where: { token, type, user: payload.sub, blacklisted: false } });
-  console.log("token-------------",tokenDoc)
+  console.log('token-------------', tokenDoc);
   if (!tokenDoc) {
     throw new Error('Token not found');
   }
@@ -70,8 +70,8 @@ const generateAuthTokens = async (user) => {
 
 const generateVerifyEmailToken = async (user) => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-  console.log("email-======================================================",expires);
-  const verifyEmailToken = generateToken(user.id, user.role,expires, tokenTypes.VERIFY_EMAIL);
+  console.log('email-======================================================', expires);
+  const verifyEmailToken = generateToken(user.id, user.role, expires, tokenTypes.VERIFY_EMAIL);
   await saveToken(verifyEmailToken, user.id, user.role, expires, tokenTypes.VERIFY_EMAIL);
   return verifyEmailToken;
 };
@@ -87,8 +87,8 @@ const generateResetPasswordToken = async (email) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
-  const resetPasswordToken = generateToken(user.id,user.role, expires, tokenTypes.RESET_PASSWORD);
-  await saveToken(resetPasswordToken, user.id,user.role,expires, tokenTypes.RESET_PASSWORD);
+  const resetPasswordToken = generateToken(user.id, user.role, expires, tokenTypes.RESET_PASSWORD);
+  await saveToken(resetPasswordToken, user.id, user.role, expires, tokenTypes.RESET_PASSWORD);
   return resetPasswordToken;
 };
 

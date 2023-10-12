@@ -6,6 +6,10 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 const { Op } = require('sequelize');
+const express = require('express');
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
 
 const createProduct = catchAsync(async (req, res) => {
   let userBody = req.body;
@@ -34,12 +38,10 @@ const uploadFeatureImage = async (req, res) => {
 
 const getProduct = catchAsync(async (req, res) => {
   let query = {};
-  query.status = req.query.status ? req.query.status : true;
+  // query.status = req.query.status ? req.query.status : true;
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
-
-
   const filterParameters = [
     'productName',
     'productNumber',
@@ -62,7 +64,7 @@ const getProduct = catchAsync(async (req, res) => {
   ];
 
   filterParameters.forEach((param) => {
-    if (req.query[param]) {
+    if (param !== 'priceFrom' && param !== 'priceTo' && req.query[param]) {
       if (req.query[param].includes(',')) {
         const values = req.query[param].split(',');
         query[param] = {
@@ -78,15 +80,47 @@ const getProduct = catchAsync(async (req, res) => {
     }
   });
 
+  // Handling subSubcategoryId
+  if (req.query.subSubcategoryId) {
+    query.subSubcategoryId = req.query.subSubcategoryId.split(',');
+  }
+  if (req.query.subCategoryId) {
+    query.subCategoryId = req.query.subCategoryId.split(',');
+  }
+  if (req.query.brandName) {
+    query.brandName = req.query.brandName.split(',');
+  }
+  if (req.query.discountPercentage) {
+    query.discountPercentage = req.query.discountPercentage.split(',');
+  }
+  if (req.query.productType) {
+    query.productType = req.query.productType.split(',');
+  }
+  if (req.query.designerName) {
+    query.designerName = req.query.designerName.split(',');
+  }
+  if (req.query.basePrice) {
+    query.basePrice = req.query.basePrice.split(',');
+  }
+  if (req.query.totalPrice) {
+    query.totalPrice = req.query.totalPrice.split(',');
+  }
+  if (req.query.colour) {
+    query.colour = req.query.colour.split(',');
+  }
+  if (req.query.size) {
+    query.size = req.query.size.split(',');
+  }
+  if (req.query.categoryId) {
+    query.categoryId = req.query.categoryId.split(',');
+  }
   const data = await productService.getProduct(query, options, between);
-  console.log("Colour Data==============================",data.dataValues);
 
   if (data) {
-    res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data});
+    res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
-
 });
 
 const getProductById = catchAsync(async (req, res) => {

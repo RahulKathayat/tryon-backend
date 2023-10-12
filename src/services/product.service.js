@@ -1,17 +1,14 @@
 const { Product, Category, SubCategory, SubSubCategory } = require('../models');
 const { Op } = require('sequelize');
 
-
 const createProduct = async (_userBody) => {
   const userBody = _userBody;
   return Product.create(userBody);
 };
 
-const getProduct = async (query, options,between) => {
-  console.log('===============================', query);
+const getProduct = async (query, options, between) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
-
 
   if (between.priceFrom && between.priceTo) {
     query.totalPrice = {
@@ -37,24 +34,28 @@ const getProduct = async (query, options,between) => {
   //     console.log("MATCHED=======================================");
   //   }
   // }
+  console.log('COLOUR++++++++++++++++++++++++++++++++', query, '@@@@@@@@@@@@@@@@@@@@');
+  // if (query.colour.length > 0) {
+  //   const support = await Product.findAndCountAll({
+  //     where: {
+  //       colour: {
+  //         [Op.in]: query.colour // Use query.colour instead of query
+  //       }
+  //     }
+  //   });
+  //   return support;
+  // }
 
-
-
-  const support = await Product.findAll({
+  const support = await Product.findAndCountAll({
     where: query,
     // attributes:['colour'],
     order: [['updatedAt', 'DESC']],
     include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
     limit,
-    offset,
-  
+    offset
   });
-  console.log("support====================================",support);
   return support;
 };
-
-
-
 
 const getProductById = async (id) => {
   try {
