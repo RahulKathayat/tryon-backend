@@ -38,7 +38,7 @@ const uploadFeatureImage = async (req, res) => {
 
 const getProduct = catchAsync(async (req, res) => {
   let query = {};
-  // query.status = req.query.status ? req.query.status : true;
+  query.status = req.query.status ? req.query.status : true;
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
@@ -79,41 +79,6 @@ const getProduct = catchAsync(async (req, res) => {
       }
     }
   });
-
-  // Handling subSubcategoryId
-  if (req.query.subSubcategoryId) {
-    query.subSubcategoryId = req.query.subSubcategoryId.split(',');
-  }
-  if (req.query.subCategoryId) {
-    query.subCategoryId = req.query.subCategoryId.split(',');
-  }
-  if (req.query.brandName) {
-    query.brandName = req.query.brandName.split(',');
-  }
-  if (req.query.discountPercentage) {
-    query.discountPercentage = req.query.discountPercentage.split(',');
-  }
-  if (req.query.productType) {
-    query.productType = req.query.productType.split(',');
-  }
-  if (req.query.designerName) {
-    query.designerName = req.query.designerName.split(',');
-  }
-  if (req.query.basePrice) {
-    query.basePrice = req.query.basePrice.split(',');
-  }
-  if (req.query.totalPrice) {
-    query.totalPrice = req.query.totalPrice.split(',');
-  }
-  if (req.query.colour) {
-    query.colour = req.query.colour.split(',');
-  }
-  if (req.query.size) {
-    query.size = req.query.size.split(',');
-  }
-  if (req.query.categoryId) {
-    query.categoryId = req.query.categoryId.split(',');
-  }
   const data = await productService.getProduct(query, options, between);
 
   if (data) {
