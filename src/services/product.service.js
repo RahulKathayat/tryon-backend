@@ -3,6 +3,10 @@ const { Op } = require('sequelize');
 
 const createProduct = async (_userBody) => {
   const userBody = _userBody;
+  const colour = _userBody.colour;
+  const size = _userBody.size;
+  _userBody.colour = JSON.stringify(colour);
+  _userBody.size = JSON.stringify(size);
   return Product.create(userBody);
 };
 
@@ -23,41 +27,8 @@ const getProduct = async (query, options, between) => {
       [Op.lte]: between.priceTo
     };
   }
-
-  // if (colour) {
-  //   console.log("COLOUR++++++++++++++++++++++++++++++++",colour,query.colour,"@@@@@@@@@@@@@@@@@@@@");
-  //   query.colour = {
-  //     [Op.overlap]: [colour],
-  //   };
-  //   if(colour==query.colour)
-  //   {
-  //     console.log("MATCHED=======================================");
-  //   }
-  // }
-  // console.log('COLOUR++++++++++++++++++++++++++++++++', query, '@@@@@@@@@@@@@@@@@@@@');
-  // if (query.colour.length > 0) {
-  //   const support = await Product.findAndCountAll({
-  //     where: {
-  //       colour: {
-  //         [Op.in]: query.colour // Use query.colour instead of query
-  //       }
-  //     }
-  //   });
-  //   return support;
-  // }
-// Handle color filtering when 'colour' is stored as a JSON array
-if (query.colour) {
-  const colors = query.colour; // An array of colors to filter by
-  console.log("colour=====================================",colors)
-  query.colour = {
-    [Op.contains]: colors, // Use Op.contains to check if the array contains any of the specified colors
-  };
-  console.log("cgvn bnvcxcz===============================",query.colour);
-
-}
   const support = await Product.findAndCountAll({
     where: query,
-    // attributes:['colour'],
     order: [['updatedAt', 'DESC']],
     include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
     limit,

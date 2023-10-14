@@ -15,10 +15,10 @@ router;
 router.post('/images', upload.array('image', 15), productController.uploadImages);
 router.post('/featureImage', upload.single('image'), productController.uploadFeatureImage);
 // router.put('/featureImage/:id', upload.single('image'), productController.uploadFeatureImage);
-
 router
   .route('/')
   .get(productController.getProduct)
+
   .post(auth(), validate(productValidation.createProduct), productController.createProduct);
 
 router
