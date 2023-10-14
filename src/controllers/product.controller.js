@@ -80,6 +80,12 @@ const getProduct = catchAsync(async (req, res) => {
     }
   });
 
+  if (req.query.colour) {
+    query.colour = {
+      [Op.in]: req.query.colour.split(',').map(color => color.trim()),
+    };
+  }
+
   // Handling subSubcategoryId
   if (req.query.subSubcategoryId) {
     query.subSubcategoryId = req.query.subSubcategoryId.split(',');

@@ -34,7 +34,7 @@ const getProduct = async (query, options, between) => {
   //     console.log("MATCHED=======================================");
   //   }
   // }
-  console.log('COLOUR++++++++++++++++++++++++++++++++', query, '@@@@@@@@@@@@@@@@@@@@');
+  // console.log('COLOUR++++++++++++++++++++++++++++++++', query, '@@@@@@@@@@@@@@@@@@@@');
   // if (query.colour.length > 0) {
   //   const support = await Product.findAndCountAll({
   //     where: {
@@ -45,7 +45,16 @@ const getProduct = async (query, options, between) => {
   //   });
   //   return support;
   // }
+// Handle color filtering when 'colour' is stored as a JSON array
+if (query.colour) {
+  const colors = query.colour; // An array of colors to filter by
+  console.log("colour=====================================",colors)
+  query.colour = {
+    [Op.contains]: colors, // Use Op.contains to check if the array contains any of the specified colors
+  };
+  console.log("cgvn bnvcxcz===============================",query.colour);
 
+}
   const support = await Product.findAndCountAll({
     where: query,
     // attributes:['colour'],
