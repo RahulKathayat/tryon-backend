@@ -54,6 +54,10 @@ const updateProductById = async (id, newData) => {
     const findData = await Product.findOne({
       where: id
     });
+    let colour = newData.colour;
+    let size = newData.size;
+    newData.colour = JSON.stringify(colour);
+    newData.size = JSON.stringify(size);
     if (findData) {
       return Product.update(newData, { where: id });
     } else {

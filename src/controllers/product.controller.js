@@ -64,6 +64,7 @@ const getProduct = catchAsync(async (req, res) => {
   ];
 
   filterParameters.forEach((param) => {
+    console.log('param================================', req.query[param]);
     if (param !== 'priceFrom' && param !== 'priceTo' && req.query[param]) {
       if (req.query[param].includes(',')) {
         const values = req.query[param].split(',');

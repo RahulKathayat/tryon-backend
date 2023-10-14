@@ -38,50 +38,54 @@ const getFabric = catchAsync(async (req, res) => {
     'quantity'
   ];
 
-  filterParameters.forEach((param) => {
-    if (req.query[param]) {
-      if (req.query[param].includes(',')) {
-        const values = req.query[param].split(',');
-        query[param] = {
-          [Op.like]: values.map((value) => ({
-            [Op.like]: `%${value.trim()}%`
-          }))
-        };
-      } else {
-        query[param] = {
-          [Op.like]: `%${req.query[param]}%`
-        };
-      }
-    }
-  });
+  // filterParameters.forEach((param) => {
+  //   if (req.query[param]) {
+  //     if (req.query[param].includes(',')) {
+  //       const values = req.query[param].split(',');
+  //       query[param] = {
+  //         [Op.like]: values.map((value) => ({
+  //           [Op.like]: `%${value.trim()}%`
+  //         }))
+  //       };
+  //     } else {
+  //       query[param] = {
+  //         [Op.like]: `%${req.query[param]}%`
+  //       };
+  //     }
+  //   }
+  // });
 
-  // if (req.query.fabricType) {
-  //   query.fabricType = req.query.fabricType.split(',');
-  // }
-  // if (req.query.printType) {
-  //   query.printType = req.query.printType.split(',');
-  // }
-  // if (req.query.construction) {
-  //   query.construction = req.query.construction.split(',');
-  // }
-  // if (req.query.transparency) {
-  //   query.transparency = req.query.transparency.split(',');
-  // }
-  // if (req.query.reflection) {
-  //   query.reflection = req.query.reflection.split(',');
-  // }
-  // if (req.query.usage) {
-  //   query.usage = req.query.usage.split(',');
-  // }
-  // if (req.query.properties) {
-  //   query.properties = req.query.properties.split(',');
-  // }
-  // if (req.query.handle) {
-  //   query.handle = req.query.handle.split(',');
-  // }
-  // if (req.query.weight) {
-  //   query.weight = req.query.weight.split(',');
-  // }
+  if (req.query.fabricType) {
+    query.fabricType = req.query.fabricType.split(',');
+  }
+  if (req.query.fabricName) {
+    query.fabricName = req.query.fabricName.split(',');
+  }
+  if (req.query.printType) {
+    query.printType = req.query.printType.split(',');
+  }
+  if (req.query.construction) {
+    query.construction = req.query.construction.split(',');
+  }
+  if (req.query.transparency) {
+    query.transparency = req.query.transparency.split(',');
+  }
+  if (req.query.reflection) {
+    query.reflection = req.query.reflection.split(',');
+  }
+  if (req.query.usage) {
+    query.usage = req.query.usage.split(',');
+  }
+  if (req.query.properties) {
+    query.properties = req.query.properties.split(',');
+  }
+  if (req.query.handle) {
+    query.handle = req.query.handle.split(',');
+  }
+  if (req.query.weight) {
+    query.weight = req.query.weight.split(',');
+  }
+
   const data = await fabricService.getFabric(query, options, between);
 
   if (data) {
