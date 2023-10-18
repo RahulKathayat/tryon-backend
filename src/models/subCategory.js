@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
 
   SubCategory.associate = function (models) {
     SubCategory.belongsTo(models.Category, {
-      foreignKey: 'categoryId',
-      onDelete: 'SET NULL',
-      allowNull: true
+      foreignKey: 'categoryId'
+      // onDelete: 'SET NULL',
+      // allowNull: true
     });
 
     SubCategory.hasMany(models.SubSubCategory, {

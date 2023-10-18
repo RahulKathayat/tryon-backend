@@ -41,6 +41,29 @@ const getProduct = async (query, options, between) => {
   return support;
 };
 
+const getHighToLowPrice = async (id) => {
+  try {
+    const data = await Product.findAll({
+      order: [['totalPrice', 'DESC']]
+    });
+    console.log('data==========================');
+    return data;
+  } catch (error) {
+    console.error('product not found!!', error);
+  }
+};
+const getLowToHighPrice = async (id) => {
+  try {
+    const data = await Product.findAll({
+      order: [['totalPrice', 'ASC']]
+    });
+    console.log('data==========================');
+    return data;
+  } catch (error) {
+    console.error('product not found!!', error);
+  }
+};
+
 const getProductById = async (id) => {
   try {
     const data = await Product.findAll({
@@ -106,6 +129,8 @@ module.exports = {
   getProduct,
   updateProductById,
   deleteProductById,
-  getProductById
+  getProductById,
+  getLowToHighPrice,
+  getHighToLowPrice
   // updateImage
 };

@@ -14,7 +14,8 @@ router
   .get(categoryController.getCategory)
   .post(auth(), validate(categoryValidation.createCategory), categoryController.createCategory);
 
-router.get('/getAll', categoryController.getAllCategory);
+router.get('/getAll', categoryController.getAll);
+router.get('/getAllCategory', categoryController.getAllCategory);
 
 router
   .route('/:id')

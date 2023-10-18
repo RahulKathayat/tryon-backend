@@ -1,4 +1,5 @@
-const { Category } = require('../models');
+const { Category, SubCategory, SubSubCategory } = require('../models');
+const subCategory = require('../models/subCategory');
 
 const createCategory = async (_userBody) => {
   const userBody = _userBody;
@@ -20,10 +21,31 @@ const getCategory = async (query, options) => {
   return support;
 };
 
-const getAllCategory = async () => {
+const getAll = async () => {
   try {
     const data = await Category.findAll({
       where: {}
+    });
+    return data;
+  } catch (error) {
+    console.error('category not found!!', error);
+  }
+};
+const getAllCategory = async () => {
+  try {
+    const data = await Category.findAll({
+      where: {},
+      // include: [{ model: SubCategory }, { model: SubSubCategory }]
+      include: [
+        {
+          model: SubCategory,
+          include: [
+            {
+              model: SubSubCategory
+            }
+          ]
+        }
+      ]
     });
     return data;
   } catch (error) {
@@ -77,5 +99,6 @@ module.exports = {
   updateCategoryById,
   deleteCategoryById,
   getCategoryById,
-  getAllCategory
+  getAllCategory,
+  getAll
 };

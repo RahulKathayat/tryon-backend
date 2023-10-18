@@ -1,4 +1,4 @@
-const { Ratings,Users,Product } = require('../models');
+const { Ratings, Users, Product } = require('../models');
 
 const createRatings = async (_userBody) => {
   const userBody = _userBody;
@@ -6,25 +6,23 @@ const createRatings = async (_userBody) => {
 };
 
 const getRatings = async (query, options) => {
-
-  const limit = Number(options.limit) ;
+  const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Ratings.findAndCountAll({
-    where:  query,
+    where: query,
     order: [['updatedAt', 'DESC']],
-    include:[{model:Users},{model:Product}],
+    include: [{ model: Users }, { model: Product }],
     limit,
     offset
   });
   return support;
 };
 
-
 const getRatingsById = async (id) => {
   try {
     const data = await Ratings.findAll({
-      where: {id:id},
-      include:[{model:Users},{model:Product}]
+      where: { id: id },
+      include: [{ model: Users }, { model: Product }]
     });
     return data;
   } catch (error) {
@@ -41,19 +39,18 @@ const updateRatingsById = async (id, newData) => {
   } else {
     return;
   }
-}
-
+};
 
 const deleteRatingsById = async (Id) => {
   try {
-    const user = await Ratings.findOne({ where:   Id  });
+    const user = await Ratings.findOne({ where: Id });
 
     if (!user) {
       throw new Error('Ratings not found');
     }
     await user.update({ status: false });
 
-    console.log("Ratings deleted successfully");
+    console.log('Ratings deleted successfully');
 
     return { message: 'Ratings deleted successfully' };
   } catch (error) {
@@ -68,5 +65,4 @@ module.exports = {
   updateRatingsById,
   deleteRatingsById,
   getRatingsById
-  
 };

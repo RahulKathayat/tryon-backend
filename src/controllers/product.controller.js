@@ -60,6 +60,7 @@ const getProduct = catchAsync(async (req, res) => {
     'tags',
     'fabric',
     'size',
+    'id',
     'colour'
   ];
 
@@ -87,6 +88,25 @@ const getProduct = catchAsync(async (req, res) => {
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
+});
+
+const getHighToLowPrice = catchAsync(async (req, res) => {
+  const data = await productService.getHighToLowPrice(req.params.id);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'product data by id is fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
+const getLowToHighPrice = catchAsync(async (req, res) => {
+  const data = await productService.getLowToHighPrice(req.params.id);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'product data by id is fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
 });
 
 const getProductById = catchAsync(async (req, res) => {
@@ -184,5 +204,7 @@ module.exports = {
   uploadFeatureImage,
   uploadImages,
   updateImage,
-  getProductById
+  getProductById,
+  getLowToHighPrice,
+  getHighToLowPrice
 };

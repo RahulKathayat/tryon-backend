@@ -30,7 +30,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         onDelete: 'SET Null',
         references: {
-          model: 'Refund',
+          model: 'OrderDetails',
           key: 'id'
         }
       },

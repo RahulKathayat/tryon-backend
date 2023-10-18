@@ -15,6 +15,8 @@ router;
 router.post('/images', upload.array('image', 15), productController.uploadImages);
 router.post('/featureImage', upload.single('image'), productController.uploadFeatureImage);
 // router.put('/featureImage/:id', upload.single('image'), productController.uploadFeatureImage);
+router.get('/getLowToHigh', productController.getLowToHighPrice);
+router.get('/getHighToLow', productController.getHighToLowPrice);
 router
   .route('/')
   .get(productController.getProduct)
@@ -25,6 +27,6 @@ router
   .route('/:id')
   .put(auth(), validate(productValidation.updateProduct), productController.updateProduct)
   .delete(auth(), productController.deleteProduct)
-  .get(auth(), productController.getProductById);
+  .get(productController.getProductById);
 
 module.exports = router;

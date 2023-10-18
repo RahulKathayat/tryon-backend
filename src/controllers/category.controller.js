@@ -4,8 +4,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const { Op } = require('sequelize');
 
-
-const   createCategory= catchAsync(async (req, res) => {
+const createCategory = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await categoryService.createCategory(userBody);
   if (data) {
@@ -21,23 +20,20 @@ const getCategory = catchAsync(async (req, res) => {
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
-  const filterParameters = [
-    'categoryName', 
-    'popularCategory', 
-];
+  const filterParameters = ['categoryName', 'popularCategory'];
 
-  filterParameters.forEach(param => {
+  filterParameters.forEach((param) => {
     if (req.query[param]) {
       if (req.query[param].includes(',')) {
         const values = req.query[param].split(',');
         query[param] = {
-          [Op.or]: values.map(value => ({
-            [Op.like]: `%${value.trim()}%`,
-          })),
+          [Op.or]: values.map((value) => ({
+            [Op.like]: `%${value.trim()}%`
+          }))
         };
       } else {
         query[param] = {
-          [Op.like]: `%${req.query[param]}%`,
+          [Op.like]: `%${req.query[param]}%`
         };
       }
     }
@@ -52,10 +48,20 @@ const getCategory = catchAsync(async (req, res) => {
   }
 });
 
-
+const getAll = catchAsync(async (req, res) => {
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
+  const data = await categoryService.getAll(query);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'Category data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
 const getAllCategory = catchAsync(async (req, res) => {
-  const query={}
-  query.status = req.query.status?req.query.status:true;
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
   const data = await categoryService.getAllCategory(query);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Category data fetched successfully', data: data });
@@ -75,8 +81,6 @@ const getCategoryById = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
 const updateCategory = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
@@ -92,8 +96,6 @@ const updateCategory = catchAsync(async (req, res) => {
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
-
-
 
 const deleteCategory = catchAsync(async (req, res) => {
   const querry = req.params;
@@ -120,11 +122,12 @@ const uploadImage = async (req, res) => {
   }
 };
 module.exports = {
-    createCategory,
-    deleteCategory,
-    getCategory,
-    updateCategory,
-    getCategoryById,
-    getAllCategory,
-    uploadImage
+  createCategory,
+  deleteCategory,
+  getCategory,
+  updateCategory,
+  getCategoryById,
+  getAllCategory,
+  uploadImage,
+  getAll
 };
