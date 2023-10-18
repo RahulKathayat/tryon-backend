@@ -15,8 +15,8 @@ const createFabric = {
     price: Joi.number().required(),
     maxWidth: Joi.number().required(),
     gsm: Joi.number().required(),
-    quantity:Joi.number().required(),
-    image:Joi.string().optional(),
+    quantity: Joi.number().required(),
+    image: Joi.string().optional(),
     status: Joi.boolean()
   })
 };
@@ -39,8 +39,8 @@ const updateFabric = {
     price: Joi.number().required(),
     maxWidth: Joi.number().required(),
     gsm: Joi.number().required(),
-    quantity:Joi.number().required(),
-    image:Joi.string().optional(),
+    quantity: Joi.number().required(),
+    image: Joi.string().optional(),
     status: Joi.boolean()
   })
 };

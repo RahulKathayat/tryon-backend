@@ -38,6 +38,7 @@ const updateOrderById = async (id, newData) => {
   const findData = await Orders.findOne({
     where: id
   });
+  console.log('FINDdTAA============================', findData);
   if (findData) {
     return Orders.update(newData, { where: id });
   } else {

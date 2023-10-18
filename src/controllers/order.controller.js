@@ -3,9 +3,9 @@ const orderService = require('../services/order.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 
-
-const   createOrder= catchAsync(async (req, res) => {
+const createOrder = catchAsync(async (req, res) => {
   let userBody = req.body;
+  console.log('userbody==============================', userBody);
   const data = await orderService.createOrder(userBody);
   if (data) {
     await res.status(200).send({ message: 'order created successfully' });
@@ -14,13 +14,11 @@ const   createOrder= catchAsync(async (req, res) => {
   }
 });
 
-
-
 const getOrder = catchAsync(async (req, res) => {
-  const query ={};
-  query.status = req.query.status?req.query.status:true;
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await orderService.getOrder(query,options);
+  const data = await orderService.getOrder(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'order data fetched successfully', data: data });
   } else {
@@ -39,13 +37,13 @@ const getOrderById = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
 const updateOrder = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
     const newData = req.body;
+    console.log('USERiD========================', userId, newData);
     const updatedUser = await orderService.updateOrderById(userId, newData);
+    console.log('UPDATEuSER============================', updatedUser);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'order updated successfully' });
     } else {
@@ -56,8 +54,6 @@ const updateOrder = catchAsync(async (req, res) => {
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
-
-
 
 const deleteOrder = catchAsync(async (req, res) => {
   const querry = req.params;
@@ -70,8 +66,8 @@ const deleteOrder = catchAsync(async (req, res) => {
   }
 });
 module.exports = {
-    createOrder,
-    deleteOrder,
+  createOrder,
+  deleteOrder,
   getOrder,
   updateOrder,
   getOrderById

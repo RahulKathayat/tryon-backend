@@ -29,7 +29,11 @@ const getProduct = async (query, options, between) => {
   }
   const support = await Product.findAndCountAll({
     where: query,
-    order: [['updatedAt', 'DESC']],
+    order: [
+      ['updatedAt', 'DESC'],
+      ['totalPrice', 'DESC'],
+      ['totalPrice', 'ASC']
+    ],
     include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
     limit,
     offset

@@ -41,8 +41,8 @@ module.exports = (sequelize, DataTypes) => {
       gsm: {
         type: DataTypes.INTEGER
       },
-      quantity:{
-        type:DataTypes.INTEGER
+      quantity: {
+        type: DataTypes.INTEGER
       },
       image: {
         type: DataTypes.STRING
