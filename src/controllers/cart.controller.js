@@ -60,7 +60,9 @@ const updateCart = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
     const newData = req.body;
+    console.log("userId=================================",userId);
     const updatedUser = await cartService.updateCartById(userId, newData);
+
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'cart updated successfully' });
     } else {

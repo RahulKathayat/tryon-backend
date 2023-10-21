@@ -1,4 +1,4 @@
-const { Cart, Users } = require('../models');
+const { Cart, Users} = require('../models');
 
 const createCart = async (_userBody) => {
   const userBody = _userBody;
@@ -26,7 +26,7 @@ const getCart = async (query, options) => {
   const support = await Cart.findAndCountAll({
     where: query,
     order: [['updatedAt', 'DESC']],
-    include: [{ model: Users }],
+    include: [{ model: Users}],
     limit,
     offset
   });
@@ -45,22 +45,65 @@ const getCartById = async (id) => {
   }
 };
 
-const updateCartById = async (id, newData) => {
+// const updateCartById = async (id, newData) => {
+//   try {
+//     console.log('id');
+//     const findData = await Cart.findOne({
+//       where: id
+//     });
+//     if (findData) {
+//       return await Cart.update(newData, { where: id });
+//     } else {
+//       return;
+//     }
+//   } catch (err) {
+//     console.log('err=====================', err);
+//   }
+// };
+
+
+
+const updateCartById = async (userId, productId, quantity, price) => {
   try {
-    console.log('id');
-    const findData = await Cart.findOne({
-      where: id
-    });
-    console.log(id, '==============================');
-    if (findData) {
-      return await Cart.update(newData, { where: id });
-    } else {
-      return;
+    const existingCart = await Cart.findOne({ where: userId });
+    console.log("existingcart=============================================",existingCart.dataValues.cartDetail);
+
+    if (existingCart.dataValues.cartDetail) {
+      const cartDetail = JSON.parse(existingCart.cartDetail);
+      console.log("cartDetails-------------------------------------------",cartDetail);
+      console.log("cartDetailsssssssssssssssssssssssssssss--------------",existingCart.cartDetail);
+
+let updateQuantit={}
+      console.log("ProductId=======================================",cartDetail.item1.productId);
+      if (cartDetail.item1.productId) {
+        let quantity=1
+
+        quantity +=cartDetail.item1.quantity;
+       updateQuantit={
+          quantity:quantity,
+        }
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",quantity,"==================",cartDetail.item1.quantity);
+      } else {
+        cartDetail= {
+          // productId:cartDetail.item1.productId,
+          quantity:quantity,
+          // price,
+        };
+      }
+      console.log("//////////////////////////////////////////////////////////////////",cartDetail);
+
+      const updateQuantity=await Cart.update(updateQuantit,
+        { where:  userId  }
+      );
+      console.log(updateQuantity,"========================================");
+      return updateQuantity
     }
   } catch (err) {
     console.log('err=====================', err);
   }
 };
+
+
 
 const deleteCartById = async (Id) => {
   try {
