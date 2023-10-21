@@ -1,25 +1,24 @@
 const { Cart, Users } = require('../models');
 
-
 const createCart = async (_userBody) => {
   const userBody = _userBody;
   const existingCart = await Cart.findOne({
-    where: { userId: userBody}
+    where: { userId: userBody }
   });
   if (!existingCart) {
-    const data= await Users.findOne({
-      where:{
-       id:userBody, role:"Customer"
+    const data = await Users.findOne({
+      where: {
+        id: userBody,
+        role: 'Customer'
       }
-     })
-     if(data){
+    });
+    if (data) {
       return Cart.create({ userId: userBody });
-     }
-     else{
-      return "user role does not matched"
-     }  
+    } else {
+      return 'user role does not matched';
+    }
   }
-}
+};
 
 const getCart = async (query, options) => {
   const limit = Number(options.limit);
@@ -35,10 +34,10 @@ const getCart = async (query, options) => {
 };
 
 const getCartById = async (id) => {
-  console.log("cart id==================================",id);
+  console.log('cart id==================================', id);
   try {
     const data = await Cart.findAll({
-      where: { id: id }
+      where: { userId: id }
     });
     return data;
   } catch (error) {
@@ -47,13 +46,19 @@ const getCartById = async (id) => {
 };
 
 const updateCartById = async (id, newData) => {
-  const findData = await Cart.findOne({
-    where: id
-  });
-  if (findData) {
-    return Cart.update(newData, { where: id });
-  } else {
-    return;
+  try {
+    console.log('id');
+    const findData = await Cart.findOne({
+      where: id
+    });
+    console.log(id, '==============================');
+    if (findData) {
+      return await Cart.update(newData, { where: id });
+    } else {
+      return;
+    }
+  } catch (err) {
+    console.log('err=====================', err);
   }
 };
 
@@ -76,7 +81,7 @@ const deleteCartById = async (Id) => {
 };
 
 const clearCartByUserId = async (userId) => {
-  console.log("userID&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",userId)
+  console.log('userID&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', userId);
   return Cart.update(
     { cartDetail: null, totalAmount: 0, totalItems: 0, totalQuantity: 0, discountCode: null },
     {

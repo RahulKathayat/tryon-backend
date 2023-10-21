@@ -14,9 +14,6 @@ const createCart = {
 };
 
 const updateCart = {
-  params: Joi.object().keys({
-    id: Joi.number().required()
-  }),
   body: Joi.object().keys({
     // userId:Joi.number().required(),
     cartDetail: Joi.object().optional(),
@@ -24,6 +21,7 @@ const updateCart = {
     totalItems: Joi.number().optional(),
     totalQuantity: Joi.number().optional(),
     discountCode: Joi.string().optional(),
+    quantity: Joi.number().optional(),
     status: Joi.boolean()
   })
 };

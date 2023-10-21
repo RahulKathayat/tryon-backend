@@ -8,17 +8,16 @@ const { commonService } = require('../../services');
 // const auth = require('../../middlewares/auth');
 
 const router = express.Router();
-router.delete('/clearCart/:id', auth(), validate(cartValidation.clearCart), cartController.clearCart);
-router.put('/updateCart/:id', auth(), validate(cartValidation.updateCart), cartController.updateCart);
+router.delete('/clearCart/:id', validate(cartValidation.clearCart), cartController.clearCart);
+router.put('/me/:id', validate(cartValidation.updateCart), cartController.updateCart);
+router.get('/me/:id', cartController.getCartMe);
 
-router
-.route('/')
-.get(auth(),cartController.getCart)
+router.route('/').get(auth(), cartController.getCart);
 
 router
   .route('/:id')
-  .put(auth(), validate(cartValidation.updateCart), cartController.updateCart)
-  .delete(auth(), cartController.deleteCart)
-  .get(auth(), cartController.getCartById);
+  // .put(validate(cartValidation.updateCart), cartController.updateCart)
+  .delete(cartController.deleteCart)
+  .get(cartController.getCartById);
 
 module.exports = router;

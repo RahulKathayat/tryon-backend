@@ -37,6 +37,15 @@ const getCart = catchAsync(async (req, res) => {
   return data;
 });
 
+const getCartMe = catchAsync(async (req, res) => {
+  const data = await cartService.getCartById(req.params.id);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'cart data by id is fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
 const getCartById = catchAsync(async (req, res) => {
   const data = await cartService.getCartById(req.params.id);
   if (data) {
@@ -93,5 +102,6 @@ module.exports = {
   getCart,
   updateCart,
   getCartById,
+  getCartMe,
   clearCart
 };
