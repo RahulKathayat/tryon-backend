@@ -17,9 +17,13 @@ router.post('/featureImage', upload.single('image'), productController.uploadFea
 // router.put('/featureImage/:id', upload.single('image'), productController.uploadFeatureImage);
 router.get('/getLowToHigh', productController.getLowToHighPrice);
 router.get('/getHighToLow', productController.getHighToLowPrice);
+router;
+
 router
+  .get('/search', productController.getProductBySearch)
   .route('/')
   .get(productController.getProduct)
+  // .get(productController.isUpcomingproduct)
 
   .post(auth(), validate(productValidation.createProduct), productController.createProduct);
 

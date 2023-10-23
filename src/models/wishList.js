@@ -1,40 +1,36 @@
 module.exports = (sequelize, DataTypes) => {
-    const WishList = sequelize.define(
-      'WishList',
-      {
-        productId:{
-            type: DataTypes.INTEGER
-          },
-        productDetailId:{
-            type: DataTypes.INTEGER
-          },
-        userId:{
-            type: DataTypes.INTEGER
-          },
-        status: {
-          type: DataTypes.BOOLEAN,
-          defaultValue:true
-        },
+  const WishList = sequelize.define(
+    'WishList',
+    {
+      productId: {
+        type: DataTypes.INTEGER
       },
-      {
-        tableName: 'WishList',
-        freezeTableName: true,
+      userId: {
+        type: DataTypes.INTEGER
+      },
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
       }
-    );
-
-    WishList.associate = function (models) {
-      WishList.belongsTo(models.Product, {
-        foreignKey: 'productId',
-        onDelete: 'SET NULL',
-        allowNull: true
-      });
-
-      WishList.belongsTo(models.Users, {
-        foreignKey: 'userId',
-        onDelete: 'SET NULL',
-        allowNull: true
-      });
+    },
+    {
+      tableName: 'WishList',
+      freezeTableName: true
     }
-     return WishList;
+  );
+
+  WishList.associate = function (models) {
+    WishList.belongsTo(models.Product, {
+      foreignKey: 'productId',
+      onDelete: 'SET NULL',
+      allowNull: true
+    });
+
+    WishList.belongsTo(models.Users, {
+      foreignKey: 'userId',
+      onDelete: 'SET NULL',
+      allowNull: true
+    });
   };
-  
+  return WishList;
+};

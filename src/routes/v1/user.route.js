@@ -20,6 +20,6 @@ router
   .route('/:id')
   .put(validate(auth(), userValidation.updateUser), userController.updateUser)
   .delete(auth(), userController.deleteUser)
-  .get(auth(), userController.getUserById);
+  .get(userController.getUserById);
 
 module.exports = router;

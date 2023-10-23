@@ -1,35 +1,31 @@
-const { WishList,Product,Users } = require('../models');
+const { WishList, Product, Users } = require('../models');
 
 const createWishlist = async (_userBody) => {
   const userBody = _userBody;
-  console.log("===============",userBody);
-   const data= await WishList.create(userBody);
-   console.log("data",data);
-   return data
+  console.log('===============', userBody);
+  const data = await WishList.create(userBody);
+  console.log('data', data);
+  return data;
 };
 
-
 const getWishlist = async (query, options) => {
-
-  const limit = Number(options.limit) ;
+  const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await WishList.findAndCountAll({
-    where:  query,
+    where: query,
     order: [['updatedAt', 'DESC']],
-    include:[{model:Product},{model:Users}],
+    include: [{ model: Product }, { model: Users }],
     limit,
     offset
   });
   return support;
 };
 
-
-const getWishlistById = async (id) => {
+const getWishlistByUserId = async (userId) => {
   try {
     const data = await WishList.findAll({
-      where: {id:id},
-      include:[{model:Product},{model:Users}]
-
+      where: { userId: userId },
+      include: [{ model: Product }, { model: Users }]
     });
     return data;
   } catch (error) {
@@ -46,19 +42,20 @@ const updateWishlistById = async (id, newData) => {
   } else {
     return;
   }
-}
+};
 
-
-const deleteWishlistById = async (Id) => {
+const deleteWishlistById = async (userId, productId) => {
   try {
-    const user = await WishList.findOne({ where:   Id  });
+    const user = await WishList.findOne({
+      where: { userId: userId, productId: productId }
+    });
 
     if (!user) {
       throw new Error('Wishlist not found');
     }
     await user.update({ status: false });
 
-    console.log("Wishlist deleted successfully");
+    console.log('Wishlist deleted successfully');
 
     return { message: 'Wishlist deleted successfully' };
   } catch (error) {
@@ -68,10 +65,9 @@ const deleteWishlistById = async (Id) => {
 };
 
 module.exports = {
-    createWishlist,
-    getWishlist,
-    updateWishlistById,
-    deleteWishlistById,
-    getWishlistById
-  
+  createWishlist,
+  getWishlist,
+  updateWishlistById,
+  deleteWishlistById,
+  getWishlistByUserId
 };

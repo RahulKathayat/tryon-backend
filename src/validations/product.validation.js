@@ -14,7 +14,7 @@ const createProduct = {
     subSubCategoryId: Joi.number().required(),
     image: Joi.array().optional(),
     featuredImage: Joi.string().optional(),
-    productType: Joi.number().valid(0, 1, 2, 3).optional(), //0=newProduct, 1=hotDeals, 2=bestSeller, 3=isUpComing
+    productType: Joi.number().valid(0, 1, 2, 3, 4).optional(), //0=newProduct, 1=hotDeals, 2=bestSeller, 3=isUpComing, 4= none
     length: Joi.number().required(),
     totalPrice: Joi.number().required(),
     currentStock: Joi.number().required(),
@@ -47,7 +47,7 @@ const updateProduct = {
   subSubCategoryId: Joi.number().required(),
   image: Joi.array().optional(),
   featuredImage: Joi.string().optional(),
-  productType: Joi.number().valid(0, 1, 2, 3).optional(), //0=newProduct, 1=hotDeals, 2=bestSeller, 3=isUpComing
+  productType: Joi.number().valid(0, 1, 2, 3, 4).optional(), //0=newProduct, 1=hotDeals, 2=bestSeller, 3=isUpComing ,  4= none
   length: Joi.number().required(),
   totalPrice: Joi.number().required(),
   currentStock: Joi.number().required(),

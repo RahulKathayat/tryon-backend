@@ -7,15 +7,12 @@ const pick = require('../utils/pick');
 const { Op } = require('sequelize');
 // const { cartService } = require('../services');
 
-
-
-
 //create user
-const   createUser= catchAsync(async (req, res) => {
+const createUser = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await userService.createUser(userBody);
-  console.log("object=====================",req.user.id);
-  const createCart=await cartService.createCart(req.user.id);
+  console.log('object=====================', req.user.id);
+  const createCart = await cartService.createCart(req.user.id);
   if (data) {
     await res.status(200).send({ message: 'user created successfully' });
   } else {
@@ -23,12 +20,11 @@ const   createUser= catchAsync(async (req, res) => {
   }
 });
 
-
 //get user
 const getUser = catchAsync(async (req, res) => {
-  let query ={};
-  query.role="Customer";
-  query.status = req.query.status?req.query.status:true;
+  let query = {};
+  query.role = 'Customer';
+  query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const filter = pick(req.query, ['role']);
 
@@ -37,28 +33,20 @@ const getUser = catchAsync(async (req, res) => {
       query.role = filter.role;
     }
   }
-  const filterParameters = [
-    'firstName',
-    'lastName',
-    'phoneNumber',
-    'email',
-    'emailVerify',
-    'addressId',
-    'dob'
-];
+  const filterParameters = ['firstName', 'lastName', 'phoneNumber', 'email', 'emailVerify', 'addressId', 'dob'];
 
-  filterParameters.forEach(param => {
+  filterParameters.forEach((param) => {
     if (req.query[param]) {
       if (req.query[param].includes(',')) {
         const values = req.query[param].split(',');
         query[param] = {
-          [Op.or]: values.map(value => ({
-            [Op.like]: `%${value.trim()}%`,
-          })),
+          [Op.or]: values.map((value) => ({
+            [Op.like]: `%${value.trim()}%`
+          }))
         };
       } else {
         query[param] = {
-          [Op.like]: `%${req.query[param]}%`,
+          [Op.like]: `%${req.query[param]}%`
         };
       }
     }
@@ -73,8 +61,7 @@ const getUser = catchAsync(async (req, res) => {
   // addressId ? query.addressId = { [Op.like]: `%${addressId}%` } : null;
   // dob ? query.dob = { [Op.like]: `%${dob}%` } : null;
 
-
-  const data = await userService.getUser(query,options);
+  const data = await userService.getUser(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'user data fetched successfully', data: data });
   } else {
@@ -83,12 +70,7 @@ const getUser = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
-
-
-
-const getUserById=catchAsync(async (req,res)=>{
+const getUserById = catchAsync(async (req, res) => {
   const data = await userService.getUserById(req.params.id);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'user data by id is fetched successfully', data: data });
@@ -96,20 +78,18 @@ const getUserById=catchAsync(async (req,res)=>{
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
   }
   return data;
-})
+});
 
-const getUserByEmail=catchAsync(async(req,res)=>{
-  const query=req.query.email
-  const data=await userService.getUserByEmail(query);
-  if(data){
+const getUserByEmail = catchAsync(async (req, res) => {
+  const query = req.query.email;
+  const data = await userService.getUserByEmail(query);
+  if (data) {
     res.status(httpStatus.OK).send({ message: 'user data by email is fetched successfully', data: data });
-  }
-  else {
+  } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
   }
   return data;
-})
-
+});
 
 //update user
 const updateUser = catchAsync(async (req, res) => {
@@ -118,7 +98,7 @@ const updateUser = catchAsync(async (req, res) => {
     const newData = req.body;
     const updatedUser = await userService.updateUserById(userId, newData);
     if (updatedUser) {
-      res.status(200).send({message: 'user updated successfully' });
+      res.status(200).send({ message: 'user updated successfully' });
     } else {
       res.status(404).send({ message: 'user not found', status: 0 });
     }
@@ -127,8 +107,6 @@ const updateUser = catchAsync(async (req, res) => {
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
-
-
 
 //delete user
 const deleteUser = catchAsync(async (req, res) => {
@@ -143,7 +121,7 @@ const deleteUser = catchAsync(async (req, res) => {
 
 const getUserDataByUserId = catchAsync(async (req, res) => {
   try {
-    const query = req.user.id;
+    const query = req.user.userId;
     const data = await userService.getUserDataByUserId(query);
     if (data) {
       res.status(httpStatus.OK).send({ message: 'user data by id is fetched successfully', data: data });
@@ -163,4 +141,4 @@ module.exports = {
   getUserById,
   getUserByEmail,
   getUserDataByUserId
-}
+};

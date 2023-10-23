@@ -2,9 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const Fabric = sequelize.define(
     'Fabric',
     {
-      fabricName: {
-        type: DataTypes.STRING
-      },
       fabricType: {
         type: DataTypes.STRING
       },

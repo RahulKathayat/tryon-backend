@@ -15,14 +15,6 @@ module.exports = {
           key: 'id'
         }
       },
-      productDetailId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'SET Null',
-        reference: {
-          model: 'ProductDetails',
-          key: 'id'
-        }
-      },
       userId: {
         type: Sequelize.INTEGER,
         onDelete: 'SET Null',

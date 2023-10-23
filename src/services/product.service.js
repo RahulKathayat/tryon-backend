@@ -41,6 +41,26 @@ const getProduct = async (query, options, between) => {
   return support;
 };
 
+const getProductBySearch = async (query, options) => {
+  try {
+    const limit = Number(options.limit);
+    const offset = options.page ? limit * (options.page - 1) : 0;
+    if (query == null || options == null) {
+      const data = await Product.findAll();
+
+      return data;
+    } else {
+      const data = await Product.findAndCountAll({
+        where: { ...query }
+      });
+      return data;
+    }
+  } catch (error) {
+    console.error('Product not found!!', error);
+    return;
+  }
+};
+
 const getHighToLowPrice = async (id) => {
   try {
     const data = await Product.findAll({
@@ -57,10 +77,26 @@ const getLowToHighPrice = async (id) => {
     const data = await Product.findAll({
       order: [['totalPrice', 'ASC']]
     });
-    console.log('data==========================');
     return data;
   } catch (error) {
     console.error('product not found!!', error);
+  }
+};
+
+const isUpcomingProduct = async (options) => {
+  try {
+    const limit = 1;
+    const offset = 2;
+    const data = await Product.findAll({
+      where: { productType: (productType = 3) },
+      order: [['updatedAt', 'ASC']],
+      offset,
+      limit
+    });
+    console.log('data=================================', data);
+    return data;
+  } catch (error) {
+    console.error('Data not found', error);
   }
 };
 
@@ -131,6 +167,8 @@ module.exports = {
   deleteProductById,
   getProductById,
   getLowToHighPrice,
-  getHighToLowPrice
+  getHighToLowPrice,
+  isUpcomingProduct,
+  getProductBySearch
   // updateImage
 };

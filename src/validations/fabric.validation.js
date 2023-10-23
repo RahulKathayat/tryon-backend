@@ -3,7 +3,6 @@ const Joi = require('joi');
 const createFabric = {
   body: Joi.object().keys({
     fabricType: Joi.string().required(),
-    fabricName: Joi.string().required(),
     weight: Joi.string().required(),
     printType: Joi.string().required(),
     usage: Joi.string().required(),
@@ -26,7 +25,6 @@ const updateFabric = {
     id: Joi.number().required()
   }),
   body: Joi.object().keys({
-    fabricName: Joi.string().required(),
     fabricType: Joi.string().required(),
     weight: Joi.string().required(),
     printType: Joi.string().required(),

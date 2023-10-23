@@ -6,13 +6,16 @@ const authValidation = require('../../validations/auth.validation');
 const { wishlistValidation } = require('../../validations');
 const { commonService } = require('../../services');
 const router = express.Router();
+
+router.get('/me', auth(), wishlistController.getWishlistByUserId);
+router.delete('/me/:productId', auth(), wishlistController.deleteWishlist);
 router
   .route('/')
-  .get(auth(),wishlistController.getWishlist)
-  .post(auth(),validate(wishlistValidation.createWishlist), wishlistController.createWishlist);
+  .get(auth(), wishlistController.getWishlist)
+  .post(auth(), validate(wishlistValidation.createWishlist), wishlistController.createWishlist);
 router
   .route('/:id')
-  .put(auth(),validate(wishlistValidation.updateWishlist), wishlistController.updateWishlist)
-  .delete(auth(),wishlistController.deleteWishlist)
-  .get(auth(),wishlistController.getWishlistById);
+  .put(auth(), validate(wishlistValidation.updateWishlist), wishlistController.updateWishlist)
+  .delete(auth(), wishlistController.deleteWishlist);
+
 module.exports = router;

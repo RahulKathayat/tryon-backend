@@ -7,9 +7,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      fabricName: {
-        type: Sequelize.STRING
-      },
       fabricType: {
         type: Sequelize.STRING
       },
