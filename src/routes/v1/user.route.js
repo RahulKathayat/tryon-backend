@@ -15,6 +15,7 @@ router
 
 router.get('/email', userController.getUserByEmail);
 router.get('/me', auth(), userController.getUserDataByUserId);
+router.put('/me', auth(), validate(userValidation.updateUser), userController.updateUser);
 
 router
   .route('/:id')

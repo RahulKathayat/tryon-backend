@@ -94,9 +94,9 @@ const getUserByEmail = catchAsync(async (req, res) => {
 //update user
 const updateUser = catchAsync(async (req, res) => {
   try {
-    const userId = req.params;
+    const query = req.user.id;
     const newData = req.body;
-    const updatedUser = await userService.updateUserById(userId, newData);
+    const updatedUser = await userService.updateUserById(query, newData);
     if (updatedUser) {
       res.status(200).send({ message: 'user updated successfully' });
     } else {
@@ -121,7 +121,7 @@ const deleteUser = catchAsync(async (req, res) => {
 
 const getUserDataByUserId = catchAsync(async (req, res) => {
   try {
-    const query = req.user.userId;
+    const query = req.user.id;
     const data = await userService.getUserDataByUserId(query);
     if (data) {
       res.status(httpStatus.OK).send({ message: 'user data by id is fetched successfully', data: data });

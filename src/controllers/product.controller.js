@@ -112,11 +112,6 @@ const getProductBySearch = catchAsync(async (req, res) => {
           }
         },
         {
-          productNumber: {
-            [Op.like]: `%${search}%`
-          }
-        },
-        {
           productType: {
             [Op.like]: `%${search}%`
           }

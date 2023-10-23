@@ -1,19 +1,14 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const bcrypt = require('bcryptjs');
-const { Users,Address } = require('../models');
+const { Users, Address } = require('../models');
 const logger = require('../config/logger');
 const messages = require('../constant/message.json');
-
-
-
 
 const getExistingEmais = async (email) => {
   logger.info(email);
   return Users.findOne({ where: { email, status: true } });
 };
-
-
 
 const createUser = async (_userBody) => {
   try {
@@ -23,14 +18,14 @@ const createUser = async (_userBody) => {
     }
     userBody.password = await bcrypt.hash(userBody.password, 8);
     const createdUser = await Users.create(userBody);
-    
+
     return createdUser;
   } catch (error) {
     console.error('Error creating user:', error);
     throw error;
   }
 };
-const getUserWithSecretFields=async()=>{
+const getUserWithSecretFields = async () => {
   try {
     const { email, password } = req.body;
     const user = await authService.loginUserWithEmailAndPassword(email, password);
@@ -39,31 +34,30 @@ const getUserWithSecretFields=async()=>{
   } catch (err) {
     console.log(err);
   }
-}
-
-
-const getUser = async (query, options) => {
-
-    const limit = Number(options.limit) ;
-    const offset = options.page ? limit * (options.page - 1) : 0;
-    const support = await Users.findAndCountAll({
-      where:  query,
-      order: [['updatedAt', 'DESC']],
-      include:[{model:Address}],
-      limit,
-      offset
-    });
-    return support;
 };
 
+const getUser = async (query, options) => {
+  const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Users.findAndCountAll({
+    where: query,
+    order: [['updatedAt', 'DESC']],
+    include: [{ model: Address }],
+    limit,
+    offset
+  });
+  return support;
+};
 
-const getUserById=async(id)=>{
-  try{
-    const data= await Users.findOne({
-      where: {id:id},
-      include:[{
-        model:Address
-      }]
+const getUserById = async (id) => {
+  try {
+    const data = await Users.findOne({
+      where: { id: id },
+      include: [
+        {
+          model: Address
+        }
+      ]
     });
     return data;
   } catch (error) {
@@ -72,11 +66,10 @@ const getUserById=async(id)=>{
   }
 };
 
-
 const getUserByEmail = async (email) => {
-  try {;
+  try {
     const data = await Users.findOne({
-      where: {email:email,status:true}
+      where: { email: email, status: true }
     });
     return data;
   } catch (error) {
@@ -85,19 +78,38 @@ const getUserByEmail = async (email) => {
   }
 };
 
-
 // update user
+// const updateUserById = async (id, newData) => {
+//   console.log('id==================================================', id);
+//   const findData = await Users.findOne({
+//     where: { id: id }
+//   });
+//   if (findData) {
+//     return findData.update(newData, { where: { id: id } });
+//   } else {
+//     return;
+//   }
+// };
+
 const updateUserById = async (id, newData) => {
-  const findData = await Users.findOne({
-    where: id
-  });
-  if (findData) {
-    return findData.update(newData, { where: id });
+  try {
+    console.log('id==================================================', id);
+
+    // Assuming you have a Sequelize model named 'User' configured correctly.
+    const user = await Users.findByPk(id);
+
+    if (user) {
+      // Update the user's data with the new data
+      await user.update(newData);
+      return user;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error; // Re-throw the error to be handled by the caller.
   }
-   else {
-    return;
-  }
-}
+};
 
 // const updateUserPasswordById = async (id, updateBody) => {
 //   return Users.update(updateBody, {
@@ -111,14 +123,14 @@ const updateUserPasswordById = async (id) => {
 
 const deleteUserById = async (userId) => {
   try {
-    const user = await Users.findOne({ where:   userId  });
+    const user = await Users.findOne({ where: userId });
 
     if (!user) {
       throw new Error('User not found');
     }
     await user.update({ status: false });
 
-    console.log("User deleted successfully");
+    console.log('User deleted successfully');
 
     return { message: 'User deleted successfully' };
   } catch (error) {
@@ -126,8 +138,6 @@ const deleteUserById = async (userId) => {
     throw error;
   }
 };
-
-
 
 const getUserWithSecretFieldsById = async (id) => {
   try {
@@ -168,5 +178,4 @@ module.exports = {
   getUserWithSecretFields,
   updateUserPasswordById,
   getUserDataByUserId
-  
 };

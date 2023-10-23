@@ -45,19 +45,26 @@ const getProductBySearch = async (query, options) => {
   try {
     const limit = Number(options.limit);
     const offset = options.page ? limit * (options.page - 1) : 0;
+
     if (query == null || options == null) {
-      const data = await Product.findAll();
+      const data = await Product.findAndCountAll({
+        limit: limit,
+        offset: offset
+      });
 
       return data;
     } else {
       const data = await Product.findAndCountAll({
-        where: { ...query }
+        where: { ...query },
+        limit: limit,
+        offset: offset
       });
+
       return data;
     }
   } catch (error) {
-    console.error('Product not found!!', error);
-    return;
+    console.error('Error fetching products:', error);
+    throw error;
   }
 };
 
