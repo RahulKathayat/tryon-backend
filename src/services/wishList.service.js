@@ -24,7 +24,7 @@ const getWishlist = async (query, options) => {
 const getWishlistByUserId = async (userId) => {
   try {
     const data = await WishList.findAll({
-      where: { userId: userId },
+      where: { userId: userId, status: true },
       include: [{ model: Product }, { model: Users }]
     });
     return data;
@@ -64,10 +64,25 @@ const deleteWishlistById = async (userId, productId) => {
   }
 };
 
+const isWishlisted = async (userId) => {
+  try {
+    const data = await WishList.findAll({
+      where: { userId: userId },
+      attributes: ['productId'] // Only fetch product IDs
+    });
+
+    const productIds = data.map((item) => item.productId); // Extract product IDs
+    return productIds;
+  } catch (error) {
+    console.error('Error fetching wishlist items!!', error);
+  }
+};
+
 module.exports = {
   createWishlist,
   getWishlist,
   updateWishlistById,
   deleteWishlistById,
-  getWishlistByUserId
+  getWishlistByUserId,
+  isWishlisted
 };

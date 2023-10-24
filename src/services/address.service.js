@@ -1,21 +1,30 @@
-const { Address,Users} = require('../models');
+const { Address, Users } = require('../models');
 
-const createAddress = async (_userBody) => {
-  const userBody = _userBody;
-  console.log("===============",userBody);
-   const data= await Address.create(userBody);
-   console.log("data",data);
-   return data
+const createAddress = async (_userBody, userId) => {
+  let userBody = _userBody;
+  console.log('===============', userBody);
+  userBody = {
+    ...userBody,
+    userId: userId
+  };
+  const data = await Address.create(userBody);
+  console.log('data', data);
+  return data;
 };
 
+const getAddressMe = async (userId) => {
+  const findData = await Address.findAll({
+    where: { userId: userId }
+  });
+  return findData;
+};
 const getAddress = async (query, options) => {
-
-  const limit = Number(options.limit) ;
+  const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Address.findAndCountAll({
-    where:  query,
+    where: query,
     order: [['updatedAt', 'DESC']],
-    include:[{model:Users}],
+    include: [{ model: Users }],
     limit,
     offset
   });
@@ -25,15 +34,16 @@ const getAddress = async (query, options) => {
 const getAddressById = async (id) => {
   try {
     const data = await Address.findAll({
-      where: {id:id}
+      where: { id: id }
     });
+    console.log('data=============', data);
     return data;
   } catch (error) {
     console.error('address not found!!', error);
   }
 };
 
-const updateAddressById = async (id, newData) => {
+const updateAddressById = async (newData, id) => {
   const findData = await Address.findOne({
     where: id
   });
@@ -42,19 +52,18 @@ const updateAddressById = async (id, newData) => {
   } else {
     return;
   }
-}
-
+};
 
 const deleteAddressById = async (Id) => {
   try {
-    const user = await Address.findOne({ where:   Id  });
+    const user = await Address.findOne({ where: Id });
 
     if (!user) {
       throw new Error('Address not found');
     }
     await user.update({ status: false });
 
-    console.log("Address deleted successfully");
+    console.log('Address deleted successfully');
 
     return { message: 'Address deleted successfully' };
   } catch (error) {
@@ -63,10 +72,10 @@ const deleteAddressById = async (Id) => {
   }
 };
 module.exports = {
-    createAddress,
-    getAddress,
-    updateAddressById,
-    deleteAddressById,
-    getAddressById
-  
+  createAddress,
+  getAddress,
+  updateAddressById,
+  deleteAddressById,
+  getAddressById,
+  getAddressMe
 };

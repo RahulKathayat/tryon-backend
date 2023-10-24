@@ -170,7 +170,8 @@ const getLowToHighPrice = catchAsync(async (req, res) => {
 });
 
 const isUpcomingproduct = catchAsync(async (req, res) => {
-  const data = await productService.isUpcomingProduct();
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await productService.isUpcomingProduct(options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
   } else {
@@ -250,9 +251,7 @@ const updateImage = catchAsync(async (req, res) => {
     if (req.body.image) {
       body.image = req.body.image;
     }
-    console.log('body data======================', body.image);
     const updatedUser = await productService.updateImage(userId, body.image);
-    console.log('updateUser================', updatedUser);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'image successfully' });
     } else {

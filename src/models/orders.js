@@ -5,9 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       productId: {
         type: DataTypes.INTEGER
       },
-      productDetailId: {
-        type: DataTypes.INTEGER
-      },
       userId: {
         type: DataTypes.INTEGER
       },

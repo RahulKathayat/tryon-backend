@@ -64,10 +64,50 @@ const deleteOrderById = async (Id) => {
   }
 };
 
+// For User
+const getOrderForUser = async (query, options) => {
+  const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Orders.findAndCountAll({
+    where: query,
+    order: [['updatedAt', 'DESC']],
+    include: [{ model: OrderDetails }, { model: Users }, { model: Product }],
+    limit,
+    offset
+  });
+  return support;
+};
+
+const createOrderForUser = async (_userBody, userId) => {
+  let userBody = _userBody;
+  userBody = {
+    ...userBody,
+    userId: userId
+  };
+  const data = await Orders.create(userBody);
+  console.log('data', data);
+  return data;
+};
+
+const updateOrderForUser = async (userId, newData, query) => {
+  const findData = await Orders.findOne({
+    where: id
+  });
+  console.log('FINDdTAA============================', findData);
+  if (findData) {
+    return Orders.update(newData, { where: id });
+  } else {
+    return;
+  }
+};
+
 module.exports = {
   createOrder,
   getOrder,
   updateOrderById,
   deleteOrderById,
-  getOrderById
+  getOrderById,
+  getOrderForUser,
+  createOrderForUser,
+  updateOrderForUser
 };

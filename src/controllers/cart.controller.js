@@ -38,7 +38,7 @@ const getCart = catchAsync(async (req, res) => {
 });
 
 const getCartMe = catchAsync(async (req, res) => {
-  const data = await cartService.getCartById(req.params.id);
+  const data = await cartService.getCartById(req.user.id);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'cart data by id is fetched successfully', data: data });
   } else {
@@ -58,7 +58,7 @@ const getCartById = catchAsync(async (req, res) => {
 
 const updateCart = catchAsync(async (req, res) => {
   try {
-    const userId = req.params;
+    const userId = req.user.id;
     const newData = req.body;
     const updatedUser = await cartService.updateCartById(userId, newData);
     if (updatedUser) {

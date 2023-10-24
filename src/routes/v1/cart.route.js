@@ -8,9 +8,9 @@ const { commonService } = require('../../services');
 // const auth = require('../../middlewares/auth');
 
 const router = express.Router();
-router.delete('/clearCart/:id', validate(cartValidation.clearCart), cartController.clearCart);
-router.put('/me/:id', validate(cartValidation.updateCart), cartController.updateCart);
-router.get('/me/:id', cartController.getCartMe);
+router.delete('/clearCart', auth(), validate(cartValidation.clearCart), cartController.clearCart);
+router.put('/me', auth(), validate(cartValidation.updateCart), cartController.updateCart);
+router.get('/me', auth(), cartController.getCartMe);
 
 router.route('/').get(auth(), cartController.getCart);
 

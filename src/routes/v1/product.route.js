@@ -19,11 +19,12 @@ router.get('/getLowToHigh', productController.getLowToHighPrice);
 router.get('/getHighToLow', productController.getHighToLowPrice);
 router;
 
+router.get('/isUpcoming', productController.isUpcomingproduct);
+
 router
   .get('/search', productController.getProductBySearch)
   .route('/')
   .get(productController.getProduct)
-  // .get(productController.isUpcomingproduct)
 
   .post(auth(), validate(productValidation.createProduct), productController.createProduct);
 

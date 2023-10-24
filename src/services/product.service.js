@@ -92,11 +92,11 @@ const getLowToHighPrice = async (id) => {
 
 const isUpcomingProduct = async (options) => {
   try {
-    const limit = 1;
-    const offset = 2;
-    const data = await Product.findAll({
-      where: { productType: (productType = 3) },
-      order: [['updatedAt', 'ASC']],
+    const limit = 2;
+    const offset = 0;
+    const data = await Product.findAndCountAll({
+      where: { productType: 3 },
+      order: [['createdAt', 'DESC']],
       offset,
       limit
     });
@@ -155,17 +155,6 @@ const deleteProductById = async (Id) => {
     throw error;
   }
 };
-
-// const updateImage = async (id, newData) => {
-//   const findData = await Product.findOne({
-//     where: { id: id }
-//   });
-//   if (findData) {
-//     return Product.update({ image: newData }, { where: { id: id } });
-//   } else {
-//     return;
-//   }
-// };
 
 module.exports = {
   createProduct,

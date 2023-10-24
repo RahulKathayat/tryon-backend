@@ -49,10 +49,10 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = function (models) {
-    User.belongsTo(models.Address, {
-      foreignKey: 'addressId',
-      onDelete: 'SET NULL',
-      allowNull: true
+    User.hasMany(models.Address, {
+      foreignKey: 'userId'
+      // onDelete: 'SET NULL',
+      // allowNull: true
     });
 
     User.hasOne(models.Cart, {

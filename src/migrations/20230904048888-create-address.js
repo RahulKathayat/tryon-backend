@@ -7,8 +7,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      userId: {
+        type: Sequelize.INTEGER
+      },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       defaultAddress: {
         type: Sequelize.BOOLEAN,

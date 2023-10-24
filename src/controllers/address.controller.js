@@ -3,10 +3,10 @@ const addressService = require('../services/address.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 
-
-const   createAddress= catchAsync(async (req, res) => {
+const createAddress = catchAsync(async (req, res) => {
+  let userId = req.user.id;
   let userBody = req.body;
-  const data = await addressService.createAddress(userBody);
+  const data = await addressService.createAddress(userBody, userId);
   if (data) {
     await res.status(200).send({ message: 'address created successfully' });
   } else {
@@ -14,13 +14,22 @@ const   createAddress= catchAsync(async (req, res) => {
   }
 });
 
-
+const getAddressMe = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const data = await addressService.getAddressMe(userId);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'address data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
 
 const getAddress = catchAsync(async (req, res) => {
-  const query ={};
-  query.status = req.query.status?req.query.status:true;
+  const query = {};
+  query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const data = await addressService.getAddress(query,options);
+  const data = await addressService.getAddress(query, options);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'address data fetched successfully', data: data });
   } else {
@@ -39,13 +48,11 @@ const getAddressById = catchAsync(async (req, res) => {
   return data;
 });
 
-
-
 const updateAddress = catchAsync(async (req, res) => {
   try {
-    const userId = req.params;
+    const params = req.params;
     const newData = req.body;
-    const updatedUser = await addressService.updateAddressById(userId, newData);
+    const updatedUser = await addressService.updateAddressById(newData, params);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'address updated successfully' });
     } else {
@@ -56,8 +63,6 @@ const updateAddress = catchAsync(async (req, res) => {
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
-
-
 
 const deleteAddress = catchAsync(async (req, res) => {
   const querry = req.params;
@@ -74,5 +79,6 @@ module.exports = {
   deleteAddress,
   getAddress,
   updateAddress,
-  getAddressById
+  getAddressById,
+  getAddressMe
 };

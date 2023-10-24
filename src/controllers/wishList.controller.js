@@ -27,9 +27,10 @@ const getWishlist = catchAsync(async (req, res) => {
 });
 
 const getWishlistByUserId = catchAsync(async (req, res) => {
-  const query = req.user.id;
-  console.log('ghv+++++++++++++++++++++++++++++++++++++++', query);
-  const data = await wishlistService.getWishlistByUserId(query);
+  // let query = {};
+  // query.status = req.query.status ? req.query.status : true;
+  const id = req.user.id;
+  const data = await wishlistService.getWishlistByUserId(id);
   console.log('userId================================', data);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Wishlist data by id is fetched successfully', data: data });
@@ -68,10 +69,26 @@ const deleteWishlist = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in Wishlist delete' });
   }
 });
+
+const isWishlisted = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const productIds = await wishlistService.isWishlisted(userId);
+
+  if (productIds && productIds.length > 0) {
+    res.status(httpStatus.OK).send({
+      message: 'Wishlist product IDs fetched successfully',
+      data: productIds
+    });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'No products in wishlist or error in fetching data' });
+  }
+});
+
 module.exports = {
   createWishlist,
   deleteWishlist,
   getWishlist,
   updateWishlist,
-  getWishlistByUserId
+  getWishlistByUserId,
+  isWishlisted
 };

@@ -1,30 +1,33 @@
 module.exports = (sequelize, DataTypes) => {
-    const Address = sequelize.define(
-      'Address',
-      {
-        address:{
-            type: DataTypes.STRING
-        },
-        defaultAddress:{
-            type: DataTypes.BOOLEAN,
-            defaultValue:true
-        },
-        status: {
-            type: DataTypes.BOOLEAN,
-            defaultValue:true
-        },
+  const Address = sequelize.define(
+    'Address',
+    {
+      userId: {
+        type: DataTypes.INTEGER
       },
-      {
-        tableName: 'Address',
-        freezeTableName: true,
+      address: {
+        type: DataTypes.JSON
+      },
+      defaultAddress: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
       }
-        );
-      Address.associate = function(models) {
-      Address.hasMany(models.Users, {
-        foreignKey: 'addressId' 
-      });
-    };
-
-     return Address;
+    },
+    {
+      tableName: 'Address',
+      freezeTableName: true
+    }
+  );
+  Address.associate = function (models) {
+    Address.belongsTo(models.Users, {
+      foreignKey: 'userId',
+      targetkey: 'id'
+    });
   };
-  
+
+  return Address;
+};

@@ -63,28 +63,28 @@ const getCartById = async (id) => {
 
 const updateCartById = async (userId, newData) => {
   try {
-    let storeData = [];
-    for (var itemKey in newData.cartDetail) {
-      var item = newData.cartDetail[itemKey];
-      storeData.push(item);
-      // productId = item.productId;
-      // var quantity = item.quantity;
-      // var price = item.price;
-    }
-    const existingCart = await Cart.findOne({ where: userId });
-    console.log('storeData :', storeData);
+    // let storeData = [];
+    // for (var itemKey in newData.cartDetail) {
+    //   var item = newData.cartDetail[itemKey];
+    //   storeData.push(item);
+    //   // productId = item.productId;
+    //   // var quantity = item.quantity;
+    //   // var price = item.price;
+    // // }
+    // const existingCart = await Cart.findOne({ where: { userId: userId } });
+    // console.log('storeData :', storeData);
 
-    const existingProductId1 = existingCart.dataValues.cartDetail.item1.productId;
-    const existingProductId2 = existingCart.dataValues.cartDetail.item2.productId;
-    console.log('existingProductId1 :', existingProductId1);
-    console.log('existingProductId2 :', existingProductId2);
-    if (existingProductId1 === storeData[0].productId && existingProductId2 === storeData[1].productId) {
-      console.log('jsonparse=====================================', newData);
-      return 'this product is already exist';
-      const updateQuantity = await Cart.update(newData, { where: userId });
-      console.log();
-      return updateQuantity;
-    }
+    // const existingProductId1 = existingCart.dataValues.cartDetail.item1.productId;
+    // const existingProductId2 = existingCart.dataValues.cartDetail.item2.productId;
+    // console.log('existingProductId1 :', existingProductId1);
+    // console.log('existingProductId2 :', existingProductId2);
+    // if (existingProductId1 === storeData[0].productId && existingProductId2 === storeData[1].productId) {
+    //   console.log('jsonparse=====================================', newData);
+    //   return 'this product is already exist';
+    const updateQuantity = await Cart.update(newData, { where: { userId: userId } });
+    console.log();
+    return updateQuantity;
+  } catch (err) {
     // if (existingCart.dataValues.cartDetail) {
     //   let cartDetail = existingCart.cartDetail;
     //   let updateQuantit = {};
@@ -106,7 +106,6 @@ const updateCartById = async (userId, newData) => {
     //     return createCart;
     //   }
     // }
-  } catch (err) {
     console.log('err=====================', err);
   }
 };
