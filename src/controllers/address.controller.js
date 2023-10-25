@@ -67,18 +67,33 @@ const updateAddress = catchAsync(async (req, res) => {
 const deleteAddress = catchAsync(async (req, res) => {
   const querry = req.params;
 
-  const deleteUser = await addressService.deleteAddresstById(querry);
+  const deleteUser = await addressService.deleteAddressById(querry);
   if (deleteUser) {
     res.status(httpStatus.OK).send({ message: 'address deleted successfully' });
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in address delete' });
   }
 });
+
+const setDefault = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const addressId = req.params.id; // Assuming you're passing the address ID as a URL parameter
+
+  const success = await addressService.setDefaultAddress(addressId, userId);
+
+  if (success) {
+    res.status(200).send({ message: 'Address set as default successfully' });
+  } else {
+    res.status(500).send({ message: 'Error setting address as default' });
+  }
+});
+
 module.exports = {
   createAddress,
   deleteAddress,
   getAddress,
   updateAddress,
   getAddressById,
-  getAddressMe
+  getAddressMe,
+  setDefault
 };

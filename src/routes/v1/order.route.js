@@ -8,9 +8,12 @@ const { commonService } = require('../../services');
 // const auth = require('../../middlewares/auth');
 
 const router = express.Router();
+
+// User Routes
 router.get('/me', auth(), orderController.getOrderForUser);
-router.post('/me', auth(), orderController.createOrderForUser);
-router.put('/:id', auth(), orderController.updateOrderForUser);
+router.post('/me', auth(), validate(orderValidation.createOrder), orderController.createOrderForUser);
+router.put('/:id', auth(), validate(orderValidation.updateOrder), orderController.updateOrderForUser);
+router.delete('/:id', auth(), orderController.deleteOrderForUser);
 // Admin Routes
 router
   .route('/')
@@ -22,7 +25,5 @@ router
   .put(auth(), validate(orderValidation.updateOrder), orderController.updateOrder)
   .delete(auth(), orderController.deleteOrder)
   .get(auth(), orderController.getOrderById);
-
-// User Routes
 
 module.exports = router;

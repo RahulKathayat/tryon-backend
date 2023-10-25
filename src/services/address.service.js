@@ -14,7 +14,8 @@ const createAddress = async (_userBody, userId) => {
 
 const getAddressMe = async (userId) => {
   const findData = await Address.findAll({
-    where: { userId: userId }
+    where: { userId: userId },
+    order: [['createdAt', 'ASC']]
   });
   return findData;
 };
@@ -23,7 +24,7 @@ const getAddress = async (query, options) => {
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Address.findAndCountAll({
     where: query,
-    order: [['updatedAt', 'DESC']],
+    order: [['createdAt', 'DESC']],
     include: [{ model: Users }],
     limit,
     offset
@@ -34,7 +35,8 @@ const getAddress = async (query, options) => {
 const getAddressById = async (id) => {
   try {
     const data = await Address.findAll({
-      where: { id: id }
+      where: { id: id },
+      order: [['createdAt', 'DESC']]
     });
     console.log('data=============', data);
     return data;
@@ -71,11 +73,36 @@ const deleteAddressById = async (Id) => {
     throw error;
   }
 };
+
+const setDefaultAddress = async (addressId, userId) => {
+  try {
+    await Address.update(
+      { defaultAddress: false },
+      {
+        where: { userId: userId }
+      }
+    );
+
+    await Address.update(
+      { defaultAddress: true },
+      {
+        where: { id: addressId, userId: userId }
+      }
+    );
+
+    return true;
+  } catch (error) {
+    console.error('Error setting default address:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   createAddress,
   getAddress,
   updateAddressById,
   deleteAddressById,
   getAddressById,
-  getAddressMe
+  getAddressMe,
+  setDefaultAddress
 };

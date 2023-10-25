@@ -51,9 +51,9 @@ const getOrderById = catchAsync(async (req, res) => {
 const updateOrderForUser = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
-    const query = req.params;
+    const id = req.params;
     const newData = req.body;
-    const updatedUser = await orderService.updateOrderForUser(userId, newData, query);
+    const updatedUser = await orderService.updateOrderForUser(userId, newData, id);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'order updated successfully' });
     } else {
@@ -107,6 +107,18 @@ const getOrderForUser = catchAsync(async (req, res) => {
   return data;
 });
 
+const deleteOrderForUser = catchAsync(async (req, res) => {
+  const querry = req.params;
+  const userId = req.user.id;
+
+  const deleteUser = await orderService.deleteOrderById(querry, userId);
+  if (deleteUser) {
+    res.status(httpStatus.OK).send({ message: 'order deleted successfully' });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in card delete' });
+  }
+});
+
 module.exports = {
   createOrder,
   deleteOrder,
@@ -115,5 +127,6 @@ module.exports = {
   getOrderById,
   getOrderForUser,
   createOrderForUser,
-  updateOrderForUser
+  updateOrderForUser,
+  deleteOrderForUser
 };

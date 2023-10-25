@@ -20,6 +20,7 @@ router.get('/getHighToLow', productController.getHighToLowPrice);
 router;
 
 router.get('/isUpcoming', productController.isUpcomingproduct);
+router.get('/isWishlisted', auth(), productController.getProductsForUser);
 
 router
   .get('/search', productController.getProductBySearch)

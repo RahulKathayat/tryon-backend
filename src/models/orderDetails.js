@@ -2,6 +2,12 @@ module.exports = (sequelize, DataTypes) => {
   const OrderDetails = sequelize.define(
     'OrderDetails',
     {
+      orderId: {
+        type: DataTypes.INTEGER
+      },
+      productId: {
+        type: DataTypes.INTEGER
+      },
       type: {
         type: DataTypes.STRING
       },
@@ -14,9 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       trackingLink: {
         type: DataTypes.STRING
       },
-      totalQuantity:{
-        type:DataTypes.INTEGER
-
+      totalQuantity: {
+        type: DataTypes.INTEGER
       },
       status: {
         type: DataTypes.BOOLEAN,
@@ -30,8 +35,16 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   OrderDetails.associate = function (models) {
-    OrderDetails.hasMany(models.Orders, {
-      foreignKey: 'orderDetailId'
+    OrderDetails.belongsTo(models.Orders, {
+      foreignKey: 'orderId',
+      onDelete: 'SET NULL',
+      allowNull: true
+    });
+
+    OrderDetails.belongsTo(models.Product, {
+      foreignKey: 'productId',
+      onDelete: 'SET NULL',
+      allowNull: true
     });
   };
 

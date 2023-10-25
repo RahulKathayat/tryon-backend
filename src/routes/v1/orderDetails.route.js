@@ -1,7 +1,7 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const {orderDetailsController } = require('../../controllers');
+const { orderDetailsController } = require('../../controllers');
 const authValidation = require('../../validations/auth.validation');
 const { orderDetailsValidation } = require('../../validations');
 const { commonService } = require('../../services');
@@ -9,18 +9,17 @@ const { commonService } = require('../../services');
 
 const router = express.Router();
 router
-.route('/')
-.get(auth(),orderDetailsController.getOrderDetails)
-.post(auth(),validate(orderDetailsValidation.createOrderDetails),orderDetailsController.createOrderDetails)
-
+  .route('/')
+  .get(auth(), orderDetailsController.getOrderDetails)
+  .post(auth(), validate(orderDetailsValidation.createOrderDetails), orderDetailsController.createOrderDetails);
 
 router
-.route('/:id')
-.put(auth(),validate(orderDetailsValidation.updateOrderDetails),orderDetailsController.updateOrderDetails)
-.delete(auth(),orderDetailsController.deleteOrderDetails)
-.get(auth(),orderDetailsController.getOrderDetailsById)
+  .route('/:id')
+  .put(auth(), validate(orderDetailsValidation.updateOrderDetails), orderDetailsController.updateOrderDetails)
+  .delete(auth(), orderDetailsController.deleteOrderDetails)
+  .get(auth(), orderDetailsController.getOrderDetailsById);
 
-
-
+// Routes for Users
+// router.get('/me', auth(), orderDetailsController.getOrderDetailsForUser);
 
 module.exports = router;

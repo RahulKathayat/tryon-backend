@@ -8,6 +8,7 @@ const { commonService } = require('../../services');
 // const auth = require('../../middlewares/auth');
 
 const router = express.Router();
+router.post('/checkout', auth(), cartController.createCheckout);
 router.delete('/clearCart', auth(), validate(cartValidation.clearCart), cartController.clearCart);
 router.put('/me', auth(), validate(cartValidation.updateCart), cartController.updateCart);
 router.get('/me', auth(), cartController.getCartMe);

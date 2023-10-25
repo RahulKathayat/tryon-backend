@@ -88,7 +88,7 @@ const changePassword = catchAsync(async (req, res) => {
   const userWithSecretFields = await userService.getUserWithSecretFieldsById(req.user.dataValues.id);
   const password = req.body.oldPassword;
   if (!(await bcrypt.compare(password, userWithSecretFields.password))) {
-    res.status(400).send({ message: 'Incorrect password!' });
+    res.status(400).send({ message: 'Incorrect Old password!' });
   } else {
     const userBody = {
       password: await bcrypt.hash(req.body.newPassword, 8)

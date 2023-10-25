@@ -98,7 +98,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     });
     Product.belongsTo(models.SubSubCategory, {
-      foreignKey: 'subSubcategoryId',
+      foreignKey: 'subSubCategoryId',
       onDelete: 'SET NULL',
       allowNull: true
     });
@@ -111,7 +111,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'productId'
     });
 
-    Product.hasMany(models.Orders, {
+    Product.hasMany(models.OrderDetails, {
       foreignKey: 'productId'
     });
 

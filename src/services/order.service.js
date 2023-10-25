@@ -1,4 +1,4 @@
-const { Orders, OrderDetails, Users, Product } = require('../models');
+const { Orders, OrderDetails, Users } = require('../models');
 // const orderDetails = require('../models/orderDetails');
 
 const createOrder = async (_userBody) => {
@@ -15,7 +15,7 @@ const getOrder = async (query, options) => {
   const support = await Orders.findAndCountAll({
     where: query,
     order: [['updatedAt', 'DESC']],
-    include: [{ model: OrderDetails }, { model: Users }, { model: Product }],
+    include: [{ model: Users }, { model: OrderDetails }],
     limit,
     offset
   });
@@ -26,7 +26,7 @@ const getOrderById = async (id) => {
   try {
     const data = await Orders.findOne({
       where: { id: id },
-      include: [{ model: OrderDetails }, { model: Users }, { model: Product }]
+      include: [{ model: Users }, { model: OrderDetails }]
     });
     return data;
   } catch (error) {
@@ -46,7 +46,7 @@ const updateOrderById = async (id, newData) => {
   }
 };
 
-const deleteOrderById = async (Id) => {
+const deleteOrderById = async (Id, userId) => {
   try {
     const user = await Orders.findOne({ where: Id });
 
@@ -65,13 +65,13 @@ const deleteOrderById = async (Id) => {
 };
 
 // For User
-const getOrderForUser = async (query, options) => {
+const getOrderForUser = async (query, options, userId) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Orders.findAndCountAll({
-    where: query,
+    where: { userId: userId, status: true },
     order: [['updatedAt', 'DESC']],
-    include: [{ model: OrderDetails }, { model: Users }, { model: Product }],
+    include: [{ model: Users }],
     limit,
     offset
   });
@@ -89,9 +89,9 @@ const createOrderForUser = async (_userBody, userId) => {
   return data;
 };
 
-const updateOrderForUser = async (userId, newData, query) => {
+const updateOrderForUser = async (userId, newData, id) => {
   const findData = await Orders.findOne({
-    where: id
+    where: { userId: userId }
   });
   console.log('FINDdTAA============================', findData);
   if (findData) {
@@ -99,6 +99,15 @@ const updateOrderForUser = async (userId, newData, query) => {
   } else {
     return;
   }
+};
+
+const createOrderCheckout = async (userId) => {
+  // userBody = {
+  //   userId: userId
+  // };
+  const data = await Orders.create(userBody);
+  console.log('data', data);
+  return data;
 };
 
 module.exports = {
@@ -109,5 +118,6 @@ module.exports = {
   getOrderById,
   getOrderForUser,
   createOrderForUser,
-  updateOrderForUser
+  updateOrderForUser,
+  createOrderCheckout
 };

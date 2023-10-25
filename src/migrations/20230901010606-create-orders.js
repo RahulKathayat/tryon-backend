@@ -7,27 +7,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      productId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'SET Null',
-        references: {
-          model: 'Product',
-          key: 'id'
-        }
-      },
       userId: {
         type: Sequelize.INTEGER,
         onDelete: 'SET Null',
         references: {
           model: 'Users',
-          key: 'id'
-        }
-      },
-      orderDetailId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'SET Null',
-        references: {
-          model: 'OrderDetails',
           key: 'id'
         }
       },

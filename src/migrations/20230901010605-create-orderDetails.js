@@ -7,6 +7,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      orderId: {
+        type: Sequelize.INTEGER
+      },
+      productId: {
+        type: Sequelize.INTEGER
+      },
       type: {
         type: Sequelize.STRING
       },

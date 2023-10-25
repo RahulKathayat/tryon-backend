@@ -68,13 +68,13 @@ const isWishlisted = async (userId) => {
   try {
     const data = await WishList.findAll({
       where: { userId: userId },
-      attributes: ['productId'] // Only fetch product IDs
+      attributes: ['productId']
     });
-
-    const productIds = data.map((item) => item.productId); // Extract product IDs
+    const productIds = data.map((item) => item.productId);
     return productIds;
   } catch (error) {
-    console.error('Error fetching wishlist items!!', error);
+    console.error('Error fetching wishlist items!', error);
+    throw error;
   }
 };
 

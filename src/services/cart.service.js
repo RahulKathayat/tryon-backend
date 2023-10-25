@@ -1,4 +1,4 @@
-const { Cart, Users } = require('../models');
+const { Cart, Users, Orders, OrderDetails } = require('../models');
 
 const createCart = async (_userBody) => {
   const userBody = _userBody;
@@ -63,24 +63,6 @@ const getCartById = async (id) => {
 
 const updateCartById = async (userId, newData) => {
   try {
-    // let storeData = [];
-    // for (var itemKey in newData.cartDetail) {
-    //   var item = newData.cartDetail[itemKey];
-    //   storeData.push(item);
-    //   // productId = item.productId;
-    //   // var quantity = item.quantity;
-    //   // var price = item.price;
-    // // }
-    // const existingCart = await Cart.findOne({ where: { userId: userId } });
-    // console.log('storeData :', storeData);
-
-    // const existingProductId1 = existingCart.dataValues.cartDetail.item1.productId;
-    // const existingProductId2 = existingCart.dataValues.cartDetail.item2.productId;
-    // console.log('existingProductId1 :', existingProductId1);
-    // console.log('existingProductId2 :', existingProductId2);
-    // if (existingProductId1 === storeData[0].productId && existingProductId2 === storeData[1].productId) {
-    //   console.log('jsonparse=====================================', newData);
-    //   return 'this product is already exist';
     const updateQuantity = await Cart.update(newData, { where: { userId: userId } });
     console.log();
     return updateQuantity;
@@ -129,7 +111,6 @@ const deleteCartById = async (Id) => {
 };
 
 const clearCartByUserId = async (userId) => {
-  console.log('userID&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', userId);
   return Cart.update(
     { cartDetail: null, totalAmount: 0, totalItems: 0, totalQuantity: 0, discountCode: null },
     {
@@ -138,11 +119,54 @@ const clearCartByUserId = async (userId) => {
   );
 };
 
+// For Checkout
+async function createCheckout(userId) {
+  if (!userId) {
+    throw new Error('No user ID provided.');
+  }
+
+  // Fetch the user's cart
+  const cart = await Cart.findOne({ where: { userId: userId } });
+
+  // If there's no cart for the user, throw an error
+  if (!cart) {
+    throw new Error('Cart not found for this user or unauthorized.');
+  }
+
+  // Create an order from the cart's data
+  const order = await Orders.create({
+    userId: cart.userId,
+    totalItems: Object.keys(cart.cartDetail).length,
+    totalQuantity: Object.values(cart.cartDetail).reduce((acc, item) => acc + item.quantity, 0),
+    status: true
+  });
+
+  // Extract cart details and transform them into order details data
+  const cartDetails = cart?.cartDetail || {};
+
+  if (!Object.keys(cartDetails).length) {
+    throw new Error('No cart details available for processing.');
+  }
+
+  const orderDetailsData = Object.values(cartDetails).map((detail) => ({
+    orderId: order.id,
+    productId: detail.productId,
+    type: detail.type || 'On Process',
+    amount: detail.price * detail.quantity,
+    totalQuantity: detail.quantity,
+    status: true
+  }));
+
+  const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
+  return { order, orderDetailsArray };
+}
+
 module.exports = {
   createCart,
   getCart,
   updateCartById,
   deleteCartById,
   getCartById,
-  clearCartByUserId
+  clearCartByUserId,
+  createCheckout
 };

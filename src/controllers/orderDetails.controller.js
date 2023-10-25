@@ -20,25 +20,20 @@ const getOrderDetails = catchAsync(async (req, res) => {
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
-  const filterParameters = [
-    'type', 
-    'amount', 
-    'trackingId', 
-    'trackingLink'
-];
+  const filterParameters = ['type', 'amount', 'trackingId', 'trackingLink'];
 
-  filterParameters.forEach(param => {
+  filterParameters.forEach((param) => {
     if (req.query[param]) {
       if (req.query[param].includes(',')) {
         const values = req.query[param].split(',');
         query[param] = {
-          [Op.or]: values.map(value => ({
-            [Op.like]: `%${value.trim()}%`,
-          })),
+          [Op.or]: values.map((value) => ({
+            [Op.like]: `%${value.trim()}%`
+          }))
         };
       } else {
         query[param] = {
-          [Op.like]: `%${req.query[param]}%`,
+          [Op.like]: `%${req.query[param]}%`
         };
       }
     }
@@ -52,7 +47,6 @@ const getOrderDetails = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
 });
-
 
 const getOrderDetailsById = catchAsync(async (req, res) => {
   const data = await orderDetailsService.getOrderDetailsById(req.params.id);
@@ -90,10 +84,26 @@ const deleteOrderDetails = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in card delete' });
   }
 });
+
+// For Users
+
+const getOrderDetailsForUser = catchAsync(async (req, res) => {
+  let query = {};
+  query.status = req.query.status ? req.query.status : true;
+  const userId = req.user.id;
+  const data = await orderDetailsService.getOrderDetailsForUser(query, userId);
+
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'order data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
+  }
+});
 module.exports = {
   createOrderDetails,
   deleteOrderDetails,
   getOrderDetails,
   updateOrderDetails,
-  getOrderDetailsById
+  getOrderDetailsById,
+  getOrderDetailsForUser
 };

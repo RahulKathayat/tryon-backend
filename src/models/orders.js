@@ -2,13 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Orders = sequelize.define(
     'Orders',
     {
-      productId: {
-        type: DataTypes.INTEGER
-      },
       userId: {
-        type: DataTypes.INTEGER
-      },
-      orderDetailId: {
         type: DataTypes.INTEGER
       },
       totalItems: {
@@ -29,12 +23,12 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Orders.associate = function (models) {
-    Orders.belongsTo(models.OrderDetails, {
-      foreignKey: 'orderDetailId',
-      // targetKey: 'id'
-      onDelete: 'SET NULL',
-      allowNull: true
-    });
+    // Orders.belongsTo(models.OrderDetails, {
+    //   foreignKey: 'orderDetailId',
+    //   // targetKey: 'id'
+    //   onDelete: 'SET NULL',
+    //   allowNull: true
+    // });
 
     Orders.belongsTo(models.Users, {
       foreignKey: 'userId',
@@ -46,10 +40,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'orderId'
     });
 
-    Orders.belongsTo(models.Product, {
-      foreignKey: 'productId',
-      onDelete: 'SET NULL',
-      allowNull: true
+    Orders.hasMany(models.OrderDetails, {
+      foreignKey: 'orderId'
     });
   };
 

@@ -156,6 +156,17 @@ const deleteProductById = async (Id) => {
   }
 };
 
+const getProductForWishlist = async () => {
+  try {
+    // Assuming you use a model named Product for products
+    const products = await Product.findAll();
+    return products;
+  } catch (error) {
+    console.error('Error fetching products!', error);
+    throw error;
+  }
+};
+
 module.exports = {
   createProduct,
   getProduct,
@@ -165,6 +176,7 @@ module.exports = {
   getLowToHighPrice,
   getHighToLowPrice,
   isUpcomingProduct,
-  getProductBySearch
+  getProductBySearch,
+  getProductForWishlist
   // updateImage
 };

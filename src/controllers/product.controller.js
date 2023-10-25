@@ -1,5 +1,6 @@
 const catchAsync = require('../utils/catchAsync');
 const productService = require('../services/product.service');
+const wishlistService = require('../services/wishList.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const sharp = require('sharp');
@@ -263,6 +264,37 @@ const updateImage = catchAsync(async (req, res) => {
   }
 });
 
+const getProductsForUser = async (req, res, next) => {
+  const userId = req.user.id;
+
+  try {
+    let products = await productService.getProductForWishlist();
+    products = products.map((product) => product.get({ plain: true }));
+
+    if (!Array.isArray(products)) {
+      return next(new Error('Unexpected response format from productService.getProductForWishlist'));
+    }
+
+    const wishlistedProductIds = await wishlistService.isWishlisted(userId);
+    console.log('vbxasghvxa++++++++++++++++++++++++++++++++', wishlistedProductIds);
+
+    if (!Array.isArray(wishlistedProductIds)) {
+      return next(new Error('Unexpected response format from wishlistService.isWishlisted'));
+    }
+    products.forEach((product) => {
+      product.isWishlisted = wishlistedProductIds.includes(product.id);
+      console.log(`Product ID: ${product.id}, Is Wishlisted: ${product.isWishlisted}`);
+    });
+
+    res.status(httpStatus.OK).send({
+      message: 'Products fetched successfully',
+      data: products
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createProduct,
   deleteProduct,
@@ -276,5 +308,6 @@ module.exports = {
   getLowToHighPrice,
   getHighToLowPrice,
   isUpcomingproduct,
-  getProductBySearch
+  getProductBySearch,
+  getProductsForUser
 };

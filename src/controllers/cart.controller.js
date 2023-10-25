@@ -96,6 +96,21 @@ const clearCart = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in Clearing Cart' });
   }
 });
+
+// For Checkout
+
+async function createCheckout(req, res) {
+  try {
+    const userId = req.user.id;
+
+    const { order, orderDetailsArray } = await cartService.createCheckout(userId);
+
+    res.json({ order, orderDetails: orderDetailsArray });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   // createCart,
   deleteCart,
@@ -103,5 +118,6 @@ module.exports = {
   updateCart,
   getCartById,
   getCartMe,
-  clearCart
+  clearCart,
+  createCheckout
 };
