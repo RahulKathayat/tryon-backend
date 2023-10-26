@@ -48,6 +48,16 @@ const getOrderDetails = catchAsync(async (req, res) => {
   }
 });
 
+const getOrderDetailsByOrderId = catchAsync(async (req, res) => {
+  console.log('request====================', req.params.id);
+  const data = await orderDetailsService.getOrderDetailsByOrderId(req.params.id);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'order data by id is fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
 const getOrderDetailsById = catchAsync(async (req, res) => {
   const data = await orderDetailsService.getOrderDetailsById(req.params.id);
   if (data) {
@@ -105,5 +115,6 @@ module.exports = {
   getOrderDetails,
   updateOrderDetails,
   getOrderDetailsById,
-  getOrderDetailsForUser
+  getOrderDetailsForUser,
+  getOrderDetailsByOrderId
 };

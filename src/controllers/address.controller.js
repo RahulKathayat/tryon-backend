@@ -77,7 +77,7 @@ const deleteAddress = catchAsync(async (req, res) => {
 
 const setDefault = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const addressId = req.params.id; // Assuming you're passing the address ID as a URL parameter
+  const addressId = req.params.id;
 
   const success = await addressService.setDefaultAddress(addressId, userId);
 

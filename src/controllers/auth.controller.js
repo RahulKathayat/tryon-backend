@@ -65,12 +65,16 @@ const verifyEmail = catchAsync(async (req, res) => {
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
+  console.log('req.body---------------------------------------------------------------------', req.body);
   const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
-  if (req.body.role === 'Admin') {
-    host = config.email.adminHost;
-  } else if (req.body.role === 'Customer') {
-    host = config.email.customerHost;
-  }
+  let host;
+  // if (req.body.role === 'Admin') {
+  //   host = config.email.adminHost;
+  // } else if (req.body.role === 'Customer') {
+  //   host = config.email.CUSTOMER_HOST;
+  // }
+  host = config.email.CUSTOMER_HOST;
+  console.log('host===================================', host, '**********', config.email.adminHost, config.email.adminHost);
   const data = await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken, host);
   // res.status(httpStatus.NO_CONTENT).send();
   res.send({ message: 'Email sent successfully!!' });

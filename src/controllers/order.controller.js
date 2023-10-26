@@ -95,6 +95,7 @@ const deleteOrder = catchAsync(async (req, res) => {
 
 const getOrderForUser = catchAsync(async (req, res) => {
   const userId = req.user.id;
+  console.log('user id======================', userId);
   const query = {};
   query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);

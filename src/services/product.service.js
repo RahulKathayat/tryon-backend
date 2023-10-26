@@ -27,7 +27,7 @@ const getProduct = async (query, options, between) => {
       [Op.lte]: between.priceTo
     };
   }
-  const support = await Product.findAndCountAll({
+  const support = await Product.findAll({
     where: query,
     order: [
       ['updatedAt', 'DESC'],

@@ -21,6 +21,17 @@ const getOrderDetails = async (query, options) => {
   return support;
 };
 
+const getOrderDetailsByOrderId = async (id) => {
+  try {
+    const data = await OrderDetails.findAll({
+      where: { orderId: id },
+      include: [{ model: Product }, { model: Orders }]
+    });
+    return data;
+  } catch (error) {
+    console.error('orderDetails not found!!', error);
+  }
+};
 const getOrderDetailsById = async (id) => {
   try {
     const data = await OrderDetails.findAll({
@@ -80,5 +91,6 @@ module.exports = {
   updateOrderDetailsById,
   deleteOrderDetailsById,
   getOrderDetailsById,
-  getOrderDetailsForUser
+  getOrderDetailsForUser,
+  getOrderDetailsByOrderId
 };

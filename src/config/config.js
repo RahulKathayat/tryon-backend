@@ -49,7 +49,7 @@ module.exports = {
     },
     from: envVars.EMAIL_FROM,
     adminHost: envVars.ADMIN_HOST,
-    customerHost: envVars.CUSTOMER_HOST
+    CUSTOMER_HOST: envVars.CUSTOMER_HOST
   },
   development: {
     username: envVars.DB_USER,
@@ -79,13 +79,13 @@ module.exports = {
     host: envVars.DB_HOST,
     dialect: envVars.DB_DIALECT
   },
-  shipRocket:{
+  shipRocket: {
     username: envVars.SR_USER,
-    password:envVars.SR_PASS
+    password: envVars.SR_PASS
   },
 
-  razorPay:{
-    keyId:envVars.RAZORPAY_API_KEY,
-    keySecret:envVars.RAZORPAY_API_SECRET
+  razorPay: {
+    keyId: envVars.RAZORPAY_API_KEY,
+    keySecret: envVars.RAZORPAY_API_SECRET
   }
 };

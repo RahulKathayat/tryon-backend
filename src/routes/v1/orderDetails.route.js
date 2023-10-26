@@ -8,6 +8,7 @@ const { commonService } = require('../../services');
 // const auth = require('../../middlewares/auth');
 
 const router = express.Router();
+router.get('/getOrderDetailsByOrderId/:id', auth(), orderDetailsController.getOrderDetailsByOrderId);
 router
   .route('/')
   .get(auth(), orderDetailsController.getOrderDetails)

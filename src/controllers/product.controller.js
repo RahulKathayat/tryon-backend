@@ -269,14 +269,12 @@ const getProductsForUser = async (req, res, next) => {
 
   try {
     let products = await productService.getProductForWishlist();
+    // console.log('check data type', );
     products = products.map((product) => product.get({ plain: true }));
-
     if (!Array.isArray(products)) {
       return next(new Error('Unexpected response format from productService.getProductForWishlist'));
     }
-
     const wishlistedProductIds = await wishlistService.isWishlisted(userId);
-    console.log('vbxasghvxa++++++++++++++++++++++++++++++++', wishlistedProductIds);
 
     if (!Array.isArray(wishlistedProductIds)) {
       return next(new Error('Unexpected response format from wishlistService.isWishlisted'));

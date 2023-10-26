@@ -31,7 +31,7 @@ const sendEmail = async (to, subject, html) => {
  */
 const sendResetPasswordEmail = async (to, token, host) => {
   const subject = 'Reset password';
-  const resetPasswordUrl = `${host}/reset-password?token=${token}`;
+  const resetPasswordUrl = `${host}/?token=${token}`;
 
   const text = `
 <!DOCTYPE html>
