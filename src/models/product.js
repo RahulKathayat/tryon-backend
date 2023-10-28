@@ -78,6 +78,9 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+      },
+      finalAmount: {
+        type: DataTypes.DOUBLE
       }
     },
     {

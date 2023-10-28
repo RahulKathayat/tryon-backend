@@ -1,4 +1,4 @@
-const { Orders, OrderDetails, Users } = require('../models');
+const { Orders, OrderDetails, Users, Product } = require('../models');
 // const orderDetails = require('../models/orderDetails');
 
 const createOrder = async (_userBody) => {
@@ -64,18 +64,41 @@ const deleteOrderById = async (Id, userId) => {
   }
 };
 
-// For User
+// For users
 const getOrderForUser = async (query, options, userId) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
-  const support = await Orders.findAndCountAll({
+  const result = await Orders.findAndCountAll({
     where: { userId: userId, status: true },
     order: [['updatedAt', 'DESC']],
-    include: [{ model: Users }],
+    include: [
+      {
+        model: Users
+      },
+      {
+        model: OrderDetails,
+        include: [
+          {
+            model: Product
+          }
+        ]
+      }
+    ],
     limit,
     offset
   });
-  return support;
+
+  // Compute totalAmount for each order based on its OrderDetails
+  const ordersWithTotalAmount = result.rows.map((order) => {
+    const totalAmount = order.OrderDetails.reduce((sum, detail) => sum + detail.amount, 0);
+    order.dataValues.totalAmount = totalAmount;
+    return order;
+  });
+
+  return {
+    ...result,
+    rows: ordersWithTotalAmount
+  };
 };
 
 const createOrderForUser = async (_userBody, userId) => {

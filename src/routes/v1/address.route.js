@@ -9,8 +9,6 @@ const { commonService } = require('../../services');
 
 const router = express.Router();
 
-router.put('/default/:id', auth(), addressController.setDefault);
-
 router
   .route('/')
   .get(auth(), addressController.getAddress)

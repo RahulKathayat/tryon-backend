@@ -9,6 +9,7 @@ const path = require('path');
 const { Op } = require('sequelize');
 const express = require('express');
 const app = express();
+const { encode } = require('hi-base32');
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -134,6 +135,16 @@ const getProductBySearch = catchAsync(async (req, res) => {
         },
         {
           colour: {
+            [Op.like]: `%${search}%`
+          }
+        },
+        {
+          description: {
+            [Op.like]: `%${search}%`
+          }
+        },
+        {
+          additionalInformation: {
             [Op.like]: `%${search}%`
           }
         }

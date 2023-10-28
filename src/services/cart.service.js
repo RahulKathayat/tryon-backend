@@ -120,6 +120,47 @@ const clearCartByUserId = async (userId) => {
 };
 
 // For Checkout
+// async function createCheckout(userId) {
+//   if (!userId) {
+//     throw new Error('No user ID provided.');
+//   }
+
+//   // Fetch the user's cart
+//   const cart = await Cart.findOne({ where: { userId: userId } });
+
+//   // If there's no cart for the user, throw an error
+//   if (!cart) {
+//     throw new Error('Cart not found for this user or unauthorized.');
+//   }
+
+//   // Create an order from the cart's data
+//   const order = await Orders.create({
+//     userId: cart.userId,
+//     totalItems: Object.keys(cart.cartDetail).length,
+//     totalQuantity: Object.values(cart.cartDetail).reduce((acc, item) => acc + item.quantity, 0),
+//     status: true
+//   });
+
+//   // Extract cart details and transform them into order details data
+//   const cartDetails = cart?.cartDetail || {};
+
+//   if (!Object.keys(cartDetails).length) {
+//     throw new Error('No cart details available for processing.');
+//   }
+
+//   const orderDetailsData = Object.values(cartDetails).map((detail) => ({
+//     orderId: order.id,
+//     productId: detail.productId,
+//     type: detail.type || 'On Process',
+//     amount: detail.price * detail.quantity,
+//     totalQuantity: detail.quantity,
+//     status: true
+//   }));
+
+//   const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
+//   return { order, orderDetailsArray };
+// }
+
 async function createCheckout(userId) {
   if (!userId) {
     throw new Error('No user ID provided.');
@@ -158,7 +199,13 @@ async function createCheckout(userId) {
   }));
 
   const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
-  return { order, orderDetailsArray };
+
+  // Compute total amount for the order
+  const totalAmount = orderDetailsData.reduce((acc, detail) => acc + detail.amount, 0);
+  console.log('total Amount=============================', totalAmount);
+
+  // Return the order, order details, and total amount
+  return { order, orderDetailsArray, totalAmount };
 }
 
 module.exports = {

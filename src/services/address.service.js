@@ -1,14 +1,19 @@
 const { Address, Users } = require('../models');
+const { Op } = require('sequelize');
 
-const createAddress = async (_userBody, userId) => {
-  let userBody = _userBody;
-  console.log('===============', userBody);
-  userBody = {
-    ...userBody,
-    userId: userId
-  };
-  const data = await Address.create(userBody);
-  console.log('data', data);
+const createAddress = async (addressData, userId) => {
+  // If the new address is set as default
+  if (addressData.defaultAddress) {
+    // Set all other addresses for the user to not be the default
+    await Address.update({ defaultAddress: false }, { where: { userId: userId } });
+  }
+
+  // Now, create the new address
+  const data = await Address.create({
+    ...addressData,
+    userId
+  });
+
   return data;
 };
 
@@ -46,14 +51,18 @@ const getAddressById = async (id) => {
 };
 
 const updateAddressById = async (newData, id) => {
-  const findData = await Address.findOne({
-    where: id
-  });
-  if (findData) {
-    return Address.update(newData, { where: id });
-  } else {
-    return;
+  const findData = await Address.findOne({ where: id });
+
+  if (!findData) {
+    return null; // Address not found
   }
+  if (newData.defaultAddress) {
+    await Address.update({ defaultAddress: false }, { where: { userId: findData.userId, id: { [Op.ne]: id.id } } });
+  }
+
+  await Address.update(newData, { where: id });
+
+  return newData;
 };
 
 const deleteAddressById = async (Id) => {

@@ -103,9 +103,8 @@ async function createCheckout(req, res) {
   try {
     const userId = req.user.id;
 
-    const { order, orderDetailsArray } = await cartService.createCheckout(userId);
-
-    res.json({ order, orderDetails: orderDetailsArray });
+    const { order, orderDetailsArray, totalAmount } = await cartService.createCheckout(userId);
+    res.json({ order, orderDetails: orderDetailsArray, totalAmount });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

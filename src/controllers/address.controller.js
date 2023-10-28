@@ -54,7 +54,7 @@ const updateAddress = catchAsync(async (req, res) => {
     const newData = req.body;
     const updatedUser = await addressService.updateAddressById(newData, params);
     if (updatedUser) {
-      res.status(200).send({ data: updatedUser, message: 'address updated successfully' });
+      res.status(200).send({ message: 'address updated successfully' });
     } else {
       res.status(404).send({ message: 'address not found', status: 0 });
     }
@@ -75,25 +75,11 @@ const deleteAddress = catchAsync(async (req, res) => {
   }
 });
 
-const setDefault = catchAsync(async (req, res) => {
-  const userId = req.user.id;
-  const addressId = req.params.id;
-
-  const success = await addressService.setDefaultAddress(addressId, userId);
-
-  if (success) {
-    res.status(200).send({ message: 'Address set as default successfully' });
-  } else {
-    res.status(500).send({ message: 'Error setting address as default' });
-  }
-});
-
 module.exports = {
   createAddress,
   deleteAddress,
   getAddress,
   updateAddress,
   getAddressById,
-  getAddressMe,
-  setDefault
+  getAddressMe
 };

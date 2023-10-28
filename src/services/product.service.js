@@ -2,12 +2,35 @@ const { Product, Category, SubCategory, SubSubCategory } = require('../models');
 const { Op } = require('sequelize');
 
 const createProduct = async (_userBody) => {
-  const userBody = _userBody;
+  let userBody = _userBody;
   const colour = _userBody.colour;
   const size = _userBody.size;
   _userBody.colour = JSON.stringify(colour);
   _userBody.size = JSON.stringify(size);
+  let finalAmount = userBody.totalPrice - ((userBody.totalPrice * userBody.discountPercentage) / 100).toFixed(2);
+  finalAmount = finalAmount.toFixed(2);
+  console.log('final amoutn===============', finalAmount);
+  userBody = {
+    ...userBody,
+    finalAmount: finalAmount
+  };
   return Product.create(userBody);
+};
+
+const getProductByproductId = async (id) => {
+  let promises = id.map(async (item) => {
+    return Product.findAll({
+      where: { id: item.productId }
+    });
+  });
+
+  let results = await Promise.all(promises);
+
+  // Flatten the results in case `Product.findAll` returns arrays
+  let suppordata;
+  return (suppordata = [].concat(...results));
+
+  console.log('hrergt==============================================', suppordata);
 };
 
 const getProduct = async (query, options, between) => {
@@ -27,18 +50,28 @@ const getProduct = async (query, options, between) => {
       [Op.lte]: between.priceTo
     };
   }
-  const support = await Product.findAll({
+
+  const products = await Product.findAll({
     where: query,
     order: [
       ['updatedAt', 'DESC'],
-      ['totalPrice', 'DESC'],
-      ['totalPrice', 'ASC']
+      ['totalPrice', 'DESC']
     ],
     include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
     limit,
     offset
   });
-  return support;
+
+  // const ProductWithFinalAmount = products.map((product) => {
+  //   const totalAmount = product.totalPrice;
+
+  //   const finalAmount = totalAmount - (totalAmount * product.discountPercentage) / 100;
+
+  //   product.dataValues.finalAmount = finalAmount;
+  return products;
+  // });
+
+  // return ProductWithFinalAmount; // This is now an array with the finalAmount added.
 };
 
 const getProductBySearch = async (query, options) => {
@@ -46,12 +79,16 @@ const getProductBySearch = async (query, options) => {
     const limit = Number(options.limit);
     const offset = options.page ? limit * (options.page - 1) : 0;
 
+    if (query && query.search) {
+      query.search = decodeURIComponent(query.search);
+      query.search = query.search.replace(/\"%/g, '').replace(/%\"/g, ''); // Remove extra quotes and percent signs.
+    }
+
     if (query == null || options == null) {
       const data = await Product.findAndCountAll({
         limit: limit,
         offset: offset
       });
-
       return data;
     } else {
       const data = await Product.findAndCountAll({
@@ -59,7 +96,6 @@ const getProductBySearch = async (query, options) => {
         limit: limit,
         offset: offset
       });
-
       return data;
     }
   } catch (error) {
@@ -71,7 +107,7 @@ const getProductBySearch = async (query, options) => {
 const getHighToLowPrice = async (id) => {
   try {
     const data = await Product.findAll({
-      order: [['totalPrice', 'DESC']]
+      order: [['finalAmount', 'DESC']]
     });
     console.log('data==========================');
     return data;
@@ -82,7 +118,7 @@ const getHighToLowPrice = async (id) => {
 const getLowToHighPrice = async (id) => {
   try {
     const data = await Product.findAll({
-      order: [['totalPrice', 'ASC']]
+      order: [['finalAmount', 'ASC']]
     });
     return data;
   } catch (error) {
@@ -119,15 +155,22 @@ const getProductById = async (id) => {
   }
 };
 
-const updateProductById = async (id, newData) => {
+const updateProductById = async (id, data) => {
   try {
     const findData = await Product.findOne({
       where: id
     });
+    let newData = data;
+    // console.log('findDatadasjfdjlkflsdnfjksdnsdnfsdkvnd', newData);
     let colour = newData.colour;
     let size = newData.size;
     newData.colour = JSON.stringify(colour);
     newData.size = JSON.stringify(size);
+    const finalAmount = newData.totalPrice - [(newData.totalPrice * newData.discountPercentage) / 100];
+    newData = {
+      ...newData,
+      finalAmount: finalAmount
+    };
     if (findData) {
       return Product.update(newData, { where: id });
     } else {
@@ -177,6 +220,7 @@ module.exports = {
   getHighToLowPrice,
   isUpcomingProduct,
   getProductBySearch,
-  getProductForWishlist
+  getProductForWishlist,
+  getProductByproductId
   // updateImage
 };
