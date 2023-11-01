@@ -33,9 +33,15 @@ const getProductByproductId = async (id) => {
   console.log('hrergt==============================================', suppordata);
 };
 
-const getProduct = async (query, options, between) => {
+const getProduct = async (query, options, between, order) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
+
+  let orderCriteria = [['finalAmount', 'ASC']]; // Default order criteria (ascending)
+
+  if (order === 'desc') {
+    orderCriteria = [['finalAmount', 'DESC']]; // If order is 'desc', change the order criteria to descending
+  }
 
   if (between.priceFrom && between.priceTo) {
     query.totalPrice = {
@@ -53,10 +59,7 @@ const getProduct = async (query, options, between) => {
 
   const products = await Product.findAll({
     where: query,
-    order: [
-      ['updatedAt', 'DESC'],
-      ['totalPrice', 'DESC']
-    ],
+    order: orderCriteria,
     include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
     limit,
     offset
@@ -74,46 +77,7 @@ const getProduct = async (query, options, between) => {
   // return ProductWithFinalAmount; // This is now an array with the finalAmount added.
 };
 
-const getProductBySearch = async (query, options, order) => {
-  try {
-    const limit = Number(options.limit);
-    const offset = options.page ? limit * (options.page - 1) : 0;
-
-    if (query && query.search) {
-      query.search = decodeURIComponent(query.search);
-      query.search = query.search.replace(/\"%/g, '').replace(/%\"/g, ''); // Remove extra quotes and percent signs.
-    }
-
-    let orderCriteria = [['finalAmount', 'ASC']]; // Default order criteria (ascending)
-
-    if (order === 'desc') {
-      orderCriteria = [['finalAmount', 'DESC']]; // If order is 'desc', change the order criteria to descending
-    }
-
-    if (query == null || options == null) {
-      const data = await Product.findAndCountAll({
-        limit: limit,
-        offset: offset,
-        order: orderCriteria,
-      });
-      return data;
-    } else {
-      const data = await Product.findAndCountAll({
-        where: { ...query },
-        limit: limit,
-        offset: offset,
-        order: orderCriteria,
-      });
-      return data;
-    }
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    throw error;
-  }
-};
-
-
-// const getProductBySearch = async (query, options,order) => {
+// const getProductBySearch = async (query, options, order) => {
 //   try {
 //     const limit = Number(options.limit);
 //     const offset = options.page ? limit * (options.page - 1) : 0;
@@ -123,25 +87,64 @@ const getProductBySearch = async (query, options, order) => {
 //       query.search = query.search.replace(/\"%/g, '').replace(/%\"/g, ''); // Remove extra quotes and percent signs.
 //     }
 
+//     let orderCriteria = [['finalAmount', 'ASC']]; // Default order criteria (ascending)
+
+//     if (order === 'desc') {
+//       orderCriteria = [['finalAmount', 'DESC']]; // If order is 'desc', change the order criteria to descending
+//     }
+
 //     if (query == null || options == null) {
 //       const data = await Product.findAndCountAll({
 //         limit: limit,
-//         offset: offset
+//         offset: offset,
+//         order: orderCriteria
 //       });
 //       return data;
 //     } else {
 //       const data = await Product.findAndCountAll({
 //         where: { ...query },
 //         limit: limit,
-//         offset: offset
+//         offset: offset,
+//         order: orderCriteria
 //       });
 //       return data;
 //     }
 //   } catch (error) {
 //     console.error('Error fetching products:', error);
 //     throw error;
-//   }s
+//   }
 // };
+
+const getProductBySearch = async (query, options) => {
+  try {
+    const limit = Number(options.limit);
+    const offset = options.page ? limit * (options.page - 1) : 0;
+
+    if (query && query.search) {
+      query.search = decodeURIComponent(query.search);
+      query.search = query.search.replace(/\"%/g, '').replace(/%\"/g, ''); // Remove extra quotes and percent signs.
+    }
+
+    if (query == null || options == null) {
+      const data = await Product.findAndCountAll({
+        limit: limit,
+        offset: offset
+      });
+      return data;
+    } else {
+      const data = await Product.findAndCountAll({
+        where: { ...query },
+        limit: limit,
+        offset: offset
+      });
+      return data;
+    }
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
+  }
+  s;
+};
 
 const getHighToLowPrice = async (id) => {
   try {
