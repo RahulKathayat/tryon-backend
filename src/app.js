@@ -67,4 +67,8 @@ app.use(errorConverter);
 // handle error
 app.use(errorHandler);
 
+// razorpay routes
+// const paymentRoutes = require('./routes/v1/payment.route');
+// app.use('/razorpay', paymentRoutes);
+
 module.exports = app;
