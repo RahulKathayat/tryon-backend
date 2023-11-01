@@ -95,10 +95,14 @@ const getProduct = catchAsync(async (req, res) => {
 const getProductBySearch = catchAsync(async (req, res) => {
   let query = {};
   query.status = req.query.status ? req.query.status : true;
-  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const options = pick(req.query, ['limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
   const search = req.query.search;
+  const order = req.query.order; // 'asc' or 'desc' for ordering
+
   console.log('search==============', search);
+  console.log('order==============', order);
+
   if (search) {
     query = {
       ...query,
@@ -113,54 +117,92 @@ const getProductBySearch = catchAsync(async (req, res) => {
             [Op.like]: `%${search}%`
           }
         },
-        {
-          productType: {
-            [Op.like]: `%${search}%`
-          }
-        },
-        {
-          designerName: {
-            [Op.like]: `%${search}%`
-          }
-        },
-        {
-          fabric: {
-            [Op.like]: `%${search}%`
-          }
-        },
-        {
-          size: {
-            [Op.like]: `%${search}%`
-          }
-        },
-        {
-          colour: {
-            [Op.like]: `%${search}%`
-          }
-        },
-        {
-          description: {
-            [Op.like]: `%${search}%`
-          }
-        },
-        {
-          additionalInformation: {
-            [Op.like]: `%${search}%`
-          }
-        }
+        // ... (other search criteria)
       ]
     };
   }
-  console.log('Query==========================================', query);
 
-  const data = await productService.getProductBySearch(query, options, between);
+  const data = await productService.getProductBySearch(query, options, order);
 
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
   } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
+    res.status(httpStatus.NO_CONTENT).send({ message: 'No data found' });
   }
 });
+
+
+
+
+// const getProductBySearch = catchAsync(async (req, res) => {
+//   let query = {};
+//   query.status = req.query.status ? req.query.status : true;
+//   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+//   const between = pick(req.query, ['priceFrom', 'priceTo']);
+//   const search = req.query.search;
+//   console.log('search==============', search);
+//   if (search) {
+//     query = {
+//       ...query,
+//       [Op.or]: [
+//         {
+//           productName: {
+//             [Op.like]: `%${search}%`
+//           }
+//         },
+//         {
+//           brandName: {
+//             [Op.like]: `%${search}%`
+//           }
+//         },
+//         {
+//           productType: {
+//             [Op.like]: `%${search}%`
+//           }
+//         },
+//         {
+//           designerName: {
+//             [Op.like]: `%${search}%`
+//           }
+//         },
+//         {
+//           fabric: {
+//             [Op.like]: `%${search}%`
+//           }
+//         },
+//         {
+//           size: {
+//             [Op.like]: `%${search}%`
+//           }
+//         },
+//         {
+//           colour: {
+//             [Op.like]: `%${search}%`
+//           }
+//         },
+//         {
+//           description: {
+//             [Op.like]: `%${search}%`
+//           }
+//         },
+//         {
+//           additionalInformation: {
+//             [Op.like]: `%${search}%`
+//           }
+//         }
+//       ]
+//     };
+//   }
+//   console.log('Query==========================================', query);
+
+//   const data = await productService.getProductBySearch(query, options, between);
+
+//   if (data) {
+//     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
+//   } else {
+//     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
+//   }
+// });
 
 const getHighToLowPrice = catchAsync(async (req, res) => {
   const data = await productService.getHighToLowPrice(req.params.id);

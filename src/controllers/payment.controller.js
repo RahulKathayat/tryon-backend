@@ -75,6 +75,13 @@ const createOrderForPayment = catchAsync(async (req, res) => {
   }
 });
 
+const createCustomer=catchAsync(async(req,res)=>{
+  const customerData = req.body;
+  paymentService.createCustomer(customerData, res);
+})
+
+
+
 const initiatePayment = catchAsync(async (req, res) => {
   const { orderId, amount, currency } = req.body;
 
@@ -85,6 +92,11 @@ const initiatePayment = catchAsync(async (req, res) => {
     res.status(500).json({ message: 'Error initiating payment', error });
   }
 });
+ 
+// for webhook interaction
+const verify=catchAsync(async(req,res)=>{
+  paymentService.verifySignature(req, res)
+});
 
 module.exports = {
   createPayment,
@@ -93,5 +105,7 @@ module.exports = {
   updatePayment,
   getPaymentById,
   createOrderForPayment,
-  initiatePayment
+  initiatePayment,
+  verify,
+  createCustomer
 };

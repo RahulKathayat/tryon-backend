@@ -5,6 +5,7 @@ const { paymentController } = require('../../controllers');
 const authValidation = require('../../validations/auth.validation');
 const { paymentValidation } = require('../../validations');
 const { commonService } = require('../../services');
+
 // const auth = require('../../middlewares/auth');
 
 const router = express.Router();
@@ -16,6 +17,8 @@ router
 //Razor pay Api's
 router.post('/createOrder', paymentController.createOrderForPayment);
 router.post('/initiatePayment', paymentController.initiatePayment);
+router.post('/createCustomer', paymentController.createCustomer);
+router.post("/verification", paymentController.verify);  //for webhook
 // router.post('/createCustomer', paymentController.createCustomer);
 
 // router.post('/verifyPayment', paymentController.verifyPayment);

@@ -1,6 +1,8 @@
 const { Payment } = require('../models');
 const razorpayConf = require('../config/razorpay');
 const Razorpay = require('razorpay');
+const secret = "razorpaysecret";
+const crypto = require('crypto');
 
 const razorpay = new Razorpay({
   key_id: razorpayConf.key_id,
@@ -81,6 +83,21 @@ const createOrderForPayment = async (amount, currency, receipt, notes) => {
   }
 };
 
+const createCustomer = async (customerData, res) => {
+  try {
+    const customer = await razorpay.customers.create(customerData);
+    res.status(201).json({ message: "Created Successfully!!" });
+  } catch (error) {
+    res.status(409).json({ error: "Customer already exists" });
+    // if (error.code === 'customer_exists') {
+    //   res.status(409).json({ error: "Customer already exists" });
+    // } else {
+    //   res.status(500).json({ error: "Internal Server Error" });
+    // }
+  }
+};
+
+
 const initiatePayment = async (orderId, amount, currency) => {
   try {
     const payment = await razorpay.payments.create({
@@ -96,6 +113,32 @@ const initiatePayment = async (orderId, amount, currency) => {
   }
 };
 
+// for webhook 
+const verifySignature=async(req,res)=>{
+  const requestBody = req.body;
+  const receivedSignature = req.headers["x-razorpay-signature"];
+
+  const calculatedSignature = calculateSignature(secret, requestBody);
+
+  console.log('Received Signature:', receivedSignature);
+  console.log('Calculated Signature:', calculatedSignature);
+
+  if (receivedSignature === calculatedSignature) {
+    console.log("Request is legit");
+    res.status(200).json({
+      message: "OK",
+    });
+  } else {
+    res.status(403).json({ message: "Invalid" });
+  }
+};
+
+function calculateSignature(secret, requestBody) {
+  const shasum = crypto.createHmac("sha256", secret);
+  shasum.update(JSON.stringify(requestBody));
+  return shasum.digest("hex");
+}
+
 module.exports = {
   createPayment,
   getPayment,
@@ -103,5 +146,8 @@ module.exports = {
   deletePaymentById,
   getPaymentById,
   createOrderForPayment,
-  initiatePayment
+  initiatePayment,
+  verifySignature,
+  createCustomer
+
 };
