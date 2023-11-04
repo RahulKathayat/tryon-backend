@@ -81,6 +81,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       finalAmount: {
         type: DataTypes.DOUBLE
+      },
+      averageRating: {
+        type: DataTypes.INTEGER
       }
     },
     {

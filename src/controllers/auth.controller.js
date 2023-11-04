@@ -11,7 +11,7 @@ const register = catchAsync(async (req, res) => {
   const cartData = await cartService.createCart(user.id);
   const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
   const tokens = await tokenService.generateAuthTokens(user);
-  const host = config.email.customerHost;
+  const host = config.email.CUSTOMER_HOST;
   await emailService.sendVerificationEmail(req.body.email, verifyEmailToken, host);
   res.status(200).send({ message: 'register successfully', user, tokens });
 });

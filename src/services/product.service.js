@@ -1,5 +1,6 @@
-const { Product, Category, SubCategory, SubSubCategory } = require('../models');
+const { Product, Category, SubCategory, SubSubCategory, Ratings } = require('../models');
 const { Op } = require('sequelize');
+const cron = require('node-cron');
 
 const createProduct = async (_userBody) => {
   let userBody = _userBody;
@@ -37,10 +38,12 @@ const getProduct = async (query, options, between, order) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
 
-  let orderCriteria = [['finalAmount', 'ASC']]; // Default order criteria (ascending)
+  let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
 
   if (order === 'desc') {
-    orderCriteria = [['finalAmount', 'DESC']]; // If order is 'desc', change the order criteria to descending
+    orderCriteria = [['finalAmount', 'DESC']];
+  } else if (order == 'asc') {
+    orderCriteria = [['finalAmount', 'ASC']];
   }
 
   if (between.priceFrom && between.priceTo) {
@@ -64,13 +67,6 @@ const getProduct = async (query, options, between, order) => {
     limit,
     offset
   });
-
-  // const ProductWithFinalAmount = products.map((product) => {
-  //   const totalAmount = product.totalPrice;
-
-  //   const finalAmount = totalAmount - (totalAmount * product.discountPercentage) / 100;
-
-  //   product.dataValues.finalAmount = finalAmount;
   return products;
   // });
 
@@ -203,7 +199,6 @@ const updateProductById = async (id, data) => {
       where: id
     });
     let newData = data;
-    // console.log('findDatadasjfdjlkflsdnfjksdnsdnfsdkvnd', newData);
     let colour = newData.colour;
     let size = newData.size;
     newData.colour = JSON.stringify(colour);
@@ -252,8 +247,21 @@ const getProductForWishlist = async () => {
   }
 };
 
+const updateAvrageRatings = async (data) => {
+  try {
+    data.map((item) => {
+      const avrageData = { averageRating: item.averageRating };
+      const id = { id: item.productId };
+      return Product.update(avrageData, { where: id });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   createProduct,
+  updateAvrageRatings,
   getProduct,
   updateProductById,
   deleteProductById,

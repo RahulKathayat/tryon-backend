@@ -1,7 +1,12 @@
-const { Ratings, Users, Product } = require('../models');
-
-const createRatings = async (_userBody) => {
-  const userBody = _userBody;
+const { Ratings, Users, Product, sequelize } = require('../models');
+// const { Sequelize } = require('sequelize');
+// const sequelize = new Sequelize('');
+const createRatings = async (_userBody, userId) => {
+  let userBody = _userBody;
+  userBody = {
+    ...userBody,
+    userId: userId
+  };
   return Ratings.create(userBody);
 };
 
@@ -30,9 +35,9 @@ const getRatingsById = async (id) => {
   }
 };
 
-const updateRatingsById = async (id, newData) => {
+const updateRatingsById = async (id, userId, newData) => {
   const findData = await Ratings.findOne({
-    where: id
+    where: { userId: userId }
   });
   if (findData) {
     return Ratings.update(newData, { where: id });
@@ -59,10 +64,60 @@ const deleteRatingsById = async (Id) => {
   }
 };
 
+const getUserRatings = async (query, options, userId) => {
+  const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Ratings.findAndCountAll({
+    where: { userId: userId },
+    order: [['updatedAt', 'DESC']],
+    include: [{ model: Users }, { model: Product }],
+    limit,
+    offset
+  });
+  return support;
+};
+
+const deleteUserRatings = async (Id, userId) => {
+  try {
+    const user = await Ratings.findOne({ where: Id });
+
+    if (!user) {
+      throw new Error('Ratings not found');
+    }
+    await user.update({ status: false });
+
+    console.log('Ratings deleted successfully');
+
+    return { message: 'Ratings deleted successfully' };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const calculateAverageRatings = async () => {
+  try {
+    const [results] = await sequelize.query(`
+      SELECT productId, AVG(ratings) AS averageRating
+      FROM Ratings
+      GROUP BY productId
+    `);
+    console.log('Average ratings calculated successfully', results);
+    return results;
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { calculateAverageRatings };
+
 module.exports = {
   createRatings,
   getRatings,
   updateRatingsById,
   deleteRatingsById,
-  getRatingsById
+  getRatingsById,
+  getUserRatings,
+  deleteUserRatings,
+  calculateAverageRatings
 };

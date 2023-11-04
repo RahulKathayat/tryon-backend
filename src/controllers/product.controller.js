@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const productService = require('../services/product.service');
 const wishlistService = require('../services/wishList.service');
+const ratingsService = require('../services/ratings.services');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const sharp = require('sharp');
@@ -10,6 +11,7 @@ const { Op } = require('sequelize');
 const express = require('express');
 const app = express();
 const { encode } = require('hi-base32');
+const product = require('../models/product');
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -84,6 +86,12 @@ const getProduct = catchAsync(async (req, res) => {
     }
   });
   const data = await productService.getProduct(query, options, between, order);
+  if (data) {
+    const getAvrageRatings = await ratingsService.calculateAverageRatings();
+    if (getAvrageRatings) {
+      const updateAvrageRatings = await productService.updateAvrageRatings(getAvrageRatings);
+    }
+  }
 
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
@@ -190,7 +198,7 @@ const getProductBySearch = catchAsync(async (req, res) => {
       ]
     };
   }
-  console.log('Query==========================================', query);
+  // console.log('Query==========================================', query);
 
   const data = await productService.getProductBySearch(query, options, between);
 
