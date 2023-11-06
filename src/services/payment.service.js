@@ -89,11 +89,6 @@ const createCustomer = async (customerData, res) => {
     res.status(201).json({ message: "Created Successfully!!" });
   } catch (error) {
     res.status(409).json({ error: "Customer already exists" });
-    // if (error.code === 'customer_exists') {
-    //   res.status(409).json({ error: "Customer already exists" });
-    // } else {
-    //   res.status(500).json({ error: "Internal Server Error" });
-    // }
   }
 };
 
@@ -105,6 +100,7 @@ const initiatePayment = async (orderId, amount, currency) => {
       amount: amount,
       currency: currency
     });
+    console.log("payment======================",payment);
 
     return payment;
   } catch (error) {

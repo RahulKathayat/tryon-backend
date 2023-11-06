@@ -1,4 +1,4 @@
 module.exports = {
-  key_id: 'rzp_test_yZobVDNvJEKGqn',
-  key_secret: 'OYDGEaDyfD3hvkD5hdTXe3J7'
+  key_id: 'rzp_live_QQgELRZbwLTE2n',
+  key_secret: 'BiwjrN0dWk4nNfHBA6Q8iFxG'
 };
