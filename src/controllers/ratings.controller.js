@@ -9,6 +9,12 @@ const createRatings = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await ratingsService.createRatings(userBody, userId);
   if (data) {
+    const getAvrageRatings = await ratingsService.calculateAverageRatings();
+    if (getAvrageRatings) {
+      const updateAvrageRatings = await productService.updateAvrageRatings(getAvrageRatings);
+    }
+  }
+  if (data) {
     await res.status(200).send({ message: 'ratings created successfully' });
   } else {
     await res.status(404).send({ message: 'ratings not created' });

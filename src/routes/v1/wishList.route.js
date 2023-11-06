@@ -9,12 +9,13 @@ const router = express.Router();
 
 router.get('/me', auth(), wishlistController.getWishlistByUserId);
 router.delete('/me/:productId', auth(), wishlistController.deleteWishlist);
-router.get('/me/isWishlisted', auth(), wishlistController.isWishlisted);
+router.post('/me',auth(), validate(wishlistValidation.createWishlist), wishlistController.createWishlist);
+// router.get('/me/isWishlisted', auth(), wishlistController.isWishlisted);
 
 router
   .route('/')
   .get(auth(), wishlistController.getWishlist)
-  .post(auth(), validate(wishlistValidation.createWishlist), wishlistController.createWishlist);
+ 
 router
   .route('/:id')
   .put(auth(), validate(wishlistValidation.updateWishlist), wishlistController.updateWishlist)

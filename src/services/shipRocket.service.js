@@ -7,9 +7,7 @@ const generateShipRocketToken = async (newData) => {
   try {  
     const response = await axios.post(SHIPROCKET_API_URL,newData, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaXYyLnNoaXByb2NrZXQuaW4vdjEvZXh0ZXJuYWwvYXV0aC9sb2dpbiIsImlhdCI6MTY5NjQyMzA3OCwiZXhwIjoxNjk3Mjg3MDc4LCJuYmYiOjE2OTY0MjMwNzgsImp0aSI6IkROQmU2RTFXQWJnNjJEbDUiLCJzdWIiOjQwMTQ1NjQsInBydiI6IjA1YmI2NjBmNjdjYWM3NDVmN2IzZGExZWVmMTk3MTk1YTIxMWU2ZDkifQ.YUlc4L1NETgmWgo4PON6tMfB97t5VU1zn1LErZ6N-XM'
-        // 'Authorization': 'Bearer {{SHIPROCKET_API_TOKEN}}'
+        'Content-Type': 'application/json'
       },
     });
     return response.data;
@@ -25,7 +23,7 @@ const getAllOrders=async()=>{
     const response=await axios.get(SHIPROCKET_API_URL,{
       headers:{
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaXYyLnNoaXByb2NrZXQuaW4vdjEvZXh0ZXJuYWwvYXV0aC9sb2dpbiIsImlhdCI6MTY5NjUxOTYyMiwiZXhwIjoxNjk3MzgzNjIyLCJuYmYiOjE2OTY1MTk2MjIsImp0aSI6Imw3QWFEY2xzOXhaU0pjSEsiLCJzdWIiOjQwMTQ1NjQsInBydiI6IjA1YmI2NjBmNjdjYWM3NDVmN2IzZGExZWVmMTk3MTk1YTIxMWU2ZDkifQ.x4B6-Ak-ReUHCEzaEB9qcj_dXjCrt2PuXTR4JySsegY'
+        'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaXYyLnNoaXByb2NrZXQuaW4vdjEvZXh0ZXJuYWwvYXV0aC9sb2dpbiIsImlhdCI6MTY5OTI3NzI3MywiZXhwIjoxNzAwMTQxMjczLCJuYmYiOjE2OTkyNzcyNzMsImp0aSI6ImplcXNkYmFESUdTQUNwMTkiLCJzdWIiOjE1OTkxMjUsInBydiI6IjA1YmI2NjBmNjdjYWM3NDVmN2IzZGExZWVmMTk3MTk1YTIxMWU2ZDkifQ.Na5lM2qLo5S0k3-3E2kdXD8mWJKpjO_7uOblpW2V4Yw'
         // 'Authorization': 'Bearer {{SHIPROCKET_API_TOKEN}}'
 
       },
@@ -44,7 +42,7 @@ const createOrder = async (orderData) => {
     const response = await axios.post(SHIPROCKET_API_URL,orderData, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaXYyLnNoaXByb2NrZXQuaW4vdjEvZXh0ZXJuYWwvYXV0aC9sb2dpbiIsImlhdCI6MTY5NjQyMzA3OCwiZXhwIjoxNjk3Mjg3MDc4LCJuYmYiOjE2OTY0MjMwNzgsImp0aSI6IkROQmU2RTFXQWJnNjJEbDUiLCJzdWIiOjQwMTQ1NjQsInBydiI6IjA1YmI2NjBmNjdjYWM3NDVmN2IzZGExZWVmMTk3MTk1YTIxMWU2ZDkifQ.YUlc4L1NETgmWgo4PON6tMfB97t5VU1zn1LErZ6N-XM'
+        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaXYyLnNoaXByb2NrZXQuaW4vdjEvZXh0ZXJuYWwvYXV0aC9sb2dpbiIsImlhdCI6MTY5OTI3NzI3MywiZXhwIjoxNzAwMTQxMjczLCJuYmYiOjE2OTkyNzcyNzMsImp0aSI6ImplcXNkYmFESUdTQUNwMTkiLCJzdWIiOjE1OTkxMjUsInBydiI6IjA1YmI2NjBmNjdjYWM3NDVmN2IzZGExZWVmMTk3MTk1YTIxMWU2ZDkifQ.Na5lM2qLo5S0k3-3E2kdXD8mWJKpjO_7uOblpW2V4Yw'
         // 'Authorization': 'Bearer {{SHIPROCKET_API_TOKEN}}'
       },
     });

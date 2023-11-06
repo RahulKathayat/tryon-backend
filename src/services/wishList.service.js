@@ -1,12 +1,26 @@
-const { WishList, Product, Users } = require('../models');
+const { WishList, Product, Users, Sequelize } = require('../models');
 
-const createWishlist = async (_userBody) => {
-  const userBody = _userBody;
-  console.log('===============', userBody);
-  const data = await WishList.create(userBody);
-  console.log('data', data);
-  return data;
+const createWishlist = async (_userBody,userId) => {
+  let userBody = _userBody;
+
+  try {
+    const existingWishlistItem = await WishList.findOne({where:{ productId: userBody.productId}});
+    
+    if (existingWishlistItem) {
+      return 'Product is already in the wishlist.';
+    } else {
+      userBody={
+        ...userBody,
+        userId:userId
+      }
+      const data = await WishList.create(userBody);
+      return ('Wishlist created successfully!!');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
 };
+}
 
 const getWishlist = async (query, options) => {
   const limit = Number(options.limit);
@@ -25,7 +39,8 @@ const getWishlistByUserId = async (userId) => {
   try {
     const data = await WishList.findAll({
       where: { userId: userId, status: true },
-      include: [{ model: Product }, { model: Users }]
+      include: [{ model: Product }, { model: Users }],
+      attributes:[[Sequelize.literal('true'),'isWhishlisted'],'id'],
     });
     return data;
   } catch (error) {

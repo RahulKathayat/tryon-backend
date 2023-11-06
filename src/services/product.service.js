@@ -236,11 +236,41 @@ const deleteProductById = async (Id) => {
   }
 };
 
-const getProductForWishlist = async () => {
+const getProductForWishlist = async (query, options, between, order) => {
   try {
-    // Assuming you use a model named Product for products
-    const products = await Product.findAll();
-    return products;
+    const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+
+  let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
+
+  if (order === 'desc') {
+    orderCriteria = [['finalAmount', 'DESC']];
+  } else if (order == 'asc') {
+    orderCriteria = [['finalAmount', 'ASC']];
+  }
+
+  if (between.priceFrom && between.priceTo) {
+    query.totalPrice = {
+      [Op.between]: [between.priceFrom, between.priceTo]
+    };
+  } else if (between.priceFrom) {
+    query.totalPrice = {
+      [Op.gte]: between.priceFrom
+    };
+  } else if (between.priceTo) {
+    query.totalPrice = {
+      [Op.lte]: between.priceTo
+    };
+  }
+
+  const products = await Product.findAll({
+    where: query,
+    order: orderCriteria,
+    include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
+    limit,
+    offset
+  });
+  return products;
   } catch (error) {
     console.error('Error fetching products!', error);
     throw error;

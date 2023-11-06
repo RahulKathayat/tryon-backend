@@ -188,15 +188,20 @@ async function createCheckout(userId) {
   if (!Object.keys(cartDetails).length) {
     throw new Error('No cart details available for processing.');
   }
-
-  const orderDetailsData = Object.values(cartDetails).map((detail) => ({
-    orderId: order.id,
-    productId: detail.productId,
-    type: detail.type || 'On Process',
-    amount: detail.price * detail.quantity,
-    totalQuantity: detail.quantity,
-    status: true
-  }));
+  console.log("cart details====================================================",cartDetails)
+  const orderDetailsData = Object.values(cartDetails).map((detail) => {
+    console.log("===============================",detail.price,'qu===============',detail.quantity,"product id=============",detail.productId); // You can add this console.log here if you want to log the price.
+  
+    return {
+      orderId: order.id,
+      productId: detail.productId,
+      type: detail.type || 'On Process',
+      amount: detail.price * detail.quantity,
+      totalQuantity: detail.quantity,
+      status: true
+    };
+  });
+  
 
   const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
 

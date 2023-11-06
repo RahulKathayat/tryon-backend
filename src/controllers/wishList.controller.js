@@ -4,10 +4,11 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 
 const createWishlist = catchAsync(async (req, res) => {
+  const userId=req.user.id;
   let userBody = req.body;
-  const data = await wishlistService.createWishlist(userBody);
+  const data = await wishlistService.createWishlist(userBody,userId);
   if (data) {
-    await res.status(200).send({ message: 'Wishlist created successfully' });
+    await res.status(200).send({ message:data});
   } else {
     await res.status(404).send({ message: 'Wishlist not created' });
   }
