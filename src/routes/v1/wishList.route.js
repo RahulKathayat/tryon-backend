@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/me', auth(), wishlistController.getWishlistByUserId);
 router.delete('/me/:productId', auth(), wishlistController.deleteWishlist);
-router.get('/me/isWishlisted', auth(), wishlistController.isWishlisted);
+// router.get('/me/isWishlisted', auth(), wishlistController.isWishlisted);
 
 router
   .route('/')

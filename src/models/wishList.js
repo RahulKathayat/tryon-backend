@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+      },
+      isWishlisted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {

@@ -12,6 +12,7 @@ const express = require('express');
 const app = express();
 const { encode } = require('hi-base32');
 const product = require('../models/product');
+const cron = require('node-cron');
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -40,9 +41,9 @@ const uploadFeatureImage = async (req, res) => {
   }
 };
 
-const getProduct = catchAsync(async (req, res) => {
+const getProduct = async (req, res) => {
   let query = {};
-  query.status = req.query.status ? req.query.status : true;
+  req.query ? (query.status = req.query.status ? req.query.status : true) : '';
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
@@ -86,19 +87,19 @@ const getProduct = catchAsync(async (req, res) => {
     }
   });
   const data = await productService.getProduct(query, options, between, order);
-  if (data) {
-    const getAvrageRatings = await ratingsService.calculateAverageRatings();
-    if (getAvrageRatings) {
-      const updateAvrageRatings = await productService.updateAvrageRatings(getAvrageRatings);
-    }
-  }
+  // if (data) {
+  //   const getAvrageRatings = await ratingsService.calculateAverageRatings();
+  //   if (getAvrageRatings) {
+  //     await productService.updateAvrageRatings(getAvrageRatings);
+  //   }
+  // }
 
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
-});
+};
 
 // const getProductBySearch = catchAsync(async (req, res) => {
 //   let query = {};
@@ -350,6 +351,14 @@ const getProductsForUser = async (req, res, next) => {
     next(error);
   }
 };
+
+cron.schedule('* * * * * *', async () => {
+  // const getAvrageRatings = await ratingsService.calculateAverageRatings();
+  // if (getAvrageRatings) {
+  //   await productService.updateAvrageRatings(getAvrageRatings);
+  // }
+  // console.log('cron Called');
+});
 
 module.exports = {
   createProduct,

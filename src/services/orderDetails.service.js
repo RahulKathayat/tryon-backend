@@ -1,4 +1,4 @@
-const { OrderDetails, Product, Orders } = require('../models');
+const { OrderDetails, Product, Orders, Users, Ratings } = require('../models');
 
 const createOrderDetails = async (_userBody) => {
   const userBody = _userBody;
@@ -13,7 +13,24 @@ const getOrderDetails = async (query, options) => {
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await OrderDetails.findAndCountAll({
     where: query,
-    include: [{ model: Product }, { model: Orders }],
+    include: [
+      {
+        model: Product
+      },
+      {
+        model: Orders,
+        include: [
+          {
+            model: Users,
+            include: [
+              {
+                model: Ratings
+              }
+            ]
+          }
+        ]
+      }
+    ],
     order: [['updatedAt', 'DESC']],
     limit,
     offset
@@ -25,7 +42,24 @@ const getOrderDetailsByOrderId = async (id) => {
   try {
     const data = await OrderDetails.findAll({
       where: { orderId: id },
-      include: [{ model: Product }, { model: Orders }]
+      include: [
+        {
+          model: Product
+        },
+        {
+          model: Orders,
+          include: [
+            {
+              model: Users,
+              include: [
+                {
+                  model: Ratings
+                }
+              ]
+            }
+          ]
+        }
+      ]
     });
     return data;
   } catch (error) {
@@ -36,7 +70,24 @@ const getOrderDetailsById = async (id) => {
   try {
     const data = await OrderDetails.findAll({
       where: { id: id },
-      include: [{ model: Product }, { model: Orders }]
+      include: [
+        {
+          model: Product
+        },
+        {
+          model: Orders,
+          include: [
+            {
+              model: Users,
+              include: [
+                {
+                  model: Ratings
+                }
+              ]
+            }
+          ]
+        }
+      ]
     });
     return data;
   } catch (error) {
@@ -78,7 +129,24 @@ const deleteOrderDetailsById = async (Id) => {
 const getOrderDetailsForUser = async (query, userId) => {
   const support = await OrderDetails.findAndCountAll({
     where: query,
-    include: [{ model: Product }, { model: Orders }],
+    include: [
+      {
+        model: Product
+      },
+      {
+        model: Orders,
+        include: [
+          {
+            model: Users,
+            include: [
+              {
+                model: Ratings
+              }
+            ]
+          }
+        ]
+      }
+    ],
     order: [['updatedAt', 'DESC']],
     limit,
     offset

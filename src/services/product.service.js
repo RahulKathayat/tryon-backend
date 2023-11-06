@@ -1,6 +1,6 @@
 const { Product, Category, SubCategory, SubSubCategory, Ratings } = require('../models');
 const { Op } = require('sequelize');
-const cron = require('node-cron');
+
 
 const createProduct = async (_userBody) => {
   let userBody = _userBody;
@@ -35,10 +35,17 @@ const getProductByproductId = async (id) => {
 };
 
 const getProduct = async (query, options, between, order) => {
+  console.log(query, options, between, order, 'options==================');
+  let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
+  if (query === undefined || options === undefined || between === undefined || order === undefined) {
+    const products = await Product.findAll({
+      order: orderCriteria,
+      include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }]
+    });
+    return products;
+  }
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
-
-  let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
 
   if (order === 'desc') {
     orderCriteria = [['finalAmount', 'DESC']];
