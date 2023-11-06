@@ -12,6 +12,7 @@ const express = require('express');
 const app = express();
 const { encode } = require('hi-base32');
 const product = require('../models/product');
+const cron = require('node-cron');
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -40,9 +41,9 @@ const uploadFeatureImage = async (req, res) => {
   }
 };
 
-const getProduct = catchAsync(async (req, res) => {
+const getProduct = async (req, res) => {
   let query = {};
-  query.status = req.query.status ? req.query.status : true;
+  req.query ? (query.status = req.query.status ? req.query.status : true) : '';
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
@@ -98,7 +99,7 @@ const getProduct = catchAsync(async (req, res) => {
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
-});
+};
 
 // const getProductBySearch = catchAsync(async (req, res) => {
 //   let query = {};
@@ -325,10 +326,9 @@ const updateImage = catchAsync(async (req, res) => {
 const getProductsForUser = async (req, res, next) => {
   const userId = req.user.id;
   try {
-
     let query = {};
     query.status = req.query.status ? req.query.status : true;
-  
+
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const between = pick(req.query, ['priceFrom', 'priceTo']);
     const order = req.query.order; // 'asc' or 'desc' for ordering
@@ -353,7 +353,7 @@ const getProductsForUser = async (req, res, next) => {
       'id',
       'colour'
     ];
-  
+
     filterParameters.forEach((param) => {
       if (param !== 'priceFrom' && param !== 'priceTo' && req.query[param]) {
         if (req.query[param].includes(',')) {
@@ -395,6 +395,14 @@ const getProductsForUser = async (req, res, next) => {
     next(error);
   }
 };
+
+cron.schedule('* * * * * *', async () => {
+  // const getAvrageRatings = await ratingsService.calculateAverageRatings();
+  // if (getAvrageRatings) {
+  //   await productService.updateAvrageRatings(getAvrageRatings);
+  // }
+  // console.log('cron Called');
+});
 
 module.exports = {
   createProduct,
