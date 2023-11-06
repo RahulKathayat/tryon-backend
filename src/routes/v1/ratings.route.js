@@ -14,7 +14,7 @@ router.post('/me', auth(), validate(ratingsValidation.createRatings), ratingsCon
 router.get('/me', auth(), ratingsController.getUserRatings);
 router.put('/me/:id', auth(), validate(ratingsValidation.updateRatings), ratingsController.updateRatings);
 router.delete('/me/:id', auth(), ratingsController.deleteUserRatings);
-router.get('/abc', ratingsController.averageRating);
+router.get('/calculate', ratingsController.averageRating);
 
 // admin routes
 router.route('/').get(ratingsController.getRatings); //admin

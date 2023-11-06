@@ -14,18 +14,17 @@ router;
 
 router.post('/images', upload.array('image', 15), productController.uploadImages);
 router.post('/featureImage', upload.single('image'), productController.uploadFeatureImage);
-// router.put('/featureImage/:id', upload.single('image'), productController.uploadFeatureImage);
 router.get('/getLowToHigh', productController.getLowToHighPrice);
 router.get('/getHighToLow', productController.getHighToLowPrice);
 router;
 
 router.get('/isUpcoming', productController.isUpcomingproduct);
-router.get('/isWishlisted', auth(), productController.getProductsForUser);
+router.get('/me', auth(), productController.getProductsForUser); //for logged-in user
 
 router
   .get('/search', productController.getProductBySearch)
   .route('/')
-  .get(productController.getProduct)
+  .get(productController.getProduct)  // for admin and without logged-in user
 
   .post(auth(), validate(productValidation.createProduct), productController.createProduct);
 
