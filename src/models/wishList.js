@@ -12,16 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
-      isWishlisted: {
-<<<<<<< HEAD
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-=======
-        type: DataTypes.VIRTUAL(DataTypes.BOOLEAN),
+     * isWishlisted: {
+      type: DataTypes.VIRTUAL(DataTypes.BOOLEAN),
         defaultValue: true
->>>>>>> 85adc015d4b9977b319af59204b2106e1446a0a0
-      }
-    },
+
+    },*/
     {
       tableName: 'WishList',
       freezeTableName: true
