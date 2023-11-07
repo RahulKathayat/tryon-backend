@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
-     * isWishlisted: {
+    /* isWishlisted: {
       type: DataTypes.VIRTUAL(DataTypes.BOOLEAN),
         defaultValue: true
 
