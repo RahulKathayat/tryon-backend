@@ -93,9 +93,6 @@ const getUserByEmail = async (email) => {
 
 const updateUserById = async (id, newData) => {
   try {
-    console.log('id==================================================', id);
-
-    // Assuming you have a Sequelize model named 'User' configured correctly.
     const user = await Users.findByPk(id);
 
     if (user) {
