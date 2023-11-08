@@ -83,6 +83,9 @@ async function createCheckout(req, res) {
     const userId = req.user.id;
 
     const { order, orderDetailsArray, totalAmount } = await cartService.createCheckout(userId);
+    if (!order) {
+      return res.status(httpStatus.OK).send({ message: 'No items in your cart!' });
+    }
     const amountForPayment = await paymentService.createOrderForPayment(totalAmount); // calling razorpay create order
     const razorpayPaymentDetails = {
       created_at: amountForPayment.created_at,
@@ -90,6 +93,7 @@ async function createCheckout(req, res) {
       receipt: amountForPayment.receipt,
       status: amountForPayment.status
     };
+
     res.json({ order, orderDetails: orderDetailsArray, totalAmount, razorpayPaymentDetails });
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -14,7 +14,7 @@ const createCart = async (_userBody) => {
       }
     });
     if (data) {
-      return Cart.create({ userId: userBody });
+      return Cart.create({ userId: userBody, cartDetail: {} });
     } else {
       return 'user role does not matched';
     }
@@ -89,26 +89,26 @@ async function createCheckout(userId) {
 
   // Fetch the user's cart
   const cart = await Cart.findOne({ where: { userId: userId } });
-
   // If there's no cart for the user, throw an error
   if (!cart) {
-    throw new Error('Cart not found for this user or unauthorized.');
+    throw new Error('Cart not found for this user or unauthorized');
+  }
+
+  // Extract cart details and transform them into order details data
+  const cartDetails = cart?.cartDetail || {};
+
+  if (Object.keys(cartDetails).length === 0) {
+    // throw new Error('No cart details available for processing');
+    return { order: null, orderDetailsArray: null, totalAmount: null };
   }
 
   // Create an order from the cart's data
   const order = await Orders.create({
     userId: cart.userId,
-    totalItems: Object.keys(cart.cartDetail).length,
-    totalQuantity: Object.values(cart.cartDetail).reduce((acc, item) => acc + item.quantity, 0),
+    totalItems: Object.keys(cartDetails).length,
+    totalQuantity: Object.values(cartDetails).reduce((acc, item) => acc + item.quantity, 0),
     status: true
   });
-
-  // Extract cart details and transform them into order details data
-  const cartDetails = cart?.cartDetail || {};
-
-  if (!Object.keys(cartDetails).length) {
-    throw new Error('No cart details available for processing.');
-  }
   const orderDetailsData = Object.values(cartDetails).map((detail) => {
     return {
       orderId: order.id,
