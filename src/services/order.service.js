@@ -3,7 +3,6 @@ const { Orders, OrderDetails, Users, Product } = require('../models');
 
 const createOrder = async (_userBody) => {
   const userBody = _userBody;
-  console.log('===============', userBody);
   const data = await Orders.create(userBody);
   console.log('data', data);
   return data;
@@ -38,7 +37,6 @@ const updateOrderById = async (id, newData) => {
   const findData = await Orders.findOne({
     where: id
   });
-  console.log('FINDdTAA============================', findData);
   if (findData) {
     return Orders.update(newData, { where: id });
   } else {
@@ -116,7 +114,6 @@ const updateOrderForUser = async (userId, newData, id) => {
   const findData = await Orders.findOne({
     where: { userId: userId }
   });
-  console.log('FINDdTAA============================', findData);
   if (findData) {
     return Orders.update(newData, { where: id });
   } else {

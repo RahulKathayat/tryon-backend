@@ -49,7 +49,6 @@ const updateRatings = catchAsync(async (req, res) => {
     const userId = req.user.id;
     const id = req.params;
     const newData = req.body;
-    console.log('new data===============================', newData, id, userId);
     const updatedUser = await ratingsService.updateRatingsById(id, userId, newData);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'ratings updated successfully' });

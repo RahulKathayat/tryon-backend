@@ -3,7 +3,6 @@ const { SubSubCategory, SubCategory } = require('../models');
 
 const createSubSubCategory = async (_userBody) => {
   const userBody = _userBody;
-  console.log('===============', userBody);
   const data = await SubSubCategory.create(userBody);
   console.log('data', data);
   return data;

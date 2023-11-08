@@ -2,7 +2,6 @@ const { SubCategory, Category } = require('../models');
 
 const createSubCategory = async (_userBody) => {
   const userBody = _userBody;
-  console.log('===============', userBody);
   const data = await SubCategory.create(userBody);
   console.log('data', data);
   return data;
@@ -52,7 +51,6 @@ const getSubCategoryById = async (id) => {
       where: { id: id },
       include: [{ model: Category }]
     });
-    console.log('data=============================', data);
     return data;
   } catch (error) {
     console.error('Subcategory not found!!', error);

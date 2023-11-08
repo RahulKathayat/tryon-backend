@@ -38,23 +38,6 @@ const getFabric = catchAsync(async (req, res) => {
     'quantity'
   ];
 
-  // filterParameters.forEach((param) => {
-  //   if (req.query[param]) {
-  //     if (req.query[param].includes(',')) {
-  //       const values = req.query[param].split(',');
-  //       query[param] = {
-  //         [Op.like]: values.map((value) => ({
-  //           [Op.like]: `%${value.trim()}%`
-  //         }))
-  //       };
-  //     } else {
-  //       query[param] = {
-  //         [Op.like]: `%${req.query[param]}%`
-  //       };
-  //     }
-  //   }
-  // });
-
   if (req.query.fabricType) {
     query.fabricType = req.query.fabricType.split(',');
   }

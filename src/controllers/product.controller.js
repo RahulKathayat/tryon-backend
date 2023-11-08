@@ -101,52 +101,12 @@ const getProduct = async (req, res) => {
   }
 };
 
-// const getProductBySearch = catchAsync(async (req, res) => {
-//   let query = {};
-//   query.status = req.query.status ? req.query.status : true;
-//   const options = pick(req.query, ['limit', 'page']);
-//   const between = pick(req.query, ['priceFrom', 'priceTo']);
-//   const search = req.query.search;
-//   const order = req.query.order; // 'asc' or 'desc' for ordering
-
-//   console.log('search==============', search);
-//   console.log('order==============', order);
-
-//   if (search) {
-//     query = {
-//       ...query,
-//       [Op.or]: [
-//         {
-//           productName: {
-//             [Op.like]: `%${search}%`
-//           }
-//         },
-//         {
-//           brandName: {
-//             [Op.like]: `%${search}%`
-//           }
-//         }
-//         // ... (other search criteria)
-//       ]
-//     };
-//   }
-
-//   const data = await productService.getProductBySearch(query, options, order);
-
-//   if (data) {
-//     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
-//   } else {
-//     res.status(httpStatus.NO_CONTENT).send({ message: 'No data found' });
-//   }
-// });
-
 const getProductBySearch = catchAsync(async (req, res) => {
   let query = {};
   query.status = req.query.status ? req.query.status : true;
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
   const search = req.query.search;
-  console.log('search==============', search);
   if (search) {
     query = {
       ...query,
@@ -199,8 +159,6 @@ const getProductBySearch = catchAsync(async (req, res) => {
       ]
     };
   }
-  // console.log('Query==========================================', query);
-
   const data = await productService.getProductBySearch(query, options, between);
 
   if (data) {
@@ -252,7 +210,6 @@ const getProductById = catchAsync(async (req, res) => {
 const updateProduct = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
-    console.log('user id================', userId);
     const newData = req.body;
     const updatedUser = await productService.updateProductById(userId, newData);
     if (updatedUser) {
@@ -323,6 +280,7 @@ const updateImage = catchAsync(async (req, res) => {
   }
 });
 
+// For logged-in users
 const getProductsForUser = async (req, res, next) => {
   const userId = req.user.id;
   try {
@@ -372,20 +330,30 @@ const getProductsForUser = async (req, res, next) => {
     });
 
     let products = await productService.getProductForWishlist(query, options, between, order);
-    // console.log('check data type', );
-    products = products.map((product) => product.get({ plain: true }));
-    if (!Array.isArray(products)) {
-      return next(new Error('Unexpected response format from productService.getProductForWishlist'));
-    }
     const wishlistedProductIds = await wishlistService.isWishlisted(userId);
-
-    if (!Array.isArray(wishlistedProductIds)) {
-      return next(new Error('Unexpected response format from wishlistService.isWishlisted'));
-    }
-    products.forEach((product) => {
-      product.isWishlisted = wishlistedProductIds.includes(product.id);
-      console.log(`Product ID: ${product.id}, Is Wishlisted: ${product.isWishlisted}`);
+    // products = products.map((product) => product.get({ plain: true }));
+    products = products.map((product) => {
+      let whishlisted = false;
+      if (wishlistedProductIds.includes(product.id)) {
+        whishlisted = true;
+      }
+      return {
+        ...product.get({ plain: true }), // Get the product as a plain object
+        isWishlisted: whishlisted // Add your custom key and value
+      };
     });
+    // if (!Array.isArray(products)) {
+    //   return next(new Error('Unexpected response format from productService.getProductForWishlist'));
+    // }
+    // const wishlistedProductIds = await wishlistService.isWishlisted(userId);
+
+    // if (!Array.isArray(wishlistedProductIds)) {
+    //   return next(new Error('Unexpected response format from wishlistService.isWishlisted'));
+    // }
+    // products.forEach((product) => {
+    //   product.isWishlisted = wishlistedProductIds.includes(product.id);
+    //   console.log(`Product ID: ${product.id}, Is Wishlisted: ${product.isWishlisted}`);
+    // });
 
     res.status(httpStatus.OK).send({
       message: 'Products fetched successfully',

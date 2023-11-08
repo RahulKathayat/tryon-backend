@@ -23,13 +23,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Orders.associate = function (models) {
-    // Orders.belongsTo(models.OrderDetails, {
-    //   foreignKey: 'orderDetailId',
-    //   // targetKey: 'id'
-    //   onDelete: 'SET NULL',
-    //   allowNull: true
-    // });
-
     Orders.belongsTo(models.Users, {
       foreignKey: 'userId',
       onDelete: 'SET NULL',

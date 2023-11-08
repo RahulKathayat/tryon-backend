@@ -1,7 +1,6 @@
 const { Product, Category, SubCategory, SubSubCategory, Ratings } = require('../models');
 const { Op } = require('sequelize');
 
-
 const createProduct = async (_userBody) => {
   let userBody = _userBody;
   const colour = _userBody.colour;
@@ -10,7 +9,6 @@ const createProduct = async (_userBody) => {
   _userBody.size = JSON.stringify(size);
   let finalAmount = userBody.totalPrice - ((userBody.totalPrice * userBody.discountPercentage) / 100).toFixed(2);
   finalAmount = finalAmount.toFixed(2);
-  console.log('final amoutn===============', finalAmount);
   userBody = {
     ...userBody,
     finalAmount: finalAmount
@@ -35,7 +33,6 @@ const getProductByproductId = async (id) => {
 };
 
 const getProduct = async (query, options, between, order) => {
-  console.log(query, options, between, order, 'options==================');
   let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
   if (query === undefined || options === undefined || between === undefined || order === undefined) {
     const products = await Product.findAll({
@@ -80,44 +77,6 @@ const getProduct = async (query, options, between, order) => {
   // return ProductWithFinalAmount; // This is now an array with the finalAmount added.
 };
 
-// const getProductBySearch = async (query, options, order) => {
-//   try {
-//     const limit = Number(options.limit);
-//     const offset = options.page ? limit * (options.page - 1) : 0;
-
-//     if (query && query.search) {
-//       query.search = decodeURIComponent(query.search);
-//       query.search = query.search.replace(/\"%/g, '').replace(/%\"/g, ''); // Remove extra quotes and percent signs.
-//     }
-
-//     let orderCriteria = [['finalAmount', 'ASC']]; // Default order criteria (ascending)
-
-//     if (order === 'desc') {
-//       orderCriteria = [['finalAmount', 'DESC']]; // If order is 'desc', change the order criteria to descending
-//     }
-
-//     if (query == null || options == null) {
-//       const data = await Product.findAndCountAll({
-//         limit: limit,
-//         offset: offset,
-//         order: orderCriteria
-//       });
-//       return data;
-//     } else {
-//       const data = await Product.findAndCountAll({
-//         where: { ...query },
-//         limit: limit,
-//         offset: offset,
-//         order: orderCriteria
-//       });
-//       return data;
-//     }
-//   } catch (error) {
-//     console.error('Error fetching products:', error);
-//     throw error;
-//   }
-// };
-
 const getProductBySearch = async (query, options) => {
   try {
     const limit = Number(options.limit);
@@ -154,7 +113,6 @@ const getHighToLowPrice = async (id) => {
     const data = await Product.findAll({
       order: [['finalAmount', 'DESC']]
     });
-    console.log('data==========================');
     return data;
   } catch (error) {
     console.error('product not found!!', error);
@@ -181,7 +139,6 @@ const isUpcomingProduct = async (options) => {
       offset,
       limit
     });
-    console.log('data=================================', data);
     return data;
   } catch (error) {
     console.error('Data not found', error);
@@ -246,38 +203,38 @@ const deleteProductById = async (Id) => {
 const getProductForWishlist = async (query, options, between, order) => {
   try {
     const limit = Number(options.limit);
-  const offset = options.page ? limit * (options.page - 1) : 0;
+    const offset = options.page ? limit * (options.page - 1) : 0;
 
-  let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
+    let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
 
-  if (order === 'desc') {
-    orderCriteria = [['finalAmount', 'DESC']];
-  } else if (order == 'asc') {
-    orderCriteria = [['finalAmount', 'ASC']];
-  }
+    if (order === 'desc') {
+      orderCriteria = [['finalAmount', 'DESC']];
+    } else if (order == 'asc') {
+      orderCriteria = [['finalAmount', 'ASC']];
+    }
 
-  if (between.priceFrom && between.priceTo) {
-    query.totalPrice = {
-      [Op.between]: [between.priceFrom, between.priceTo]
-    };
-  } else if (between.priceFrom) {
-    query.totalPrice = {
-      [Op.gte]: between.priceFrom
-    };
-  } else if (between.priceTo) {
-    query.totalPrice = {
-      [Op.lte]: between.priceTo
-    };
-  }
+    if (between.priceFrom && between.priceTo) {
+      query.totalPrice = {
+        [Op.between]: [between.priceFrom, between.priceTo]
+      };
+    } else if (between.priceFrom) {
+      query.totalPrice = {
+        [Op.gte]: between.priceFrom
+      };
+    } else if (between.priceTo) {
+      query.totalPrice = {
+        [Op.lte]: between.priceTo
+      };
+    }
 
-  const products = await Product.findAll({
-    where: query,
-    order: orderCriteria,
-    include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
-    limit,
-    offset
-  });
-  return products;
+    const products = await Product.findAll({
+      where: query,
+      order: orderCriteria,
+      include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
+      limit,
+      offset
+    });
+    return products;
   } catch (error) {
     console.error('Error fetching products!', error);
     throw error;

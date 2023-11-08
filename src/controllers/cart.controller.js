@@ -2,27 +2,7 @@ const catchAsync = require('../utils/catchAsync');
 const cartService = require('../services/cart.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
-const { userService } = require('../services');
-
-// const createCart = catchAsync(async (req, res) => {
-//   try {
-//     let userBody = req.body
-
-//     if (data) {
-//       res.status(200).send({ message: 'Cart created successfully' });
-//     } else {
-//       res.status(404).send({ message: 'Cart not created' });
-//     }
-//   } catch (error) {
-//     console.error("Error:", error);
-//     res.status(500).send({ message: 'Internal server error' });
-//   }
-// });
-
-// Execute createCart after a delay using setTimeout
-// setTimeout((req,res) => {
-//   createCart(req, res);
-// }, 1000);
+const { paymentService } = require('../services');
 
 const getCart = catchAsync(async (req, res) => {
   const query = {};
@@ -85,7 +65,6 @@ const deleteCart = catchAsync(async (req, res) => {
 
 const clearCart = catchAsync(async (req, res) => {
   const cart = await cartService.getCartById(req.user.dataValues.id);
-  console.log('cartt==============================', cart);
   if (!cart) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Cart not found');
   }
@@ -104,14 +83,20 @@ async function createCheckout(req, res) {
     const userId = req.user.id;
 
     const { order, orderDetailsArray, totalAmount } = await cartService.createCheckout(userId);
-    res.json({ order, orderDetails: orderDetailsArray, totalAmount });
+    const amountForPayment = await paymentService.createOrderForPayment(totalAmount); // calling razorpay create order
+    const razorpayPaymentDetails = {
+      created_at: amountForPayment.created_at,
+      id: amountForPayment.id,
+      receipt: amountForPayment.receipt,
+      status: amountForPayment.status
+    };
+    res.json({ order, orderDetails: orderDetailsArray, totalAmount, razorpayPaymentDetails });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
 
 module.exports = {
-  // createCart,
   deleteCart,
   getCart,
   updateCart,

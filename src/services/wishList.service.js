@@ -1,26 +1,26 @@
 const { WishList, Product, Users, Sequelize } = require('../models');
 
-const createWishlist = async (_userBody,userId) => {
+const createWishlist = async (_userBody, userId) => {
   let userBody = _userBody;
 
   try {
-    const existingWishlistItem = await WishList.findOne({where:{ productId: userBody.productId}});
-    
+    const existingWishlistItem = await WishList.findOne({ where: { productId: userBody.productId, userId, status: 1 } });
+
     if (existingWishlistItem) {
-      return 'Product is already in the wishlist.';
+      return 'Product is already in the wishlist';
     } else {
-      userBody={
+      userBody = {
         ...userBody,
-        userId:userId
-      }
+        userId: userId
+      };
       const data = await WishList.create(userBody);
-      return ('Wishlist created successfully!!');
+      return 'Wishlist created successfully!!';
     }
   } catch (error) {
     console.error('Error:', error);
     throw error;
+  }
 };
-}
 
 const getWishlist = async (query, options) => {
   const limit = Number(options.limit);
@@ -39,8 +39,8 @@ const getWishlistByUserId = async (userId) => {
   try {
     const data = await WishList.findAll({
       where: { userId: userId, status: true },
-      include: [{ model: Product }, { model: Users }],
-      attributes:[[Sequelize.literal('true'),'isWhishlisted'],'id'],
+      include: [{ model: Product }, { model: Users }]
+      // attributes: [[Sequelize.literal('true'), 'isWishlisted'], 'id']
     });
     return data;
   } catch (error) {
@@ -62,13 +62,14 @@ const updateWishlistById = async (id, newData) => {
 const deleteWishlistById = async (userId, productId) => {
   try {
     const user = await WishList.findOne({
-      where: { userId: userId, productId: productId }
+      where: { userId, productId, status: 1 }
     });
 
     if (!user) {
       throw new Error('Wishlist not found');
     }
-    await user.update({ status: false });
+    user.status = 0;
+    await user.save();
 
     console.log('Wishlist deleted successfully');
 
@@ -82,7 +83,7 @@ const deleteWishlistById = async (userId, productId) => {
 const isWishlisted = async (userId) => {
   try {
     const data = await WishList.findAll({
-      where: { userId: userId },
+      where: { userId: userId, status: 1 },
       attributes: ['productId']
     });
     const productIds = data.map((item) => item.productId);

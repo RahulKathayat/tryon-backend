@@ -7,7 +7,6 @@ const { productService } = require('../services');
 const createOrderForUser = catchAsync(async (req, res) => {
   const userId = req.user.id;
   let userBody = req.body;
-  console.log('userbody==============================', userBody);
   const data = await orderService.createOrderForUser(userBody, userId);
   if (data) {
     await res.status(200).send({ message: 'order created successfully' });
@@ -17,7 +16,6 @@ const createOrderForUser = catchAsync(async (req, res) => {
 });
 const createOrder = catchAsync(async (req, res) => {
   let userBody = req.body;
-  console.log('userbody==============================', userBody);
   const data = await orderService.createOrder(userBody);
   if (data) {
     await res.status(200).send({ message: 'order created successfully' });
@@ -69,9 +67,7 @@ const updateOrder = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
     const newData = req.body;
-    console.log('USERiD========================', userId, newData);
     const updatedUser = await orderService.updateOrderById(userId, newData);
-    console.log('UPDATEuSER============================', updatedUser);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'order updated successfully' });
     } else {

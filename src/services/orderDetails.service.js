@@ -2,7 +2,6 @@ const { OrderDetails, Product, Orders, Users, Ratings } = require('../models');
 
 const createOrderDetails = async (_userBody) => {
   const userBody = _userBody;
-  console.log('===============', userBody);
   const data = await OrderDetails.create(userBody);
   console.log('data', data);
   return data;

@@ -43,7 +43,6 @@ const getAddressById = async (id) => {
       where: { id: id },
       order: [['createdAt', 'DESC']]
     });
-    console.log('data=============', data);
     return data;
   } catch (error) {
     console.error('address not found!!', error);

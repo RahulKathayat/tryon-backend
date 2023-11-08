@@ -5,7 +5,6 @@ const cartService = require('../services/cart.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const { Op } = require('sequelize');
-// const { cartService } = require('../services');
 
 //create user
 const createUser = catchAsync(async (req, res) => {
@@ -51,15 +50,6 @@ const getUser = catchAsync(async (req, res) => {
       }
     }
   });
-
-  // const { firstName,lastName,phoneNumber,email,emailVerify,addressId,dob } = req.query;
-  // firstName ? query.firstName = { [Op.like]: `%${firstName}%` } : null;
-  // lastName ? query.lastName = { [Op.like]: `%${lastName}%` } : null;
-  // phoneNumber ? query.phoneNumber = { [Op.like]: `%${phoneNumber}%` } : null;
-  // email ? query.email = { [Op.like]: `%${email}%` } : null;
-  // emailVerify ? query.emailVerify = { [Op.like]: `%${emailVerify}%` } : null;
-  // addressId ? query.addressId = { [Op.like]: `%${addressId}%` } : null;
-  // dob ? query.dob = { [Op.like]: `%${dob}%` } : null;
 
   const data = await userService.getUser(query, options);
   if (data) {

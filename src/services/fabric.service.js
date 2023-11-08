@@ -3,7 +3,6 @@ const { Op } = require('sequelize');
 
 const createFabric = async (_userBody) => {
   const userBody = _userBody;
-  console.log('===============', userBody);
   const data = await Fabric.create(userBody);
   console.log('data', data);
   return data;
