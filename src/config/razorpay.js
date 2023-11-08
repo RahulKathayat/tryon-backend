@@ -1,4 +1,4 @@
 module.exports = {
-  key_id: 'rzp_live_QQgELRZbwLTE2n',
-  key_secret: 'BiwjrN0dWk4nNfHBA6Q8iFxG'
+  RAZORPAY_API_KEY: 'rzp_live_QQgELRZbwLTE2n',
+  RAZORPAY_API_SECRET: 'BiwjrN0dWk4nNfHBA6Q8iFxG'
 };

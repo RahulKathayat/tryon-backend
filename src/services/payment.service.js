@@ -7,8 +7,8 @@ const db = require('../models/index');
 const shortid = require('shortid');
 
 const razorpay = new Razorpay({
-  key_id: razorpayConf.key_id,
-  key_secret: razorpayConf.key_secret
+  key_id: razorpayConf.RAZORPAY_API_KEY,
+  key_secret: razorpayConf.RAZORPAY_API_SECRET
 });
 
 const createPayment = async (_userBody) => {
