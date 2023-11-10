@@ -61,15 +61,15 @@ const updateWishlistById = async (id, newData) => {
 
 const deleteWishlistById = async (userId, productId) => {
   try {
-    const user = await WishList.findOne({
+    const data = await WishList.findOne({
       where: { userId, productId, status: 1 }
     });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Wishlist not found');
     }
-    user.status = 0;
-    await user.save();
+    data.status = 0;
+    await data.save();
 
     console.log('Wishlist deleted successfully');
 

@@ -51,12 +51,13 @@ const updatePaymentById = async (id, newData) => {
 
 const deletePaymentById = async (Id) => {
   try {
-    const user = await Payment.findOne({ where: Id });
+    const data = await Payment.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Payment not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Payment deleted successfully');
 

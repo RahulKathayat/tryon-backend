@@ -45,13 +45,13 @@ const updateProductFabricById = async (id, newData) => {
 
 const deleteProductFabricById = async (Id) => {
   try {
-    const user = await ProductFabric.findOne({ where: Id });
+    const data = await ProductFabric.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('ProductFabric not found');
     }
-    await user.update({ status: false });
-
+    data.status = 0;
+    await data.save();
     console.log('ProductFabric deleted successfully');
 
     return { message: 'ProductFabric deleted successfully' };

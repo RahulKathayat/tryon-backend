@@ -342,18 +342,6 @@ const getProductsForUser = async (req, res, next) => {
         isWishlisted: whishlisted // Add your custom key and value
       };
     });
-    // if (!Array.isArray(products)) {
-    //   return next(new Error('Unexpected response format from productService.getProductForWishlist'));
-    // }
-    // const wishlistedProductIds = await wishlistService.isWishlisted(userId);
-
-    // if (!Array.isArray(wishlistedProductIds)) {
-    //   return next(new Error('Unexpected response format from wishlistService.isWishlisted'));
-    // }
-    // products.forEach((product) => {
-    //   product.isWishlisted = wishlistedProductIds.includes(product.id);
-    //   console.log(`Product ID: ${product.id}, Is Wishlisted: ${product.isWishlisted}`);
-    // });
 
     res.status(httpStatus.OK).send({
       message: 'Products fetched successfully',

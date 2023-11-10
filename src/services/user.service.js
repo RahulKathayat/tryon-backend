@@ -125,7 +125,8 @@ const deleteUserById = async (userId) => {
     if (!user) {
       throw new Error('User not found');
     }
-    await user.update({ status: false });
+    user.status = 0;
+    await user.save();
 
     console.log('User deleted successfully');
 

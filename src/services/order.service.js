@@ -46,12 +46,13 @@ const updateOrderById = async (id, newData) => {
 
 const deleteOrderById = async (Id, userId) => {
   try {
-    const user = await Orders.findOne({ where: Id });
+    const data = await Orders.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Orders not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Orders deleted successfully');
 

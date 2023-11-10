@@ -35,7 +35,8 @@ const deleteSubscribedUserById = async (Id) => {
     if (!user) {
       throw new Error('SubscribedUser not found');
     }
-    await user.update({ status: false });
+    user.status = 0;
+    await user.save();
 
     console.log('SubscribedUser deleted successfully');
 

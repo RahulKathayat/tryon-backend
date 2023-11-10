@@ -57,12 +57,13 @@ const updateCartById = async (userId, newData) => {
 
 const deleteCartById = async (Id) => {
   try {
-    const user = await Cart.findOne({ where: Id });
+    const data = await Cart.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Cart not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Cart deleted successfully');
 
@@ -89,6 +90,7 @@ async function createCheckout(userId) {
 
   // Fetch the user's cart
   const cart = await Cart.findOne({ where: { userId: userId } });
+
   // If there's no cart for the user, throw an error
   if (!cart) {
     throw new Error('Cart not found for this user or unauthorized');
@@ -98,7 +100,6 @@ async function createCheckout(userId) {
   const cartDetails = cart?.cartDetail || {};
 
   if (Object.keys(cartDetails).length === 0) {
-    // throw new Error('No cart details available for processing');
     return { order: null, orderDetailsArray: null, totalAmount: null };
   }
 
@@ -109,6 +110,7 @@ async function createCheckout(userId) {
     totalQuantity: Object.values(cartDetails).reduce((acc, item) => acc + item.quantity, 0),
     status: true
   });
+
   const orderDetailsData = Object.values(cartDetails).map((detail) => {
     return {
       orderId: order.id,
@@ -124,6 +126,16 @@ async function createCheckout(userId) {
 
   // Compute total amount for the order
   const totalAmount = orderDetailsData.reduce((acc, detail) => acc + parseFloat(detail.amount), 0);
+
+  // Update the Cart model with new values
+  await Cart.update(
+    {
+      totalAmount: totalAmount,
+      totalItems: order.totalItems,
+      totalQuantity: order.totalQuantity
+    },
+    { where: { userId: userId } }
+  );
 
   // Return the order, order details, and total amount
   return { order, orderDetailsArray, totalAmount };

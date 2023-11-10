@@ -184,12 +184,13 @@ const updateProductById = async (id, data) => {
 
 const deleteProductById = async (Id) => {
   try {
-    const user = await Product.findOne({ where: Id });
+    const data = await Product.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Product not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Product deleted successfully');
 
