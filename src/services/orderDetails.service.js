@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-const { OrderDetails, Product, Orders, Users, Ratings } = require('../models');
-=======
 const { OrderDetails, Product, Orders, Users,Ratings } = require('../models');
->>>>>>> 85adc015d4b9977b319af59204b2106e1446a0a0
 
 const createOrderDetails = async (_userBody) => {
   const userBody = _userBody;
@@ -26,11 +22,7 @@ const getOrderDetails = async (query, options) => {
         include: [
           {
             model: Users,
-<<<<<<< HEAD
-            include: [
-=======
             include:[
->>>>>>> 85adc015d4b9977b319af59204b2106e1446a0a0
               {
                 model: Ratings
               }
@@ -59,11 +51,7 @@ const getOrderDetailsByOrderId = async (id) => {
           include: [
             {
               model: Users,
-<<<<<<< HEAD
-              include: [
-=======
               include:[
->>>>>>> 85adc015d4b9977b319af59204b2106e1446a0a0
                 {
                   model: Ratings
                 }
@@ -71,11 +59,7 @@ const getOrderDetailsByOrderId = async (id) => {
             }
           ]
         }
-<<<<<<< HEAD
-      ]
-=======
       ],
->>>>>>> 85adc015d4b9977b319af59204b2106e1446a0a0
     });
     return data;
   } catch (error) {
@@ -95,11 +79,7 @@ const getOrderDetailsById = async (id) => {
           include: [
             {
               model: Users,
-<<<<<<< HEAD
-              include: [
-=======
               include:[
->>>>>>> 85adc015d4b9977b319af59204b2106e1446a0a0
                 {
                   model: Ratings
                 }
@@ -107,11 +87,7 @@ const getOrderDetailsById = async (id) => {
             }
           ]
         }
-<<<<<<< HEAD
-      ]
-=======
       ],
->>>>>>> 85adc015d4b9977b319af59204b2106e1446a0a0
     });
     return data;
   } catch (error) {
@@ -162,11 +138,7 @@ const getOrderDetailsForUser = async (query, userId) => {
         include: [
           {
             model: Users,
-<<<<<<< HEAD
-            include: [
-=======
             include:[
->>>>>>> 85adc015d4b9977b319af59204b2106e1446a0a0
               {
                 model: Ratings
               }
