@@ -95,8 +95,12 @@ async function createCheckout(userId, cartData) {
       const cart = await Cart.findOne({ where: { userId: userId } });
   
       let cartDetails = cart.dataValues.cartDetail || {};
-      cartDetails = JSON.parse(cartDetails);
-  
+      // cartDetails = JSON.parse(cartDetails);
+      try {
+        cartDetails = JSON.parse(cartDetails);
+      } catch (error) {
+        console.error('Error parsing cartDetails:', error);
+      }
       if (Array.isArray(cartDetails.cartDetails)) {
         
         const cartItems = [];
