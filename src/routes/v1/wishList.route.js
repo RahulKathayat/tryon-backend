@@ -21,3 +21,6 @@ router
   .delete(auth(), wishlistController.deleteWishlist);
 
 module.exports = router;
+
+
+
