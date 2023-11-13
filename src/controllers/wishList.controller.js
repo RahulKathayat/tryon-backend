@@ -4,13 +4,16 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 
 const createWishlist = catchAsync(async (req, res) => {
-  const userId=req.user.id;
+  const userId = req.user.id;
   let userBody = req.body;
-  const data = await wishlistService.createWishlist(userBody,userId);
-  if (data) {
-    await res.status(200).send({ message:data});
+  const data = await wishlistService.createWishlist(userBody, userId);
+  if (data == 'Product is already in the wishlist') {
+    res.status(400).send({ message: 'Product is already in the wishlist' });
+  }
+  if (data == 'Wishlist created successfully!!') {
+    res.status(200).send({ message: data });
   } else {
-    await res.status(404).send({ message: 'Wishlist not created' });
+    res.status(404).send({ message: 'Wishlist not created' });
   }
 });
 
@@ -32,7 +35,6 @@ const getWishlistByUserId = catchAsync(async (req, res) => {
   // query.status = req.query.status ? req.query.status : true;
   const id = req.user.id;
   const data = await wishlistService.getWishlistByUserId(id);
-  console.log('userId================================', data);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Wishlist data by id is fetched successfully', data: data });
   } else {
@@ -58,12 +60,10 @@ const updateWishlist = catchAsync(async (req, res) => {
 });
 
 const deleteWishlist = catchAsync(async (req, res) => {
-  const querry = req.user.id;
+  const userId = req.user.id;
   const params = req.params.productId;
 
-  console.log('ids..........................', querry, params);
-
-  const deleteUser = await wishlistService.deleteWishlistById(querry, params);
+  const deleteUser = await wishlistService.deleteWishlistById(userId, params);
   if (deleteUser) {
     res.status(httpStatus.OK).send({ message: 'Wishlist deleted successfully' });
   } else {

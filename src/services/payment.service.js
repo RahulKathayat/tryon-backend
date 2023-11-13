@@ -1,12 +1,14 @@
-const { Payment } = require('../models');
+const { Payment, Users } = require('../models');
 const razorpayConf = require('../config/razorpay');
 const Razorpay = require('razorpay');
-const secret = "razorpaysecret";
+const secret = 'razorpaysecret';
 const crypto = require('crypto');
+const db = require('../models/index');
+const shortid = require('shortid');
 
 const razorpay = new Razorpay({
-  key_id: razorpayConf.key_id,
-  key_secret: razorpayConf.key_secret
+  key_id: razorpayConf.RAZORPAY_API_KEY,
+  key_secret: razorpayConf.RAZORPAY_API_SECRET
 });
 
 const createPayment = async (_userBody) => {
@@ -49,12 +51,13 @@ const updatePaymentById = async (id, newData) => {
 
 const deletePaymentById = async (Id) => {
   try {
-    const user = await Payment.findOne({ where: Id });
+    const data = await Payment.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Payment not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Payment deleted successfully');
 
@@ -69,9 +72,9 @@ const deletePaymentById = async (Id) => {
 const createOrderForPayment = async (amount, currency, receipt, notes) => {
   try {
     const options = {
-      amount: amount, // Amount in the smallest currency unit (e.g., 100 paise for 1 INR)
-      currency: currency, // Currency code (e.g., 'INR')
-      receipt: receipt, // Unique order ID or receipt number
+      amount: amount * 100, // Amount in the smallest currency unit (e.g., 100 paise for 1 INR)
+      currency: 'INR', // Currency code (e.g., 'INR')
+      receipt: shortid.generate(),
       notes: notes // Additional notes (if needed)
     };
 
@@ -86,12 +89,11 @@ const createOrderForPayment = async (amount, currency, receipt, notes) => {
 const createCustomer = async (customerData, res) => {
   try {
     const customer = await razorpay.customers.create(customerData);
-    res.status(201).json({ message: "Created Successfully!!" });
+    res.status(201).json({ message: 'Created Successfully!!' });
   } catch (error) {
-    res.status(409).json({ error: "Customer already exists" });
+    res.status(409).json({ error: 'Customer already exists' });
   }
 };
-
 
 const initiatePayment = async (orderId, amount, currency) => {
   try {
@@ -100,7 +102,7 @@ const initiatePayment = async (orderId, amount, currency) => {
       amount: amount,
       currency: currency
     });
-    console.log("payment======================",payment);
+    console.log('payment======================', payment);
 
     return payment;
   } catch (error) {
@@ -109,10 +111,10 @@ const initiatePayment = async (orderId, amount, currency) => {
   }
 };
 
-// for webhook 
-const verifySignature=async(req,res)=>{
+// for webhook
+const verifySignature = async (req, res) => {
   const requestBody = req.body;
-  const receivedSignature = req.headers["x-razorpay-signature"];
+  const receivedSignature = req.headers['x-razorpay-signature'];
 
   const calculatedSignature = calculateSignature(secret, requestBody);
 
@@ -120,20 +122,95 @@ const verifySignature=async(req,res)=>{
   console.log('Calculated Signature:', calculatedSignature);
 
   if (receivedSignature === calculatedSignature) {
-    console.log("Request is legit");
+    console.log('Request is legit');
     res.status(200).json({
-      message: "OK",
+      message: 'OK'
     });
   } else {
-    res.status(403).json({ message: "Invalid" });
+    res.status(403).json({ message: 'Invalid' });
   }
 };
 
 function calculateSignature(secret, requestBody) {
-  const shasum = crypto.createHmac("sha256", secret);
+  const shasum = crypto.createHmac('sha256', secret);
   shasum.update(JSON.stringify(requestBody));
-  return shasum.digest("hex");
+  return shasum.digest('hex');
 }
+
+// const createRazorpayOrder = async (req, callback) => {
+//   try {
+//     let transferArray = [];
+
+//     for (let detail of req.body.payment_distribute_details) {
+//       console.log('user details for payment:========================================= ', detail);
+//       let user = await Users.findOne({ where: { email: detail.email } });
+
+//       if (user) {
+//         transferArray.push({
+//           // account: user.bankAccountId,
+//           amount: detail.amount * 100,
+//           currency: 'INR',
+//           notes: {
+//             branch: '',
+//             name: ' '
+//           },
+//           linked_account_notes: ['branch'],
+//           on_hold: 1,
+//           on_hold_until: 1671222870
+//         });
+
+//         // Save the payment information to your database
+//         try {
+//           const payment = await Payment.create({
+//             userId: user.userId, // Update with the actual foreign key value
+//             orderDetailId: req.body.orderDetailId, // Update with the actual order detail ID
+//             status: true // You can adjust the status as needed
+//           });
+//         } catch (error) {
+//           console.error('Error creating payment record:', error);
+//         }
+//       }
+//     }
+
+//     const instance = new Razorpay({ key_id: razorpayConf.key_id, key_secret: razorpayConf.key_secret });
+//     const options = {
+//       amount: req.body.amount * 100, // amount in the smallest currency unit
+//       currency: 'INR',
+//       receipt: req.body.receipt,
+//       transfers: transferArray
+//     };
+
+//     console.log(options);
+
+//     instance.orders.create(options, async (err, order) => {
+//       if (err) {
+//         console.error(err);
+//         callback(500, 'Error In Order Creation', err);
+//       } else {
+//         try {
+//           const payment = await Payment.create({
+//             user: req.user,
+//             orderId: order.id,
+//             receipt: order.receipt,
+//             status: 'Order ' + order.status
+//           });
+
+//           callback(200, 'Order Created', order);
+//         } catch (e) {
+//           console.error(e);
+//           callback(500, 'Error In Order Creation', err);
+//         }
+//       }
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     callback(500, 'Error In Order Creation', error);
+//   }
+// };
+
+const verifyPayment = async (req, callback) => {
+  // Implement the payment verification logic using Sequelize
+};
 
 module.exports = {
   createPayment,
@@ -145,5 +222,5 @@ module.exports = {
   initiatePayment,
   verifySignature,
   createCustomer
-
+  // createRazorpayOrder
 };

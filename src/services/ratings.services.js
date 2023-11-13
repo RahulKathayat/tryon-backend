@@ -79,12 +79,13 @@ const getUserRatings = async (query, options, userId) => {
 
 const deleteUserRatings = async (Id, userId) => {
   try {
-    const user = await Ratings.findOne({ where: Id });
+    const data = await Ratings.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Ratings not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Ratings deleted successfully');
 

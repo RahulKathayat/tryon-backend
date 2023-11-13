@@ -3,7 +3,6 @@ const { Op } = require('sequelize');
 
 const createFabric = async (_userBody) => {
   const userBody = _userBody;
-  console.log('===============', userBody);
   const data = await Fabric.create(userBody);
   console.log('data', data);
   return data;
@@ -60,12 +59,13 @@ const updateFabricById = async (id, newData) => {
 
 const deleteFabricById = async (Id) => {
   try {
-    const user = await Fabric.findOne({ where: Id });
+    const data = await Fabric.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Fabric not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Fabric deleted successfully');
 

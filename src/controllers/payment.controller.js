@@ -69,18 +69,17 @@ const createOrderForPayment = catchAsync(async (req, res) => {
     const { amount, currency, receipt, notes } = req.body;
 
     const order = await paymentService.createOrderForPayment(amount, currency, receipt, notes);
+    console.log('order======================', order);
     res.status(200).json({ message: 'Razorpay Order Created', order });
   } catch (error) {
     res.status(500).json({ message: 'Error creating Razorpay order', error });
   }
 });
 
-const createCustomer=catchAsync(async(req,res)=>{
+const createCustomer = catchAsync(async (req, res) => {
   const customerData = req.body;
   paymentService.createCustomer(customerData, res);
-})
-
-
+});
 
 const initiatePayment = catchAsync(async (req, res) => {
   const { orderId, amount, currency } = req.body;
@@ -92,11 +91,24 @@ const initiatePayment = catchAsync(async (req, res) => {
     res.status(500).json({ message: 'Error initiating payment', error });
   }
 });
- 
+
 // for webhook interaction
-const verify=catchAsync(async(req,res)=>{
-  paymentService.verifySignature(req, res)
+const verify = catchAsync(async (req, res) => {
+  paymentService.verifySignature(req, res);
 });
+
+// razorpay payment
+// const razorpayPayment = catchAsync(async (req, res) => {
+//   try {
+//     const order = await paymentService.createRazorpayOrder(req, (statusCode, message, data) => {
+//       console.log('message==========================================', message, data);
+//       res.status(statusCode).json({ message, data });
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
 
 module.exports = {
   createPayment,
@@ -108,4 +120,5 @@ module.exports = {
   initiatePayment,
   verify,
   createCustomer
+  // razorpayPayment
 };

@@ -1,4 +1,7 @@
 const { Cart, Users, Orders, OrderDetails } = require('../models');
+const { createOrderForPayment } = require('../controllers/payment.controller');
+const { json } = require('sequelize');
+// const { cartService } = require('../services/cart.service');
 
 const createCart = async (_userBody) => {
   const userBody = _userBody;
@@ -13,7 +16,7 @@ const createCart = async (_userBody) => {
       }
     });
     if (data) {
-      return Cart.create({ userId: userBody });
+      return Cart.create({ userId: userBody, cartDetail: {} });
     } else {
       return 'user role does not matched';
     }
@@ -34,7 +37,6 @@ const getCart = async (query, options) => {
 };
 
 const getCartById = async (id) => {
-  console.log('cart id==================================', id);
   try {
     const data = await Cart.findAll({
       where: { userId: id }
@@ -45,61 +47,25 @@ const getCartById = async (id) => {
   }
 };
 
-// const updateCartById = async (id, newData) => {
-//   try {
-//     console.log('id');
-//     const findData = await Cart.findOne({
-//       where: id
-//     });
-//     if (findData) {
-//       return await Cart.update(newData, { where: id });
-//     } else {
-//       return;
-//     }
-//   } catch (err) {
-//     console.log('err=====================', err);
-//   }
-// };
-
 const updateCartById = async (userId, newData) => {
   try {
     const updateQuantity = await Cart.update(newData, { where: { userId: userId } });
     console.log();
     return updateQuantity;
   } catch (err) {
-    // if (existingCart.dataValues.cartDetail) {
-    //   let cartDetail = existingCart.cartDetail;
-    //   let updateQuantit = {};
-    //   if (cartDetail.item1.productId) {
-    //     let quantity = 1;
-
-    //     quantity += cartDetail.item1.quantity;
-    //     updateQuantit = {
-    //       quantity: quantity
-    //     };
-    //   } else {
-    //     cartDetail = {
-    //       productId: cartDetail.item1.productId,
-    //       quantity: quantity
-    //       // price,
-    //     };
-    //     const createCart = await Cart.create(cartDetail);
-
-    //     return createCart;
-    //   }
-    // }
     console.log('err=====================', err);
   }
 };
 
 const deleteCartById = async (Id) => {
   try {
-    const user = await Cart.findOne({ where: Id });
+    const data = await Cart.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Cart not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Cart deleted successfully');
 
@@ -118,100 +84,77 @@ const clearCartByUserId = async (userId) => {
     }
   );
 };
+ 
 
-// For Checkout
-// async function createCheckout(userId) {
-//   if (!userId) {
-//     throw new Error('No user ID provided.');
-//   }
-
-//   // Fetch the user's cart
-//   const cart = await Cart.findOne({ where: { userId: userId } });
-
-//   // If there's no cart for the user, throw an error
-//   if (!cart) {
-//     throw new Error('Cart not found for this user or unauthorized.');
-//   }
-
-//   // Create an order from the cart's data
-//   const order = await Orders.create({
-//     userId: cart.userId,
-//     totalItems: Object.keys(cart.cartDetail).length,
-//     totalQuantity: Object.values(cart.cartDetail).reduce((acc, item) => acc + item.quantity, 0),
-//     status: true
-//   });
-
-//   // Extract cart details and transform them into order details data
-//   const cartDetails = cart?.cartDetail || {};
-
-//   if (!Object.keys(cartDetails).length) {
-//     throw new Error('No cart details available for processing.');
-//   }
-
-//   const orderDetailsData = Object.values(cartDetails).map((detail) => ({
-//     orderId: order.id,
-//     productId: detail.productId,
-//     type: detail.type || 'On Process',
-//     amount: detail.price * detail.quantity,
-//     totalQuantity: detail.quantity,
-//     status: true
-//   }));
-
-//   const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
-//   return { order, orderDetailsArray };
-// }
-
-async function createCheckout(userId) {
-  if (!userId) {
-    throw new Error('No user ID provided.');
-  }
-
-  // Fetch the user's cart
-  const cart = await Cart.findOne({ where: { userId: userId } });
-
-  // If there's no cart for the user, throw an error
-  if (!cart) {
-    throw new Error('Cart not found for this user or unauthorized.');
-  }
-
-  // Create an order from the cart's data
-  const order = await Orders.create({
-    userId: cart.userId,
-    totalItems: Object.keys(cart.cartDetail).length,
-    totalQuantity: Object.values(cart.cartDetail).reduce((acc, item) => acc + item.quantity, 0),
-    status: true
-  });
-
-  // Extract cart details and transform them into order details data
-  const cartDetails = cart?.cartDetail || {};
-
-  if (!Object.keys(cartDetails).length) {
-    throw new Error('No cart details available for processing.');
-  }
-  console.log("cart details====================================================",cartDetails)
-  const orderDetailsData = Object.values(cartDetails).map((detail) => {
-    console.log("===============================",detail.price,'qu===============',detail.quantity,"product id=============",detail.productId); // You can add this console.log here if you want to log the price.
+async function createCheckout(userId, cartData) {
+    try {
+      if (!userId) {
+        throw new Error('No user ID provided.');
+      }
   
-    return {
-      orderId: order.id,
-      productId: detail.productId,
-      type: detail.type || 'On Process',
-      amount: detail.price * detail.quantity,
-      totalQuantity: detail.quantity,
-      status: true
-    };
-  });
+      const cart = await Cart.findOne({ where: { userId: userId } });
   
-
-  const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
-
-  // Compute total amount for the order
-  const totalAmount = orderDetailsData.reduce((acc, detail) => acc + detail.amount, 0);
-  console.log('total Amount=============================', totalAmount);
-
-  // Return the order, order details, and total amount
-  return { order, orderDetailsArray, totalAmount };
-}
+      let cartDetails = cart.dataValues.cartDetail || {};
+      cartDetails = JSON.parse(cartDetails);
+  
+      if (Array.isArray(cartDetails.cartDetails)) {
+        
+        const cartItems = [];
+      
+        cartDetails.cartDetails.forEach(item => {
+          const id = item.id;
+          const selectedQuantity = item.selectedQuantity;
+          const finalAmount = item.finalAmount;
+          cartItems.push({ id, finalAmount, selectedQuantity });
+        });
+      //   return cartItems;
+      // } else {
+      //   console.log('No items in the cart!');
+      //   return { order: null, orderDetailsArray: null, totalAmount: null };
+      // }
+      
+  
+      const order = await Orders.create({
+        userId: userId,
+        totalItems: cartItems.length, // Assuming you're using the cartItems array
+        totalQuantity: cartItems.reduce((acc, item) => acc + (item.selectedQuantity || 0), 0),
+        status: true,
+      });
+  
+      const orderDetailsData = cartItems.map((item) => ({
+        orderId: order.id,
+        productId: item.id,
+        type: 'On Process', 
+        amount: item.finalAmount || 0,
+        totalQuantity: item.selectedQuantity || 0,
+        status: true,
+      }));
+  
+      const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
+  
+      const totalAmount = orderDetailsData.reduce((acc, item) => acc + parseFloat(item.amount), 0);
+  
+      await Cart.update(
+        {
+          totalAmount: totalAmount,
+          totalItems: order.totalItems,
+          totalQuantity: order.totalQuantity,
+        },
+        { where: { userId: userId } }
+      );
+  
+  
+      return { order, orderDetailsArray, totalAmount };
+    } 
+  }catch (error) {
+      console.error('Error in createCheckout:', error);
+      throw error;
+    }
+  }
+  
+  
+  
+  
 
 module.exports = {
   createCart,

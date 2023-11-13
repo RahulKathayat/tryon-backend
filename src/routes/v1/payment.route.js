@@ -15,10 +15,11 @@ router
   .post(auth(), validate(paymentValidation.createPayment), paymentController.createPayment);
 
 //Razor pay Api's
+// router.post('/razorpay', paymentController.razorpayPayment);
 router.post('/createOrder', paymentController.createOrderForPayment);
 router.post('/initiatePayment', paymentController.initiatePayment);
 router.post('/createCustomer', paymentController.createCustomer);
-router.post("/verification", paymentController.verify);  //for webhook
+router.post('/verification', paymentController.verify); //for webhook
 // router.post('/createCustomer', paymentController.createCustomer);
 
 // router.post('/verifyPayment', paymentController.verifyPayment);

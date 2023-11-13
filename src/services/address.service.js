@@ -43,7 +43,6 @@ const getAddressById = async (id) => {
       where: { id: id },
       order: [['createdAt', 'DESC']]
     });
-    console.log('data=============', data);
     return data;
   } catch (error) {
     console.error('address not found!!', error);
@@ -67,12 +66,13 @@ const updateAddressById = async (newData, id) => {
 
 const deleteAddressById = async (Id) => {
   try {
-    const user = await Address.findOne({ where: Id });
+    const data = await Address.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Address not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Address deleted successfully');
 

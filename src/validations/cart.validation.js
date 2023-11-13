@@ -22,6 +22,7 @@ const updateCart = {
     totalQuantity: Joi.number().optional(),
     discountCode: Joi.string().optional(),
     quantity: Joi.number().optional(),
+    addressId: Joi.number().optional(),
     status: Joi.boolean()
   })
 };

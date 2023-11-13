@@ -3,7 +3,6 @@ const subCategory = require('../models/subCategory');
 
 const createCategory = async (_userBody) => {
   const userBody = _userBody;
-  console.log('===============', userBody);
   const data = await Category.create(userBody);
   console.log('data', data);
   return data;
@@ -77,12 +76,13 @@ const updateCategoryById = async (id, newData) => {
 
 const deleteCategoryById = async (Id) => {
   try {
-    const user = await Category.findOne({ where: Id });
+    const data = await Category.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Category not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Category deleted successfully');
 

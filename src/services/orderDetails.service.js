@@ -1,8 +1,7 @@
-const { OrderDetails, Product, Orders, Users,Ratings } = require('../models');
+const { OrderDetails, Product, Orders, Users, Ratings } = require('../models');
 
 const createOrderDetails = async (_userBody) => {
   const userBody = _userBody;
-  console.log('===============', userBody);
   const data = await OrderDetails.create(userBody);
   console.log('data', data);
   return data;
@@ -22,7 +21,9 @@ const getOrderDetails = async (query, options) => {
         include: [
           {
             model: Users,
-            include:[
+
+            // include: [
+            include: [
               {
                 model: Ratings
               }
@@ -51,7 +52,7 @@ const getOrderDetailsByOrderId = async (id) => {
           include: [
             {
               model: Users,
-              include:[
+              include: [
                 {
                   model: Ratings
                 }
@@ -59,7 +60,7 @@ const getOrderDetailsByOrderId = async (id) => {
             }
           ]
         }
-      ],
+      ]
     });
     return data;
   } catch (error) {
@@ -79,7 +80,7 @@ const getOrderDetailsById = async (id) => {
           include: [
             {
               model: Users,
-              include:[
+              include: [
                 {
                   model: Ratings
                 }
@@ -87,7 +88,7 @@ const getOrderDetailsById = async (id) => {
             }
           ]
         }
-      ],
+      ]
     });
     return data;
   } catch (error) {
@@ -108,12 +109,13 @@ const updateOrderDetailsById = async (id, newData) => {
 
 const deleteOrderDetailsById = async (Id) => {
   try {
-    const user = await OrderDetails.findOne({ where: Id });
+    const data = await OrderDetails.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('OrderDetails not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('OrderDetails deleted successfully');
 
@@ -138,7 +140,7 @@ const getOrderDetailsForUser = async (query, userId) => {
         include: [
           {
             model: Users,
-            include:[
+            include: [
               {
                 model: Ratings
               }

@@ -3,7 +3,6 @@ const { Orders, OrderDetails, Users, Product } = require('../models');
 
 const createOrder = async (_userBody) => {
   const userBody = _userBody;
-  console.log('===============', userBody);
   const data = await Orders.create(userBody);
   console.log('data', data);
   return data;
@@ -38,7 +37,6 @@ const updateOrderById = async (id, newData) => {
   const findData = await Orders.findOne({
     where: id
   });
-  console.log('FINDdTAA============================', findData);
   if (findData) {
     return Orders.update(newData, { where: id });
   } else {
@@ -48,12 +46,13 @@ const updateOrderById = async (id, newData) => {
 
 const deleteOrderById = async (Id, userId) => {
   try {
-    const user = await Orders.findOne({ where: Id });
+    const data = await Orders.findOne({ where: Id });
 
-    if (!user) {
+    if (!data) {
       throw new Error('Orders not found');
     }
-    await user.update({ status: false });
+    data.status = 0;
+    await data.save();
 
     console.log('Orders deleted successfully');
 
@@ -116,7 +115,6 @@ const updateOrderForUser = async (userId, newData, id) => {
   const findData = await Orders.findOne({
     where: { userId: userId }
   });
-  console.log('FINDdTAA============================', findData);
   if (findData) {
     return Orders.update(newData, { where: id });
   } else {
