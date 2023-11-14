@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Payment', {
+    queryInterface.createTable('paymentLog', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,19 +9,12 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        onDelete: 'SET Null',
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
       },
-      orderDetailId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'SET Null',
-        references: {
-          model: 'OrderDetails',
-          key: 'id'
-        }
+      orderId: {
+        type: Sequelize.INTEGER
+      },
+      paymentResponse: {
+        type: Sequelize.JSON
       },
       status: {
         type: Sequelize.BOOLEAN
@@ -35,5 +28,5 @@ module.exports = {
         type: Sequelize.DATE
       }
     }),
-  down: (queryInterface) => queryInterface.dropTable('Payment')
+  down: (queryInterface) => queryInterface.dropTable('paymentLog')
 };

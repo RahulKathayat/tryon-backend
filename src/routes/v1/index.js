@@ -18,6 +18,7 @@ const fabricRoute= require("./fabric.route");
 const productFabricRoute= require("./productFabric.route");
 const subscribedUserRoute=require("./subscribedUser.route")
 const shipRocketRoute=require("./shipRocket.route")
+const paymentLogRoute=require("./paymentLog.route")
 
 
 
@@ -97,6 +98,10 @@ const defaultRoutes = [
   {
     path: '/shipRocket',
     route: shipRocketRoute
+  },
+  {
+    path: '/paymentLog',
+    route: paymentLogRoute
   }
   
 ];

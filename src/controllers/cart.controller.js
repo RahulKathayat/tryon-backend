@@ -4,6 +4,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const { paymentService } = require('../services');
 
+
 const getCart = catchAsync(async (req, res) => {
   const query = {};
   query.status = req.query.status ? req.query.status : true;
@@ -100,6 +101,8 @@ const clearCart = catchAsync(async (req, res) => {
 //     res.status(500).json({ error: error.message });
 //   }
 // }
+
+
 
 async function createCheckout(req, res) {
   try {

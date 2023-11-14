@@ -74,6 +74,10 @@ module.exports = (sequelize, DataTypes) => {
     User.hasOne(models.WishList, {
       foreignKey: 'userId'
     });
+
+    User.hasMany(models.paymentLog, {
+      foreignKey: 'userId'
+    });
   };
 
   return User;
