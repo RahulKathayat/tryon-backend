@@ -4,7 +4,6 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const { paymentService } = require('../services');
 
-
 const getCart = catchAsync(async (req, res) => {
   const query = {};
   query.status = req.query.status ? req.query.status : true;
@@ -102,8 +101,6 @@ const clearCart = catchAsync(async (req, res) => {
 //   }
 // }
 
-
-
 async function createCheckout(req, res) {
   try {
     const userId = req.user.id;
@@ -116,7 +113,7 @@ async function createCheckout(req, res) {
 
     const { order, orderDetailsArray, totalAmount } = checkoutResponse;
 
-    console.log("order controller check function ==============================", order, orderDetailsArray, totalAmount);
+    console.log('order controller check function ==============================', order, orderDetailsArray, totalAmount);
 
     const amountForPayment = await paymentService.createOrderForPayment(totalAmount);
 
@@ -129,13 +126,14 @@ async function createCheckout(req, res) {
           status: amountForPayment.status
         }
       : {};
+    //clear cart on checkout
+    const cartUpdate = await cartService.clearCartByUserId(req.user.dataValues.id);
 
-    res.json({ order, orderDetails: orderDetailsArray, totalAmount, razorpayPaymentDetails });
+    res.json({ order, orderDetails: orderDetailsArray, totalAmount, razorpayPaymentDetails, cartUpdate });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
-
 
 module.exports = {
   deleteCart,

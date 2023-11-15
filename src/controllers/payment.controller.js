@@ -37,7 +37,6 @@ const verify = catchAsync(async (req, res) => {
   paymentService.verifySignature(req, res);
 });
 
-
 module.exports = {
   createOrderForPayment,
   initiatePayment,
