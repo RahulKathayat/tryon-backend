@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
         email: {
             type: DataTypes.STRING
           },
+          isActive:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+          },
         status: {
           type: DataTypes.BOOLEAN,
           defaultValue:true

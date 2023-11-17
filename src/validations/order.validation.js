@@ -6,7 +6,9 @@ const createOrder = {
     userId: Joi.number().required(),
     totalItems: Joi.number().required(),
     totalQuantity: Joi.number().required(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+    isActive:Joi.boolean()
+
   })
 };
 
@@ -17,7 +19,8 @@ const updateOrder = {
   userId: Joi.number().required(),
   totalItems: Joi.number().required(),
   totalQuantity: Joi.number().required(),
-  status: Joi.boolean()
+  status: Joi.boolean(),
+  isActive:Joi.boolean()
 };
 
 module.exports = {

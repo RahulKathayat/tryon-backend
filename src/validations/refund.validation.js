@@ -6,7 +6,9 @@ const createRefund = {
    userId:Joi.number().required(),
    orderId:Joi.number().required(),
    orderDetailId:Joi.number().required(),
-   status: Joi.boolean()
+   status: Joi.boolean(),
+  isActive:Joi.boolean()
+
   })
 };
 
@@ -17,7 +19,9 @@ const updateRefund = {
   userId:Joi.number().required(),
    orderId:Joi.number().required(),
    orderDetailId:Joi.number().required(),
-   status: Joi.boolean()
+   status: Joi.boolean(),
+  isActive:Joi.boolean()
+
 };
 
 module.exports = {

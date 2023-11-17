@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       addressId: {
         type: DataTypes.INTEGER
       },
+      isActive:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

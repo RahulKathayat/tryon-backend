@@ -32,6 +32,21 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   }
 };
 
+const loginWithGoogle = async (email, gAuth) => {
+  console.log("gauth============================",email,gAuth)
+  const userWithSecretFields = await userService.getUserWithSecretFields(email);
+  const user = await userService.getUserByEmail(email);
+  logger.info('message');
+  if (!userWithSecretFields || !(gAuth === userWithSecretFields.gAuth)) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect auth');
+}
+  if (!user.isActive) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'You Account is not active');
+  }
+  return user;
+};
+
+
 const logout = async (refreshToken) => {
   const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
   if (!refreshTokenDoc) {
@@ -113,5 +128,6 @@ module.exports = {
   logout,
   refreshAuth,
   verifyEmail,
-  resetPassword
+  resetPassword,
+  loginWithGoogle
 };

@@ -17,6 +17,15 @@ const login = {
   })
 };
 
+const loginWithGoogle = {
+  body: Joi.object().keys({
+    email: Joi.string().required(),
+    gAuth: Joi.string().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required()
+  })
+};
+
 const logout = {
   body: Joi.object().keys({
     refreshToken: Joi.string().required()
@@ -66,5 +75,6 @@ module.exports = {
   generatePassword,
   forgotPassword,
   resetPassword,
-  changePassword
+  changePassword,
+  loginWithGoogle
 };

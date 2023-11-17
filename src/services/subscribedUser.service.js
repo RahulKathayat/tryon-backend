@@ -6,7 +6,7 @@ const ApiError = require('../utils/ApiError');
 
 const createSubscribedUser = async (_userBody) => {
   const userBody = _userBody;
-  if (await getExistingEmais(userBody.email)) {
+  if (await getExistingEmails(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, messages.EMAIL_ALREADY_EXISTS);
   }
   const data = await SubscribedUser.create(userBody);
@@ -14,7 +14,7 @@ const createSubscribedUser = async (_userBody) => {
   return data;
 };
 
-const getExistingEmais = async (email) => {
+const getExistingEmails = async (email) => {
   logger.info(email);
   return SubscribedUser.findOne({ where: { email, status: true } });
 };
@@ -51,5 +51,5 @@ module.exports = {
   createSubscribedUser,
   getSubscribedUser,
   deleteSubscribedUserById,
-  getExistingEmais
+  getExistingEmails
 };

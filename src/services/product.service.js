@@ -86,7 +86,7 @@ const getProduct = async (query = {}, options = {}, between = {}, order = 'desc'
   ) {
     const products = await Product.findAll({
       order: orderCriteria,
-      include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }]
+      include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory },{model: Ratings}]
     });
     return products;
   }
@@ -117,7 +117,7 @@ const getProduct = async (query = {}, options = {}, between = {}, order = 'desc'
   const products = await Product.findAll({
     where: query,
     order: orderCriteria,
-    include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
+    include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory },{model: Ratings}],
     limit,
     offset
   });
@@ -196,7 +196,7 @@ const getProductById = async (id) => {
   try {
     const data = await Product.findAll({
       where: { id: id },
-      include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }]
+      include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory },{model: Ratings}]
     });
     return data;
   } catch (error) {
@@ -278,7 +278,7 @@ const getProductForWishlist = async (query, options, between, order) => {
     const products = await Product.findAll({
       where: query,
       order: orderCriteria,
-      include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
+      include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory },{model: Ratings}],
       limit,
       offset
     });

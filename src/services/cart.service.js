@@ -39,7 +39,7 @@ const getCart = async (query, options) => {
 const getCartById = async (id) => {
   try {
     const data = await Cart.findAll({
-      where: { userId: id }
+      where: { userId: id}
     });
     return data;
   } catch (error) {
@@ -133,6 +133,7 @@ async function createCheckout(userId, cartData) {
         totalItems: cartItems.length, // Assuming you're using the cartItems array
         totalQuantity: cartItems.reduce((acc, item) => acc + (item.selectedQuantity || 0), 0),
         totalAmount:Amount,
+        orderDetails:cartDetails.cartDetails,
         status: true,
       });
       
@@ -147,6 +148,7 @@ async function createCheckout(userId, cartData) {
         amount:item.finalAmount||0,
         totalQuantity: item.selectedQuantity || 0,
         calculatedAmount:itemAmount,
+
         status: true,
 
       };

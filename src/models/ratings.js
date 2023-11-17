@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       ratings: {
         type: DataTypes.INTEGER
       },
+      isActive:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

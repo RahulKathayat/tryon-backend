@@ -27,7 +27,9 @@ const createProduct = {
     colour: Joi.array().required(),
     // quantity:Joi.number().required(),
     upComingDate: Joi.string().allow(''),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+    isActive:Joi.boolean()
+
   })
 };
 
@@ -60,7 +62,9 @@ const updateProduct = {
   colour: Joi.array().required(),
   // quantity:Joi.number().required(),
   upComingDate: Joi.string().allow(''),
-  status: Joi.boolean()
+  status: Joi.boolean(),
+  isActive:Joi.boolean()
+
 };
 
 module.exports = {

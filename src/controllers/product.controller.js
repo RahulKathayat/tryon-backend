@@ -283,6 +283,7 @@ const getProductsForUser = async (req, res, next) => {
   try {
     let query = {};
     query.status = req.query.status ? req.query.status : true;
+    query.isActive=req.query.isActive?req.query.isActive:true;
 
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const between = pick(req.query, ['priceFrom', 'priceTo']);

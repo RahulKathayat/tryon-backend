@@ -12,7 +12,9 @@ const createUser = {
     addressId: Joi.number().required(),
     dob: Joi.date().required(),
     role: Joi.string().valid('Admin', 'Customer').required(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+  isActive:Joi.boolean()
+
   })
 };
 
@@ -30,8 +32,9 @@ const updateUser = {
     addressId: Joi.number().optional(),
     dob: Joi.date().optional(),
     role: Joi.string().valid('Admin', 'Customer').optional(),
+    status: Joi.boolean(),
+  isActive:Joi.boolean()
 
-    status: Joi.boolean()
   })
 };
 

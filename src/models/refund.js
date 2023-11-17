@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       orderDetailId: {
         type: DataTypes.INTEGER
       },
+      isActive:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

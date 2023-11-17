@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             defaultValue:true
         },
+        isActive:{
+          type: DataTypes.BOOLEAN,
+          defaultValue: true
+        },
       },
       {
         tableName: 'ProductFabric',
