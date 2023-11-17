@@ -103,40 +103,62 @@ async function createCheckout(userId, cartData) {
       }
       if (Array.isArray(cartDetails.cartDetails)) {
         
-        const cartItems = [];
-      
+        let cartItems = [];
+        let finalAmount=0;
         cartDetails.cartDetails.forEach(item => {
+       console.log("total amounnt=================",item.selectedQuantity);
+
           const id = item.id;
           const selectedQuantity = item.selectedQuantity;
-          const finalAmount = item.finalAmount;
+          finalAmount = item.finalAmount;
           cartItems.push({ id, finalAmount, selectedQuantity });
+
         });
+        console.log("cartitems=============",cartItems);
+    
       //   return cartItems;
       // } else {
       //   console.log('No items in the cart!');
       //   return { order: null, orderDetailsArray: null, totalAmount: null };
       // }
-      
-  
-      const order = await Orders.create({
+      let Amount = cartItems.reduce((acc, item) => {
+        return acc + (item.finalAmount * item.selectedQuantity);
+    }, 0);
+    
+    console.log("Total Amount:",Amount);
+    
+      const order = await Orders.create(
+        {
         userId: userId,
         totalItems: cartItems.length, // Assuming you're using the cartItems array
         totalQuantity: cartItems.reduce((acc, item) => acc + (item.selectedQuantity || 0), 0),
+        totalAmount:Amount,
         status: true,
       });
-  
-      const orderDetailsData = cartItems.map((item) => ({
+      
+     
+      const orderDetailsData = cartItems.map((item) => {
+      const itemAmount =   ((item.finalAmount*1)*(item.selectedQuantity*1))
+        console.log("object",itemAmount);
+        let data= {
         orderId: order.id,
         productId: item.id,
         type: 'On Process', 
-        amount: item.finalAmount || 0,
+        amount:item.finalAmount||0,
         totalQuantity: item.selectedQuantity || 0,
+        calculatedAmount:itemAmount,
         status: true,
-      }));
+
+      };
+
+      return data;
+    }
+      
+      );
   
       const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
   
-      const totalAmount = orderDetailsData.reduce((acc, item) => acc + parseFloat(item.amount), 0);
+      const totalAmount = orderDetailsData.reduce((acc, item) => acc + parseFloat(item.calculatedAmount), 0);
   
       await Cart.update(
         {
