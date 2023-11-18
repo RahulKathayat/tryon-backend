@@ -8,4 +8,7 @@ const router = express.Router();
 router.get('/me',auth(),paymentLogController.getPaymentLog)
 router.post('/me',auth(),validate(paymentLogValidation.createPaymentLog), paymentLogController.createPaymentLog);
 
+// get for admin
+router.get('/admin',auth(),paymentLogController.getPaymentLogForAdmin)
+
  module.exports = router;

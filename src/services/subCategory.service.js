@@ -7,6 +7,36 @@ const createSubCategory = async (_userBody) => {
   return data;
 };
 
+const getSubCategoryForAdmin = async (query, options, categoryId,userId) => {
+  
+  const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  if (categoryId == null) {
+    const support = await SubCategory.findAndCountAll({
+      where: query,
+      order: [['updatedAt', 'DESC']],
+      include: [{ model: Category }],
+      limit,
+      offset
+    });
+    return support;
+  } else {
+    console.log("category==============================================",categoryId);
+    const support = await SubCategory.findAndCountAll({
+      where: {
+        ...query,
+        categoryId: categoryId
+      },
+      order: [['updatedAt', 'DESC']],
+      include: [{ model: Category }],
+      limit,
+      offset
+    });
+    console.log("support========================",support);
+    return support;
+  }
+};
+
 const getSubCategory = async (query, options, categoryId) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
@@ -93,5 +123,6 @@ module.exports = {
   updateSubCategoryById,
   deleteSubCategoryById,
   getSubCategoryById,
-  getAllSubCategory
+  getAllSubCategory,
+  getSubCategoryForAdmin
 };

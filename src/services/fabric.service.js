@@ -35,6 +35,33 @@ const getFabric = async (query, options, between) => {
   return support;
 };
 
+const getFabricForAdmin = async (query, options, between) => {
+  const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+
+  if (between.priceFrom && between.priceTo) {
+    query.price = {
+      [Op.between]: [between.priceFrom, between.priceTo]
+    };
+  } else if (between.priceFrom) {
+    query.price = {
+      [Op.gte]: between.priceFrom
+    };
+  } else if (between.priceTo) {
+    query.price = {
+      [Op.lte]: between.priceTo
+    };
+  }
+
+  const support = await Fabric.findAndCountAll({
+    where: query,
+    order: [['updatedAt', 'DESC']],
+    limit,
+    offset
+  });
+  return support;
+};
+
 const getFabricById = async (id) => {
   try {
     const data = await Fabric.findAll({
@@ -80,5 +107,6 @@ module.exports = {
   getFabric,
   updateFabricById,
   deleteFabricById,
-  getFabricById
+  getFabricById,
+  getFabricForAdmin
 };

@@ -30,30 +30,34 @@ const login = catchAsync(async (req, res) => {
 });
 
 const loginWithGoogle = catchAsync(async (req, res) => {
-  const existUser = await userService.getExistingEmails(req.body.email);
-  if (existUser) {
-    const user = await authService.loginWithGoogle(req.body.email, req.body.gAuth);
-    const tokens = await tokenService.generateAuthTokens(user);
-    await userService.updateUserById(existUser.dataValues.id, { gLogin: true });
-    res.send({ user, tokens });
-  } else {
-    const user = await userService.createGoogleUser({
-      ...req.body,
-      isEmailVerified: true,
-      gLogin: true
-    });
-    const userDetailBody = {
-      id: user.dataValues.id,
-      firstName: user.dataValues.firstName,
-      lastName: user.dataValues.lastName,
-      phoneNumber: user.dataValues.phoneNumber,
-      email: user.dataValues.email,
-     
-    };
-    await userService.createUserDetail(userDetailBody);
-    const tokens = await tokenService.generateAuthTokens(user);
-    await cartService.createCart({ userId: user.dataValues.id, cartDetail: null });
-    res.send({ user, tokens });
+  try{
+    const existUser = await userService.getExistingEmails(req.body.email);
+    if (existUser) {
+      const user = await authService.loginWithGoogle(req.body.email, req.body.gAuth);
+      const tokens = await tokenService.generateAuthTokens(user);
+      await userService.updateUserById(existUser.dataValues.id, { gLogin: true });
+      res.send({ user, tokens });
+    } else {
+      const user = await userService.createGoogleUser({
+        ...req.body,
+        isEmailVerified: true,
+        gLogin: true
+      });
+      const userDetailBody = {
+        id: user.dataValues.id,
+        firstName: user.dataValues.firstName,
+        lastName: user.dataValues.lastName,
+        phoneNumber: user.dataValues.phoneNumber,
+        email: user.dataValues.email,
+       
+      };
+      await userService.createUserDetail(userDetailBody);
+      const tokens = await tokenService.generateAuthTokens(user);
+      await cartService.createCart({ userId: user.dataValues.id, cartDetail: null });
+      res.send({ user, tokens });
+    }
+  }catch(err){
+    console.log("error=====",err);
   }
 });
 

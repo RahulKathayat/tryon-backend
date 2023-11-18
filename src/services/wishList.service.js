@@ -38,7 +38,7 @@ const getWishlist = async (query, options) => {
 const getWishlistByUserId = async (userId) => {
   try {
     const data = await WishList.findAll({
-      where: { userId: userId, status: true },
+      where: { userId: userId, status: true, isActive:true },
       include: [{ model: Product }, { model: Users }]
       // attributes: [[Sequelize.literal('true'), 'isWishlisted'], 'id']
     });

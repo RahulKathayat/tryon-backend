@@ -43,6 +43,41 @@ const getSubSubCategory = async (query, options, subCategoryId) => {
   }
 };
 
+const getSubSubCategoryForAdmin = async (query, options, subCategoryId,userId) => {
+  const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  if (subCategoryId == null) {
+    const support = await SubSubCategory.findAndCountAll({
+      where: query,
+      order: [['updatedAt', 'DESC']],
+      // include: [{ model: SubCategory }, { model: Category }],
+      include: [
+        {
+          model: SubCategory,
+          include: [
+            {
+              model: Category
+            }
+          ]
+        }
+      ],
+
+      limit,
+      offset
+    });
+    return support;
+  } else {
+    const support = await SubSubCategory.findAndCountAll({
+      where: { ...query, subCategoryId: subCategoryId },
+      order: [['updatedAt', 'DESC']],
+      include: [{ model: SubCategory }],
+      limit,
+      offset
+    });
+    return support;
+  }
+};
+
 const getAllSubSubCategories = async () => {
   try {
     const data = await SubSubCategory.findAll({
@@ -111,5 +146,6 @@ module.exports = {
   updateSubSubCategoryById,
   deleteSubSubCategoryById,
   getSubSubCategoryById,
-  getAllSubSubCategories
+  getAllSubSubCategories,
+  getSubSubCategoryForAdmin
 };

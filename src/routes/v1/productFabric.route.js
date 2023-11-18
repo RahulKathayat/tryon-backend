@@ -8,9 +8,11 @@ const { commonService } = require('../../services');
 // const auth = require('../../middlewares/auth');
 
 const router = express.Router();
+
+router.get('/admin',auth(),productFabricController.getProductFabricForAdmin) //admin
 router
 .route('/')
-.get(productFabricController.getProductFabric)
+.get(productFabricController.getProductFabric) //users
 .post(auth(),validate(productFabricValidation.createProductFabric),productFabricController.createProductFabric)
 
 

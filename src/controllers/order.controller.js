@@ -94,6 +94,7 @@ const getOrderForUser = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const query = {};
   query.status = req.query.status ? req.query.status : true;
+
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const data = await orderService.getOrderForUser(query, options, userId);
 

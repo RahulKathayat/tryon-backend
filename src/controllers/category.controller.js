@@ -14,9 +14,47 @@ const createCategory = catchAsync(async (req, res) => {
   }
 });
 
+const getCategoryForAdmin = catchAsync(async (req, res) => {
+  let query = {};
+  const userId=req.user.id;
+  query.status = req.query.status ? req.query.status : true;
+
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+  const filterParameters = ['categoryName', 'popularCategory'];
+
+  filterParameters.forEach((param) => {
+    if (req.query[param]) {
+      if (req.query[param].includes(',')) {
+        const values = req.query[param].split(',');
+        query[param] = {
+          [Op.or]: values.map((value) => ({
+            [Op.like]: `%${value.trim()}%`
+          }))
+        };
+      } else {
+        query[param] = {
+          [Op.like]: `%${req.query[param]}%`
+        };
+      }
+    }
+  });
+
+  const data = await categoryService.getCategoryForAdmin(query, options,userId);
+
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'category data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
+  }
+});
+
+
 const getCategory = catchAsync(async (req, res) => {
   let query = {};
   query.status = req.query.status ? req.query.status : true;
+  query.isActive = req.query.isActive ? req.query.isActive : true;
+
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
@@ -47,6 +85,7 @@ const getCategory = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
   }
 });
+
 
 const getAll = catchAsync(async (req, res) => {
   const query = {};
@@ -129,5 +168,6 @@ module.exports = {
   getCategoryById,
   getAllCategory,
   uploadImage,
-  getAll
+  getAll,
+  getCategoryForAdmin
 };

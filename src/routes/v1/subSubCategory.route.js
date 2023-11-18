@@ -11,9 +11,10 @@ const upload = require('../../utils/upload');
 
 const router = express.Router();
 router.post('/image', upload.single('image'), subSubCategoryController.uploadImage);
+router.get('/admin',auth(),subSubCategoryController.getSubSubCategoryForAdmin)
 router
   .route('/')
-  .get(subSubCategoryController.getSubSubCategory)
+  .get(subSubCategoryController.getSubSubCategory)  //users
   .post(auth(), validate(subSubCategoryValidation.createSubSubCategory), subSubCategoryController.createSubSubCategory);
 
 router.get('/getAll', subSubCategoryController.getAllCategories);

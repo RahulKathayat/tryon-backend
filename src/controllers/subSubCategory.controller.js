@@ -31,6 +31,8 @@ const uploadImage = async (req, res) => {
 const getSubSubCategory = catchAsync(async (req, res) => {
   let query = {};
   query.status = req.query.status ? req.query.status : true;
+  query.isActive = req.query.isActive ? req.query.isActive : true;
+
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
@@ -57,6 +59,46 @@ const getSubSubCategory = catchAsync(async (req, res) => {
   });
 
   const data = await subSubCategoryService.getSubSubCategory(query, options);
+
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'category data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
+  }
+});
+
+const getSubSubCategoryForAdmin = catchAsync(async (req, res) => {
+  let query = {};
+  const userId=req.user.id;
+  query.status = req.query.status ? req.query.status : true;
+  
+
+
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+  const filterParameters = [
+    'subSubCategoryName', 
+    'subCategoryId', 
+];
+
+  filterParameters.forEach(param => {
+    if (req.query[param]) {
+      if (req.query[param].includes(',')) {
+        const values = req.query[param].split(',');
+        query[param] = {
+          [Op.or]: values.map(value => ({
+            [Op.like]: `%${value.trim()}%`,
+          })),
+        };
+      } else {
+        query[param] = {
+          [Op.like]: `%${req.query[param]}%`,
+        };
+      }
+    }
+  });
+
+  const data = await subSubCategoryService.getSubSubCategoryForAdmin(query, options,userId);
 
   if (data) {
     res.status(httpStatus.OK).send({ message: 'category data fetched successfully', data: data });
@@ -119,5 +161,6 @@ module.exports = {
   updateSubSubCategory,
   getSubSubCategoryById,
   getAllCategories,
-  uploadImage
+  uploadImage,
+  getSubSubCategoryForAdmin
 };

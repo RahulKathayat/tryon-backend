@@ -19,8 +19,25 @@ const   createProductFabric= catchAsync(async (req, res) => {
 const getProductFabric = catchAsync(async (req, res) => {
   const query ={};
   query.status = req.query.status?req.query.status:true;
+  query.isActive = req.query.isActive?req.query.isActive:true;
+
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const data = await productFabricService.getProductFabric(query,options);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'ProductFabric data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
+
+const getProductFabricForAdmin = catchAsync(async (req, res) => {
+  const query ={};
+  const userId=req.user.id;
+  query.status = req.query.status?req.query.status:true;
+
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const data = await productFabricService.getProductFabricForAdmin(query,options,userId);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'ProductFabric data fetched successfully', data: data });
   } else {
@@ -74,5 +91,6 @@ module.exports = {
     deleteProductFabric,
     getProductFabric,
     updateProductFabric,
-    getProductFabricById
+    getProductFabricById,
+    getProductFabricForAdmin
 };

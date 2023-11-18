@@ -44,6 +44,9 @@ const uploadFeatureImage = async (req, res) => {
 const getProduct = async (req, res) => {
   let query = {};
   req.query ? (query.status = req.query.status ? req.query.status : true) : '';
+  query.isActive = req.query.isActive ? req.query.isActive : true;
+
+
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
   const order = req.query.order; // 'asc' or 'desc' for ordering
@@ -91,6 +94,8 @@ const getProduct = async (req, res) => {
   //     const updateAvrageRatings = await productService.updateAvrageRatings(getAvrageRatings);
   //   }
   // }
+console.log("data==============================",data);
+
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
   } else {
@@ -98,50 +103,66 @@ const getProduct = async (req, res) => {
   }
 };
 
-// const getProduct = async (req, res) => {
-//   try {
-//     let query = {};
-//     query.status = req.query && req.query.status ? req.query.status : true;
+const getProductForAdmin = async (req, res) => {
+  let query = {};
+  const userId=req.user.id;
+  req.query ? (query.status = req.query.status ? req.query.status : true) : '';
 
-//     const options = pick(req.query, ['sortBy', 'limit', 'page']);
-//     const between = pick(req.query, ['priceFrom', 'priceTo']);
-//     const order = req.query.order; // 'asc' or 'desc' for ordering
-//     const filterParameters = [
-//       'productName',
-//       'productNumber',
-//       'brandName'
-//       // ... other parameters
-//     ];
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const between = pick(req.query, ['priceFrom', 'priceTo']);
+  const order = req.query.order; // 'asc' or 'desc' for ordering
+  const filterParameters = [
+    'productName',
+    'productNumber',
+    'brandName',
+    'discountPercentage',
+    'productType',
+    'designerName',
+    'basePrice',
+    'totalPrice',
+    'currentStock',
+    'fabricId',
+    'categoryId',
+    'subCategoryId',
+    'subSubCategoryId',
+    'sku',
+    'tags',
+    'fabric',
+    'size',
+    'id',
+    'colour'
+  ];
+  filterParameters.forEach((param) => {
+    if (param !== 'priceFrom' && param !== 'priceTo' && req.query[param]) {
+      if (req.query[param].includes(',')) {
+        const values = req.query[param].split(',');
+        query[param] = {
+          [Op.or]: values.map((value) => ({
+            [Op.like]: `%${value.trim()}%`
+          }))
+        };
+      } else {
+        query[param] = {
+          [Op.like]: `%${req.query[param]}%`
+        };
+      }
+    }
+  });
+  const data = await productService.getProductForAdmin(query, options, between, order,userId);
+  // if (data) {
+  //   const getAvrageRatings = await ratingsService.calculateAverageRatings();
+  //   if (getAvrageRatings) {
+  //     const updateAvrageRatings = await productService.updateAvrageRatings(getAvrageRatings);
+  //   }
+  // }
+console.log("data==============================",data);
 
-//     filterParameters.forEach((param) => {
-//       if (param !== 'priceFrom' && param !== 'priceTo' && req.query[param]) {
-//         if (req.query[param].includes(',')) {
-//           const values = req.query[param].split(',');
-//           query[param] = {
-//             [Op.or]: values.map((value) => ({
-//               [Op.like]: `%${value.trim()}%`
-//             }))
-//           };
-//         } else {
-//           query[param] = {
-//             [Op.like]: `%${req.query[param]}%`
-//           };
-//         }
-//       }
-//     });
-
-//     const data = await productService.getProduct(query, options, between, order);
-
-//     if (data && data.length > 0) {
-//       res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
-//     } else {
-//       res.status(httpStatus.NO_CONTENT).send({ message: 'No matching data found' });
-//     }
-//   } catch (error) {
-//     console.error('Error fetching product data:', error);
-//     res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Error in fetching data' });
-//   }
-// };
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
+  }
+};
 
 const getProductBySearch = catchAsync(async (req, res) => {
   let query = {};
@@ -417,5 +438,6 @@ module.exports = {
   getHighToLowPrice,
   isUpcomingproduct,
   getProductBySearch,
-  getProductsForUser
+  getProductsForUser,
+  getProductForAdmin
 };

@@ -11,11 +11,13 @@ const upload = require('../../utils/upload');
 
 const router = express.Router();
 
+router.get('/admin',auth(),fabricController.getFabricForAdmin)   //for admin
+
 router.post('/image', upload.single('image'), fabricController.uploadImage);
 
 router
 .route('/')
-.get(fabricController.getFabric)
+.get(fabricController.getFabric)  // for users
 .post(auth(),validate(fabricValidation.createFabric),fabricController.createFabric)
 
 

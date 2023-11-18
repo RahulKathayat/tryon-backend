@@ -20,6 +20,20 @@ const getCategory = async (query, options) => {
   return support;
 };
 
+const getCategoryForAdmin = async (query, options,userId) => {
+  const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await Category.findAndCountAll({
+    where: query,
+    order: [['updatedAt', 'DESC']],
+    limit,
+    offset
+  });
+  return support;
+};
+
+
+
 const getAll = async () => {
   try {
     const data = await Category.findAll({
@@ -100,5 +114,6 @@ module.exports = {
   deleteCategoryById,
   getCategoryById,
   getAllCategory,
-  getAll
+  getAll,
+  getCategoryForAdmin
 };

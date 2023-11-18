@@ -20,6 +20,19 @@ const getProductFabric = async (query, options) => {
   return support;
 };
 
+const getProductFabricForAdmin = async (query, options,userId) => {
+  const limit = Number(options.limit);
+  const offset = options.page ? limit * (options.page - 1) : 0;
+  const support = await ProductFabric.findAndCountAll({
+    where: query,
+    order: [['updatedAt', 'DESC']],
+    include: [{ model: Fabric }, { model: Product }],
+    limit,
+    offset
+  });
+  return support;
+};
+
 const getProductFabricById = async (id) => {
   try {
     const data = await ProductFabric.findAll({
@@ -66,5 +79,6 @@ module.exports = {
   getProductFabric,
   updateProductFabricById,
   deleteProductFabricById,
-  getProductFabricById
+  getProductFabricById,
+  getProductFabricForAdmin
 };
