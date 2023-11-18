@@ -84,7 +84,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       averageRating: {
         type: DataTypes.INTEGER
-      }
+      },
+      isActive:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
     },
     {
       tableName: 'Product',

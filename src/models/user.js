@@ -29,6 +29,16 @@ module.exports = (sequelize, DataTypes) => {
       role: {
         type: DataTypes.STRING
       },
+      gAuth:{
+        type: DataTypes.STRING,
+      },
+      gLogin:{
+        type: DataTypes.BOOLEAN,
+      },
+      isActive:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

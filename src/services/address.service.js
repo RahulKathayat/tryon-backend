@@ -19,11 +19,16 @@ const createAddress = async (addressData, userId) => {
 
 const getAddressMe = async (userId) => {
   const findData = await Address.findAll({
-    where: { userId: userId },
+    Where: {
+      userId: userId,
+      isActive: true,
+      status: true
+    },
     order: [['createdAt', 'ASC']]
   });
   return findData;
 };
+
 const getAddress = async (query, options) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;

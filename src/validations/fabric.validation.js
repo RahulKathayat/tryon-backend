@@ -16,7 +16,8 @@ const createFabric = {
     gsm: Joi.number().required(),
     quantity: Joi.number().required(),
     image: Joi.string().optional(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+    isActive:Joi.boolean()
   })
 };
 
@@ -39,7 +40,8 @@ const updateFabric = {
     gsm: Joi.number().required(),
     quantity: Joi.number().required(),
     image: Joi.string().optional(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+    isActive:Joi.boolean()
   })
 };
 

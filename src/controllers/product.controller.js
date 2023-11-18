@@ -7,7 +7,7 @@ const pick = require('../utils/pick');
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
-const { Op } = require('sequelize');
+const { Op ,Sequelize} = require('sequelize');
 const express = require('express');
 const app = express();
 const { encode } = require('hi-base32');
@@ -44,7 +44,6 @@ const uploadFeatureImage = async (req, res) => {
 const getProduct = async (req, res) => {
   let query = {};
   req.query ? (query.status = req.query.status ? req.query.status : true) : '';
-
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
   const order = req.query.order; // 'asc' or 'desc' for ordering
@@ -69,7 +68,6 @@ const getProduct = async (req, res) => {
     'id',
     'colour'
   ];
-
   filterParameters.forEach((param) => {
     if (param !== 'priceFrom' && param !== 'priceTo' && req.query[param]) {
       if (req.query[param].includes(',')) {
@@ -93,7 +91,6 @@ const getProduct = async (req, res) => {
   //     const updateAvrageRatings = await productService.updateAvrageRatings(getAvrageRatings);
   //   }
   // }
-
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
   } else {
@@ -331,6 +328,7 @@ const getProductsForUser = async (req, res, next) => {
   try {
     let query = {};
     query.status = req.query.status ? req.query.status : true;
+    query.isActive=req.query.isActive?req.query.isActive:true;
 
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const between = pick(req.query, ['priceFrom', 'priceTo']);

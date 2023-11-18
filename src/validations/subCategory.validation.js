@@ -2,15 +2,19 @@ const Joi = require('joi');
 
 const getSubCategory = {
   query: Joi.object().keys({
-    categoryId: Joi.number()
+    categoryId: Joi.number(),
+
+
   })
 };
 const createSubCategory = {
   body: Joi.object().keys({
     categoryId: Joi.number().required(),
     subCategoryName: Joi.string().required(),
-    image: Joi.string().optional(),
-    status: Joi.boolean()
+    // image: Joi.string().optional(),
+    status: Joi.boolean(),
+  isActive:Joi.boolean()
+
   })
 };
 
@@ -21,8 +25,10 @@ const updateSubCategory = {
   body: Joi.object().keys({
     // categoryId:Joi.number().required(),
     subCategoryName: Joi.string().required(),
-    image: Joi.string().optional(),
-    status: Joi.boolean()
+    // image: Joi.string().optional(),
+    status: Joi.boolean(),
+  isActive:Joi.boolean()
+
   })
 };
 

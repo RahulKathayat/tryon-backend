@@ -1,3 +1,4 @@
+delete require.cache[require.resolve('./Orders')];
 module.exports = (sequelize, DataTypes) => {
   const Orders = sequelize.define(
     'Orders',
@@ -10,6 +11,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       totalQuantity: {
         type: DataTypes.INTEGER
+      },
+      totalAmount: {
+        type: DataTypes.INTEGER
+      },
+      orderDetails: {
+        type: DataTypes.JSON
+      },
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
       },
       status: {
         type: DataTypes.BOOLEAN,

@@ -23,6 +23,13 @@ module.exports = (sequelize, DataTypes) => {
       totalQuantity: {
         type: DataTypes.INTEGER
       },
+      calculatedAmount:{
+        type: DataTypes.INTEGER
+      },
+      isActive:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

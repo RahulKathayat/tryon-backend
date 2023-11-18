@@ -5,7 +5,9 @@ const createProductFabric = {
     fabricId: Joi.number(),
     productId: Joi.number(),
     defaultFabric: Joi.boolean().optional(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+  isActive:Joi.boolean()
+
   })
 };
 
@@ -17,7 +19,9 @@ const updateProductFabric = {
     fabricId: Joi.number().required(),
     productId: Joi.number().required(),
     defaultFabric: Joi.boolean().optional(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+  isActive:Joi.boolean()
+
   })
 };
 module.exports = {

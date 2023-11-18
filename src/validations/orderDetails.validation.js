@@ -10,7 +10,8 @@ const createOrderDetails = {
     trackingId: Joi.string().required(),
     trackingLink: Joi.string().required(),
     totalQuantity: Joi.number().required(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+    isActive:Joi.boolean()
   })
 };
 
@@ -25,7 +26,8 @@ const updateOrderDetails = {
   trackingId: Joi.string().required(),
   trackingLink: Joi.string().required(),
   totalQuantity: Joi.number().required(),
-  status: Joi.boolean()
+  status: Joi.boolean(),
+  isActive:Joi.boolean()
 };
 
 module.exports = {

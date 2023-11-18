@@ -5,15 +5,21 @@ const { Users, Address } = require('../models');
 const logger = require('../config/logger');
 const messages = require('../constant/message.json');
 
-const getExistingEmais = async (email) => {
+const getExistingEmails = async (email) => {
   logger.info(email);
   return Users.findOne({ where: { email, status: true } });
+};
+
+const createUserDetail = async (_userDetailBody) => {
+  const userDetailBody = _userDetailBody;
+
+  return Users.create(userDetailBody);
 };
 
 const createUser = async (_userBody) => {
   try {
     const userBody = _userBody;
-    if (await getExistingEmais(userBody.email)) {
+    if (await getExistingEmails(userBody.email)) {
       throw new ApiError(httpStatus.BAD_REQUEST, messages.EMAIL_ALREADY_EXISTS);
     }
     userBody.password = await bcrypt.hash(userBody.password, 8);
@@ -165,6 +171,11 @@ const getUserDataByUserId = async (id) => {
   }
 };
 
+const createGoogleUser = async (_userBody) => {
+  const userBody = _userBody;
+  return Users.create(userBody);
+};
+
 module.exports = {
   createUser,
   getUser,
@@ -175,5 +186,8 @@ module.exports = {
   getUserById,
   getUserWithSecretFields,
   updateUserPasswordById,
-  getUserDataByUserId
+  getUserDataByUserId,
+  getExistingEmails,
+  createGoogleUser,
+  createUserDetail
 };

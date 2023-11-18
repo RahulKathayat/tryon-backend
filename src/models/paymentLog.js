@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
           paymentResponse: {
             type: DataTypes.JSON
           },
+          isActive:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+          },
           status: {
           type: DataTypes.BOOLEAN,
           defaultValue: true

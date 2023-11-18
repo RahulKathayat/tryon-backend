@@ -4,7 +4,8 @@ const createAddress = {
   body: Joi.object().keys({
     address: Joi.object().required(),
     defaultAddress: Joi.boolean(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+    isActive:Joi.boolean()
   })
 };
 
@@ -15,7 +16,8 @@ const updateAddress = {
   body: Joi.object().keys({
     address: Joi.object().optional(),
     defaultAddress: Joi.boolean(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+    isActive:Joi.boolean()
   })
 };
 

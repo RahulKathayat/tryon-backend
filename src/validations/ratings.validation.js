@@ -8,7 +8,9 @@ const createRatings = {
     productId: Joi.number().required(),
     review: Joi.string().optional(),
     ratings: Joi.number().optional(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+  isActive:Joi.boolean()
+
   })
 };
 
@@ -21,7 +23,9 @@ const updateRatings = {
   productId: Joi.number().required(),
   review: Joi.string().optional(),
   ratings: Joi.number().optional(),
-  status: Joi.boolean()
+  status: Joi.boolean(),
+  isActive:Joi.boolean()
+
 };
 
 module.exports = {

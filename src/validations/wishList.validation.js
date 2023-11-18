@@ -4,7 +4,9 @@ const createWishlist = {
   body: Joi.object().keys({
     productId: Joi.number().required(),
     // userId: Joi.number().required(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+  isActive:Joi.boolean()
+
   })
 };
 
@@ -14,7 +16,9 @@ const updateWishlist = {
   }),
   productId: Joi.number().required(),
   // userId: Joi.number().required(),
-  status: Joi.boolean()
+  status: Joi.boolean(),
+  isActive:Joi.boolean()
+
 };
 
 module.exports = {

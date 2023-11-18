@@ -4,7 +4,8 @@ const createPaymentLog = {
   body: Joi.object().keys({
     orderId: Joi.number().required(),
     paymentResponse: Joi.object().required(),
-    status: Joi.boolean()
+    status: Joi.boolean(),
+    isActive:Joi.boolean()
   })
 };
 
