@@ -9,7 +9,7 @@ const logger = require('../config/logger');
 
 const loginUserWithEmailAndPassword = async (email, password) => {
   try {
-    console.log("checkPassword=============================",email,password);
+    console.log('checkPassword=============================', email, password);
     const user = await userService.getUserByEmail(email);
     console.log('user id ========', user);
 
@@ -34,19 +34,20 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 };
 
 const loginWithGoogle = async (email, gAuth) => {
-  console.log("gauth============================",email,gAuth)
-  const userWithSecretFields = await userService.getUserWithSecretFields(email);
-  const user = await userService.getUserByEmail(email);
+  console.log('gauth============================', email, gAuth);
+  const user = await loginUserWithEmailAndPassword(email, gAuth);
+  // const userWithSecretFields = await userService.getUserWithSecretFields(email, gAuth);
+  // const user = await userService.getUserByEmail(email);
   logger.info('message');
+  console.log('AUThhhhhhhhhhhhhhhhhhhhh===', gAuth, userWithSecretFields.gAuth);
   if (!userWithSecretFields || !(gAuth === userWithSecretFields.gAuth)) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect auth');
-}
+  }
   if (!user.isActive) {
     throw new ApiError(httpStatus.FORBIDDEN, 'You Account is not active');
   }
   return user;
 };
-
 
 const logout = async (refreshToken) => {
   const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
@@ -69,7 +70,6 @@ const refreshAuth = async (refreshToken) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
   }
 };
-
 
 /**
  * Verify email
@@ -113,7 +113,7 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
     const updatedUser = await userService.updateUserById(user.id, { password: newHashedPassword });
 
     if (updatedUser) {
-      return {message:'Password reset successfully'};
+      return { message: 'Password reset successfully' };
     } else {
       throw new Error('Password reset failed');
     }
@@ -121,8 +121,6 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, error.message || 'Password reset failed');
   }
 };
-
-
 
 module.exports = {
   loginUserWithEmailAndPassword,

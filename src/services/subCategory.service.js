@@ -7,11 +7,10 @@ const createSubCategory = async (_userBody) => {
   return data;
 };
 
-const getSubCategoryForAdmin = async (query, options, categoryId,userId) => {
-  
+const getSubCategoryForAdmin = async (query, options, userId) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
-  if (categoryId == null) {
+  if (query.categoryId == null) {
     const support = await SubCategory.findAndCountAll({
       where: query,
       order: [['updatedAt', 'DESC']],
@@ -21,18 +20,18 @@ const getSubCategoryForAdmin = async (query, options, categoryId,userId) => {
     });
     return support;
   } else {
-    console.log("category==============================================",categoryId);
+    console.log('category==============================================', query.categoryId);
     const support = await SubCategory.findAndCountAll({
       where: {
         ...query,
-        categoryId: categoryId
+        categoryId: query.categoryId
       },
       order: [['updatedAt', 'DESC']],
       include: [{ model: Category }],
       limit,
       offset
     });
-    console.log("support========================",support);
+    console.log('support========================', support);
     return support;
   }
 };

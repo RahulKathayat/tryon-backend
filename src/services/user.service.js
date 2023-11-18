@@ -4,7 +4,8 @@ const bcrypt = require('bcryptjs');
 const { Users, Address } = require('../models');
 const logger = require('../config/logger');
 const messages = require('../constant/message.json');
-const authService=require('../services/auth.service')
+const authService = require('./auth.service');
+const tokenService = require('./token.service');
 
 const getExistingEmails = async (email) => {
   logger.info(email);
@@ -32,12 +33,16 @@ const createUser = async (_userBody) => {
     throw error;
   }
 };
-const getUserWithSecretFields = async (email,password) => {
+const getUserWithSecretFields = async (email, password) => {
   try {
-    console.log("secret fields==============================================",email,password);
+    console.log(
+      'secret fields loginUserWithEmailAndPassword==============================================',
+      email,
+      password
+    );
     const user = await authService.loginUserWithEmailAndPassword(email, password);
     const tokens = await tokenService.generateAuthTokens(user);
-    res.send({ user, tokens });
+    //res.send({ user, tokens });
   } catch (err) {
     console.log(err);
   }
@@ -163,7 +168,7 @@ const getUserWithSecretFieldsById = async (id) => {
 const getUserDataByUserId = async (id) => {
   try {
     const data = await Users.findOne({
-      where: { id: id, status:true, isActive:true}
+      where: { id: id, status: true, isActive: true }
     });
     return data;
   } catch (error) {
