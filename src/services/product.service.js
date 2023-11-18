@@ -30,24 +30,80 @@ const getProductByproductId = async (id) => {
   return (suppordata = [].concat(...results));
 };
 
-const getProduct = async (query, options, between, order) => {
+// const getProduct = async (query, options, between, order) => {
+//   let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
+//   if (query === undefined || options === undefined || between === undefined || order === undefined) {
+//     const products = await Product.findAll({
+//       order: orderCriteria,
+//       include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }]
+//     });
+//     return products;
+//   }
+//   const limit = Number(options.limit);
+//   const offset = options.page ? limit * (options.page - 1) : 0;
+
+//   if (order === 'desc') {
+//     orderCriteria = [['finalAmount', 'DESC']];
+//   } else if (order == 'asc') {
+//     orderCriteria = [['finalAmount', 'ASC']];
+//   }
+
+//   if (between.priceFrom && between.priceTo) {
+//     query.totalPrice = {
+//       [Op.between]: [between.priceFrom, between.priceTo]
+//     };
+//   } else if (between.priceFrom) {
+//     query.totalPrice = {
+//       [Op.gte]: between.priceFrom
+//     };
+//   } else if (between.priceTo) {
+//     query.totalPrice = {
+//       [Op.lte]: between.priceTo
+//     };
+//   }
+
+//   const products = await Product.findAll({
+//     where: query,
+//     order: orderCriteria,
+//     include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
+//     limit,
+//     offset
+//   });
+//   return products;
+//   // });
+
+//   // return ProductWithFinalAmount; // This is now an array with the finalAmount added.
+// };
+
+const getProduct = async (query = {}, options = {}, between = {}, order = 'desc') => {
   let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
-  if (query === undefined || options === undefined || between === undefined || order === undefined) {
+
+  // Check if any of the required parameters is undefined, and fetch all products if so
+  if (
+    Object.values(query).length === 0 ||
+    Object.values(options).length === 0 ||
+    Object.values(between).length === 0 ||
+    order === undefined
+  ) {
     const products = await Product.findAll({
       order: orderCriteria,
       include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }]
     });
     return products;
   }
+
+  // Parse limit and offset from options
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
 
-  if (order === 'desc') {
-    orderCriteria = [['finalAmount', 'DESC']];
-  } else if (order == 'asc') {
+  // Update order criteria based on the provided order parameter
+  if (order.toLowerCase() === 'asc') {
     orderCriteria = [['finalAmount', 'ASC']];
+  } else if (order.toLowerCase() === 'desc') {
+    orderCriteria = [['finalAmount', 'DESC']];
   }
 
+  // Apply price range filtering
   if (between.priceFrom && between.priceTo) {
     query.totalPrice = {
       [Op.between]: [between.priceFrom, between.priceTo]
@@ -62,6 +118,7 @@ const getProduct = async (query, options, between, order) => {
     };
   }
 
+  // Fetch products based on the provided filters and options
   const products = await Product.findAll({
     where: query,
     order: orderCriteria,
@@ -69,10 +126,8 @@ const getProduct = async (query, options, between, order) => {
     limit,
     offset
   });
-  return products;
-  // });
 
-  // return ProductWithFinalAmount; // This is now an array with the finalAmount added.
+  return products;
 };
 
 const getProductBySearch = async (query, options) => {

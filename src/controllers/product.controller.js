@@ -101,6 +101,51 @@ const getProduct = async (req, res) => {
   }
 };
 
+// const getProduct = async (req, res) => {
+//   try {
+//     let query = {};
+//     query.status = req.query && req.query.status ? req.query.status : true;
+
+//     const options = pick(req.query, ['sortBy', 'limit', 'page']);
+//     const between = pick(req.query, ['priceFrom', 'priceTo']);
+//     const order = req.query.order; // 'asc' or 'desc' for ordering
+//     const filterParameters = [
+//       'productName',
+//       'productNumber',
+//       'brandName'
+//       // ... other parameters
+//     ];
+
+//     filterParameters.forEach((param) => {
+//       if (param !== 'priceFrom' && param !== 'priceTo' && req.query[param]) {
+//         if (req.query[param].includes(',')) {
+//           const values = req.query[param].split(',');
+//           query[param] = {
+//             [Op.or]: values.map((value) => ({
+//               [Op.like]: `%${value.trim()}%`
+//             }))
+//           };
+//         } else {
+//           query[param] = {
+//             [Op.like]: `%${req.query[param]}%`
+//           };
+//         }
+//       }
+//     });
+
+//     const data = await productService.getProduct(query, options, between, order);
+
+//     if (data && data.length > 0) {
+//       res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
+//     } else {
+//       res.status(httpStatus.NO_CONTENT).send({ message: 'No matching data found' });
+//     }
+//   } catch (error) {
+//     console.error('Error fetching product data:', error);
+//     res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Error in fetching data' });
+//   }
+// };
+
 const getProductBySearch = catchAsync(async (req, res) => {
   let query = {};
   query.status = req.query.status ? req.query.status : true;
