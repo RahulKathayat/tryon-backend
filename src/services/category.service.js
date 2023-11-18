@@ -13,7 +13,7 @@ const getCategory = async (query, options) => {
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Category.findAndCountAll({
     where: query,
-    order: [['updatedAt', 'DESC']],
+    order: [['isSequence', 'ASC']],
     limit,
     offset
   });
