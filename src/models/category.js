@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.STRING
       },
-      isActive:{
+      isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
-      isFeatured:{
-        type: DataTypes.BOOLEAN,
+      isFeatured: {
+        type: DataTypes.BOOLEAN
       },
-      isFrequent:{
-        type: DataTypes.INTEGER,
+      isSequence: {
+        type: DataTypes.INTEGER
       }
     },
     {
