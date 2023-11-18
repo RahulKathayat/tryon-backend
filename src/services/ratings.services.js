@@ -68,7 +68,7 @@ const getUserRatings = async (query, options, userId) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Ratings.findAndCountAll({
-    where: { userId: userId },
+    where: { userId: userId, isActive: true, status: true },
     order: [['updatedAt', 'DESC']],
     include: [{ model: Users }, { model: Product }],
     limit,

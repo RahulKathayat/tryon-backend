@@ -39,7 +39,7 @@ const getCart = async (query, options) => {
 const getCartById = async (id) => {
   try {
     const data = await Cart.findAll({
-      where: { userId: id, isActive: true }
+      where: { userId: id, isActive: true, status: true }
     });
     return data;
   } catch (error) {

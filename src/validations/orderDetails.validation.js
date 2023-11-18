@@ -11,7 +11,7 @@ const createOrderDetails = {
     trackingLink: Joi.string().required(),
     totalQuantity: Joi.number().required(),
     status: Joi.boolean(),
-    isActive:Joi.boolean()
+    isActive: Joi.boolean()
   })
 };
 
@@ -19,15 +19,15 @@ const updateOrderDetails = {
   params: Joi.object().keys({
     id: Joi.number().required()
   }),
-  orderId: Joi.number().required(),
-  productId: Joi.number().required(),
-  type: Joi.string().valid('Delivered', 'Return', 'Cancel').required(),
-  amount: Joi.number().required(),
-  trackingId: Joi.string().required(),
-  trackingLink: Joi.string().required(),
-  totalQuantity: Joi.number().required(),
+  orderId: Joi.number().optional(),
+  productId: Joi.number().optional(),
+  type: Joi.string().valid('Delivered', 'Return', 'Cancel').optional(),
+  amount: Joi.number().optional(),
+  trackingId: Joi.string().optional(),
+  trackingLink: Joi.string().optional(),
+  totalQuantity: Joi.number().optional(),
   status: Joi.boolean(),
-  isActive:Joi.boolean()
+  isActive: Joi.boolean()
 };
 
 module.exports = {

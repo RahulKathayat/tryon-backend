@@ -13,8 +13,7 @@ const createUser = {
     dob: Joi.date().required(),
     role: Joi.string().valid('Admin', 'Customer').required(),
     status: Joi.boolean(),
-  isActive:Joi.boolean()
-
+    isActive: Joi.boolean()
   })
 };
 
@@ -23,9 +22,9 @@ const updateUser = {
   //   id: Joi.number().required()
   // }),
   body: Joi.object().keys({
-    firstName: Joi.string().required(),
-    lastName: Joi.string().required(),
-    phoneNumber: Joi.number().required(),
+    firstName: Joi.string().optional(),
+    lastName: Joi.string().optional(),
+    phoneNumber: Joi.number().optional(),
     email: Joi.string().optional().email(),
     emailVerify: Joi.boolean().optional(),
     // password: Joi.string().required(),
@@ -33,8 +32,7 @@ const updateUser = {
     dob: Joi.date().optional(),
     role: Joi.string().valid('Admin', 'Customer').optional(),
     status: Joi.boolean(),
-  isActive:Joi.boolean()
-
+    isActive: Joi.boolean()
   })
 };
 

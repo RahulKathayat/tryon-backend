@@ -23,7 +23,7 @@ const getSubscribedUser = async (query, options) => {
   //   const limit = Number(options.limit) ;
   //   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await SubscribedUser.findAndCountAll({
-    where: query
+    where: { ...query, isActive: true, status: true }
   });
   return support;
 };

@@ -9,8 +9,7 @@ const createRatings = {
     review: Joi.string().optional(),
     ratings: Joi.number().optional(),
     status: Joi.boolean(),
-  isActive:Joi.boolean()
-
+    isActive: Joi.boolean()
   })
 };
 
@@ -19,13 +18,12 @@ const updateRatings = {
     id: Joi.number().required()
   }),
   // userId: Joi.number().required(),
-  orderId: Joi.number().required(),
-  productId: Joi.number().required(),
+  orderId: Joi.number().optional(),
+  productId: Joi.number().optional(),
   review: Joi.string().optional(),
   ratings: Joi.number().optional(),
   status: Joi.boolean(),
-  isActive:Joi.boolean()
-
+  isActive: Joi.boolean()
 };
 
 module.exports = {

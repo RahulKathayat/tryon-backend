@@ -68,7 +68,7 @@ const getOrderForUser = async (query, options, userId) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const result = await Orders.findAndCountAll({
-    where: { userId: userId, status: true },
+    where: { userId: userId, isActive: true, status: true },
     order: [['updatedAt', 'DESC']],
     include: [
       {

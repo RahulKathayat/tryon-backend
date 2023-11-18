@@ -4,11 +4,11 @@ const createCategory = {
   body: Joi.object().keys({
     categoryName: Joi.string().required(),
     popularCategory: Joi.boolean().required(),
-    // image:Joi.string().optional(),
+    image: Joi.string().optional(),
     status: Joi.boolean(),
     isActive: Joi.boolean(),
     isFeatured: Joi.boolean(),
-    isFrequent: Joi.boolean()
+    isFrequent: Joi.number()
   })
 };
 
@@ -19,11 +19,11 @@ const updateCategory = {
   body: Joi.object().keys({
     categoryName: Joi.string().optional(),
     popularCategory: Joi.boolean().optional(),
-    // image:Joi.string().optional(),
+    image: Joi.string().optional(),
     status: Joi.boolean(),
     isActive: Joi.boolean(),
     isFeatured: Joi.boolean(),
-    isFrequent: Joi.boolean()
+    isFrequent: Joi.number()
   })
 };
 

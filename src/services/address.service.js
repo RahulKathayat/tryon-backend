@@ -18,8 +18,9 @@ const createAddress = async (addressData, userId) => {
 };
 
 const getAddressMe = async (userId) => {
+  console.log('userId===================', userId);
   const findData = await Address.findAll({
-    Where: {
+    where: {
       userId: userId,
       isActive: true,
       status: true
