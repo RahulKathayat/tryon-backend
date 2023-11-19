@@ -20,19 +20,17 @@ const getCategory = async (query, options) => {
   return support;
 };
 
-const getCategoryForAdmin = async (query, options,userId) => {
+const getCategoryForAdmin = async (query, options) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await Category.findAndCountAll({
     where: query,
-    order: [['updatedAt', 'DESC']],
+    order: [['isSequence', 'ASC']],
     limit,
     offset
   });
   return support;
 };
-
-
 
 const getAll = async () => {
   try {
