@@ -30,7 +30,7 @@ const login = catchAsync(async (req, res) => {
 });
 
 const loginWithGoogle = catchAsync(async (req, res) => {
-  try{
+  try {
     const existUser = await userService.getExistingEmails(req.body.email);
     if (existUser) {
       const user = await authService.loginWithGoogle(req.body.email, req.body.gAuth);
@@ -48,19 +48,17 @@ const loginWithGoogle = catchAsync(async (req, res) => {
         firstName: user.dataValues.firstName,
         lastName: user.dataValues.lastName,
         phoneNumber: user.dataValues.phoneNumber,
-        email: user.dataValues.email,
-       
+        email: user.dataValues.email
       };
       await userService.createUserDetail(userDetailBody);
       const tokens = await tokenService.generateAuthTokens(user);
       await cartService.createCart({ userId: user.dataValues.id, cartDetail: null });
       res.send({ user, tokens });
     }
-  }catch(err){
-    console.log("error=====",err);
+  } catch (err) {
+    console.log('error=====', err);
   }
 });
-
 
 const logout = catchAsync(async (req, res) => {
   await authService.logout(req.body.refreshToken);
@@ -81,12 +79,14 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
   if (!req.user.isEmailVerified) {
     const verifyEmailToken = await tokenService.generateVerifyEmailToken(req.user);
     if (req.user.role === 'Admin') {
-      host = config.email.adminHost;
+      host = config.email.ADMIN_HOST;
     } else if (req.user.role === 'Customer') {
-      host = config.email.customerHost;
+      host = config.email.CUSTOMER_HOST;
     }
     await emailService.sendVerificationEmail(req.user.email, verifyEmailToken, host);
     // res.status(httpStatus.NO_CONTENT).send();
+    console.log('token===============================', verifyEmailToken);
+    res.send(verifyEmailToken);
     res.send('Verification Email is sent successfully!!');
   } else {
     throw new ApiError(httpStatus.FORBIDDEN, 'Email already verified');
@@ -95,7 +95,7 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
 
 const verifyEmail = catchAsync(async (req, res) => {
   await authService.verifyEmail(req.query.token);
-  res.status(httpStatus.NO_CONTENT).send();
+  res.status(httpStatus.OK).send('Email Verified Successfully!');
 });
 
 const forgotPassword = catchAsync(async (req, res) => {

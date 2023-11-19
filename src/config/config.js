@@ -48,7 +48,7 @@ module.exports = {
       }
     },
     from: envVars.EMAIL_FROM,
-    adminHost: envVars.ADMIN_HOST,
+    ADMIN_HOST: envVars.ADMIN_HOST,
     CUSTOMER_HOST: envVars.CUSTOMER_HOST
   },
   development: {

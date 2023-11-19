@@ -6,6 +6,7 @@ const Token = require('../models/token');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const logger = require('../config/logger');
+const { Users } = require('../models/user');
 
 const loginUserWithEmailAndPassword = async (email, password) => {
   try {
