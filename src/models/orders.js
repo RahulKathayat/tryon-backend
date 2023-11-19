@@ -1,4 +1,3 @@
-delete require.cache[require.resolve('./Orders')];
 module.exports = (sequelize, DataTypes) => {
   const Orders = sequelize.define(
     'Orders',
