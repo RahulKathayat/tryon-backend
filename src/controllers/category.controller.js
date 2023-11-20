@@ -102,6 +102,7 @@ const getAll = catchAsync(async (req, res) => {
 const getAllCategory = catchAsync(async (req, res) => {
   const query = {};
   query.status = req.query.status ? req.query.status : true;
+  query.isActive = req.query.isActive ? req.query.isActive : true;
   const data = await categoryService.getAllCategory(query);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Category data fetched successfully', data: data });

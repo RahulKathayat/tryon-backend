@@ -42,10 +42,10 @@ const getAll = async () => {
     console.error('category not found!!', error);
   }
 };
-const getAllCategory = async () => {
+const getAllCategory = async (query) => {
   try {
     const data = await Category.findAll({
-      where: {},
+      where: query,
       // include: [{ model: SubCategory }, { model: SubSubCategory }]
       include: [
         {
