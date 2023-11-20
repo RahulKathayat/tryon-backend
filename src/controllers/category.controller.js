@@ -54,6 +54,7 @@ const getCategory = catchAsync(async (req, res) => {
   let query = {};
   query.status = req.query.status ? req.query.status : true;
   query.isActive = req.query.isActive ? req.query.isActive : true;
+  query.isFeatured = req.query.isFeatured ? req.query.isFeatured : true;
 
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
