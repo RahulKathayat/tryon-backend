@@ -67,9 +67,11 @@ const getUserById = async (id) => {
       where: { id: id },
       include: [
         {
-          model: Address
-        }
-      ]
+          model: Address,
+          where: { userId: id, defaultAddress: true }, // Add condition for default address
+          required: false, // Use required: false to perform a LEFT JOIN
+        },
+      ],
     });
     return data;
   } catch (error) {
@@ -155,6 +157,7 @@ const getUserWithSecretFieldsById = async (id) => {
     const user = await Users.scope('withSecretColumns').findOne({
       where: { id: id }
     });
+    console.log("user with secret field=====================",user)
     return user;
   } catch (error) {
     console.error('Error retrieving user with secret fields by id:', error);
@@ -168,7 +171,7 @@ const getUserWithSecretFieldsById = async (id) => {
 const getUserDataByUserId = async (id) => {
   try {
     const data = await Users.findOne({
-      where: { id: id, status: true, isActive: true }
+      where: { id: id, status: true, isActive: true },
     });
     return data;
   } catch (error) {
@@ -177,10 +180,26 @@ const getUserDataByUserId = async (id) => {
   }
 };
 
+// const createGoogleUser = async (_userBody) => {
+//   const userBody = _userBody;
+//   userBody.gAuth =bcrypt.hash(userBody.gAuth);
+//  return Users.create(userBody);
+// };
+
 const createGoogleUser = async (_userBody) => {
   const userBody = _userBody;
+
+  if (Array.isArray(userBody.gAuth) || typeof userBody.gAuth === 'object') {
+    // Handle the case where gAuth is an array or object (e.g., stringify it)
+    userBody.gAuth = JSON.stringify(userBody.gAuth);
+  }
+
+  // Hash the gAuth field
+  userBody.gAuth = await bcrypt.hash(userBody.gAuth,10);
+
   return Users.create(userBody);
 };
+
 
 module.exports = {
   createUser,

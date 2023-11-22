@@ -8,6 +8,8 @@ const { tokenTypes } = require('../config/tokens');
 const logger = require('../config/logger');
 const { Users } = require('../models/user');
 
+
+// login without Google account--------------------------------------------------
 const loginUserWithEmailAndPassword = async (email, password) => {
   try {
     console.log('checkPassword=============================', email, password);
@@ -34,16 +36,48 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   }
 };
 
+
+// For Google Login----------------------------------------------------------
+const loginUserWithEmailAndPasswordForGoogle = async (email, password) => {
+  try {
+    console.log('checkPassword=============================', email, password);
+    const user = await userService.getUserByEmail(email);
+
+    if (!user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    }
+    const userWithSecretFields = await userService.getUserWithSecretFieldsById(user.id);
+    console.log('password=======================', password);
+    console.log('userWithSecretFields==========================', userWithSecretFields);
+    logger.info('message');
+    
+    if (!user || !(await bcrypt.compare(password, userWithSecretFields.gAuth))) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    }
+
+    return user;
+  } catch (error) {
+    console.error('Error in loginUserWithEmailAndPassword:', error);
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+
 const loginWithGoogle = async (email, gAuth) => {
   console.log('gauth============================', email, gAuth);
-  const user = await loginUserWithEmailAndPassword(email, gAuth);
+  const user = await loginUserWithEmailAndPasswordForGoogle(email, gAuth);
   // const userWithSecretFields = await userService.getUserWithSecretFields(email, gAuth);
   // const user = await userService.getUserByEmail(email);
   logger.info('message');
-  console.log('AUThhhhhhhhhhhhhhhhhhhhh===', gAuth, userWithSecretFields.gAuth);
-  if (!userWithSecretFields || !(gAuth === userWithSecretFields.gAuth)) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect auth');
-  }
+  // if (!userWithSecretFields || !(gAuth === userWithSecretFields.gAuth)) {
+  //   throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect auth');
+  // }
   if (!user.isActive) {
     throw new ApiError(httpStatus.FORBIDDEN, 'You Account is not active');
   }
@@ -129,5 +163,6 @@ module.exports = {
   refreshAuth,
   verifyEmail,
   resetPassword,
-  loginWithGoogle
+  loginWithGoogle,
+  loginUserWithEmailAndPasswordForGoogle
 };

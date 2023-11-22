@@ -48,11 +48,11 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'Users',
       freezeTableName: true,
       defaultScope: {
-        attributes: { exclude: ['password'] }
+        attributes: { exclude: ['password','gAuth'] }
       },
       scopes: {
         withSecretColumns: {
-          attributes: { include: ['password'] }
+          attributes: { include: ['password','gAuth'] }
         }
       }
     }
