@@ -1,7 +1,7 @@
 const { Cart, Users, Orders, OrderDetails } = require('../models');
 const { createOrderForPayment } = require('../controllers/payment.controller');
 const { json } = require('sequelize');
-const shipRocketService =require('../services/shipRocket.service')
+const shipRocketService = require('../services/shipRocket.service');
 // const { cartService } = require('../services/cart.service');
 
 const createCart = async (_userBody) => {
@@ -39,8 +39,9 @@ const getCart = async (query, options) => {
 
 const getCartById = async (id) => {
   try {
+    // console.log('is===============', id);
     const data = await Cart.findOne({
-      where: { id: id, isActive: true, status: true }
+      where: { userId: id, isActive: true, status: true }
     });
     return data;
   } catch (error) {
@@ -171,7 +172,6 @@ async function createCheckout(userId, cartData) {
     throw error;
   }
 }
-
 
 module.exports = {
   createCart,
