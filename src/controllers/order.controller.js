@@ -97,7 +97,6 @@ const getOrderForUser = catchAsync(async (req, res) => {
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const data = await orderService.getOrderForUser(query, options, userId);
-
   if (data) {
     res.status(httpStatus.OK).send({ message: 'order data fetched successfully', data: data });
   } else {

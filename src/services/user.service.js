@@ -153,11 +153,9 @@ const deleteUserById = async (userId) => {
 
 const getUserWithSecretFieldsById = async (id) => {
   try {
-    console.log(id);
     const user = await Users.scope('withSecretColumns').findOne({
       where: { id: id }
     });
-    console.log("user with secret field=====================",user)
     return user;
   } catch (error) {
     console.error('Error retrieving user with secret fields by id:', error);

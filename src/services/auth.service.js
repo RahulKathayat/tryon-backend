@@ -12,10 +12,7 @@ const { Users } = require('../models/user');
 // login without Google account--------------------------------------------------
 const loginUserWithEmailAndPassword = async (email, password) => {
   try {
-    console.log('checkPassword=============================', email, password);
     const user = await userService.getUserByEmail(email);
-    console.log('user id ========', user);
-
     if (user == null) {
       throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
     }
