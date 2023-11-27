@@ -33,7 +33,7 @@ const getPaymentLog = async (userId) => {
 const getPaymentLogForAdmin = async (userId) => {
   try {
     const data = await paymentLog.findAll({
-      where: { userId: userId, status: true },
+      where: { status: true },
       include: [{ model: Orders }, { model: Users }]
     });
 

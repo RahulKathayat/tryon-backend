@@ -22,7 +22,7 @@ const createProduct = {
     additionalInformation: Joi.string().required(),
     sku: Joi.string().required(),
     tags: Joi.string().required(),
-    fabric: Joi.string().required(),
+    fabric: Joi.string().optional(),
     size: Joi.array().required(),
     colour: Joi.array().required(),
     // quantity:Joi.number().required(),

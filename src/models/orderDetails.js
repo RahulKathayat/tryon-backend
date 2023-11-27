@@ -53,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'SET NULL',
       allowNull: true
     });
+
+    OrderDetails.hasMany(models.shiprocketOrder, {
+          foreignKey: 'orderDetailId'
+        });
   };
 
   return OrderDetails;

@@ -1,4 +1,4 @@
-const { Cart, Users, Orders, OrderDetails } = require('../models');
+const { Cart, Users, Orders, OrderDetails,paymentLog } = require('../models');
 const { createOrderForPayment } = require('../controllers/payment.controller');
 const { json } = require('sequelize');
 const shipRocketService = require('../services/shipRocket.service');
@@ -172,6 +172,95 @@ async function createCheckout(userId, cartData) {
     throw error;
   }
 }
+
+// async function createCheckout(userId, cartData, paymentLogId) {
+//   try {
+//     if (!userId || !paymentLogId) {
+//       throw new Error('Invalid user ID or paymentLog ID provided.');
+//     }
+
+//     // Retrieve the user's cart
+//     const cart = await Cart.findOne({ where: { userId: userId } });
+
+//     let cartDetails = cart.dataValues.cartDetail || {};
+//     try {
+//       cartDetails = JSON.parse(cartDetails);
+//     } catch (error) {
+//       console.error('Error parsing cartDetails:', error);
+//     }
+
+//     if (Array.isArray(cartDetails.cartDetails)) {
+//       let cartItems = [];
+//       let finalAmount = 0;
+
+//       // Extract relevant information from cartDetails
+//       cartDetails.cartDetails.forEach((item) => {
+//         const id = item.id;
+//         const selectedQuantity = item.selectedQuantity;
+//         finalAmount = item.finalAmount;
+//         cartItems.push({ id, finalAmount, selectedQuantity });
+//       });
+
+//       let Amount = cartItems.reduce((acc, item) => {
+//         return acc + item.finalAmount * item.selectedQuantity;
+//       }, 0);
+
+//       console.log('Total Amount:', Amount);
+
+//       const paymentResult = await paymentLog.findOne({where:{userId:userId}})
+//       console.log("nmc sdsvmvn============================",paymentResult)
+
+//       if (paymentResult.status === 'paid') {
+//         // Payment successful, create the order, and update the cart
+//         const order = await Orders.create({
+//           userId: userId,
+//           totalItems: cartItems.length,
+//           totalQuantity: cartItems.reduce((acc, item) => acc + (item.selectedQuantity || 0), 0),
+//           totalAmount: Amount,
+//           orderDetails: cartDetails.cartDetails,
+//           status: true
+//         });
+
+//         const orderDetailsData = cartItems.map((item) => {
+//           const itemAmount = item.finalAmount * 1 * (item.selectedQuantity * 1);
+//           let data = {
+//             orderId: order.id,
+//             productId: item.id,
+//             type: 'On Process',
+//             amount: item.finalAmount || 0,
+//             totalQuantity: item.selectedQuantity || 0,
+//             calculatedAmount: itemAmount,
+//             status: true
+//           };
+
+//           return data;
+//         });
+
+//         const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
+
+//         const totalAmount = orderDetailsData.reduce((acc, item) => acc + parseFloat(item.calculatedAmount), 0);
+
+//         // Update the cart with order-related information
+//         await Cart.update(
+//           {
+//             totalAmount: totalAmount,
+//             totalItems: order.totalItems,
+//             totalQuantity: order.totalQuantity
+//           },
+//           { where: { userId: userId } }
+//         );
+
+//         return { order, orderDetailsArray, totalAmount };
+//       } else {
+//         throw new Error('Payment failed or not yet completed.');
+//       }
+//     }
+//   } catch (error) {
+//     console.error('Error in createCheckout:', error);
+//     throw error;
+//   }
+// }
+
 
 module.exports = {
   createCart,
