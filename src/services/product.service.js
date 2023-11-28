@@ -58,15 +58,15 @@ const getProductForAdmin = async (query = {}, options = {}, between = {}, order 
     }
     // Apply price range filtering
     if (between.priceFrom && between.priceTo) {
-      query.totalPrice = {
+      query.finalAmount = {
         [Op.between]: [between.priceFrom, between.priceTo]
       };
     } else if (between.priceFrom) {
-      query.totalPrice = {
+      query.finalAmount = {
         [Op.gte]: between.priceFrom
       };
     } else if (between.priceTo) {
-      query.totalPrice = {
+      query.finalAmount = {
         [Op.lte]: between.priceTo
       };
     }
@@ -123,15 +123,15 @@ const getProduct = async (query = {}, options = {}, between = {}, order = 'desc'
     }
     // Apply price range filtering
     if (between.priceFrom && between.priceTo) {
-      query.totalPrice = {
+      query.finalAmount = {
         [Op.between]: [between.priceFrom, between.priceTo]
       };
     } else if (between.priceFrom) {
-      query.totalPrice = {
+      query.finalAmount = {
         [Op.gte]: between.priceFrom
       };
     } else if (between.priceTo) {
-      query.totalPrice = {
+      query.finalAmount = {
         [Op.lte]: between.priceTo
       };
     }
@@ -311,15 +311,15 @@ const getProductForWishlist = async (query, options, between, order) => {
     }
 
     if (between.priceFrom && between.priceTo) {
-      query.totalPrice = {
+      query.finalAmount = {
         [Op.between]: [between.priceFrom, between.priceTo]
       };
     } else if (between.priceFrom) {
-      query.totalPrice = {
+      query.finalAmount = {
         [Op.gte]: between.priceFrom
       };
     } else if (between.priceTo) {
-      query.totalPrice = {
+      query.finalAmount = {
         [Op.lte]: between.priceTo
       };
     }

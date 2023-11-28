@@ -13,7 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         awbCode:{
             type:DataTypes.STRING
-          },
+        },
+        orderType:{
+            type:DataTypes.STRING
+        },
         status: {
           type: DataTypes.BOOLEAN,
           defaultValue: true

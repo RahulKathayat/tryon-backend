@@ -19,6 +19,9 @@ module.exports = {
       awbCode:{
         type:Sequelize.STRING
       },
+      orderType:{
+        type:Sequelize.STRING
+      },
       status: {
         type: Sequelize.BOOLEAN
       },

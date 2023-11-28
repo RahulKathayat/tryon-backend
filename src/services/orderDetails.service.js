@@ -153,6 +153,20 @@ const getOrderDetailsForUser = async (query, userId) => {
   });
   return support;
 };
+
+const cancelOrder=async(orderDetailId)=>{
+  const result=await OrderDetails.findOne({
+    where: {id:orderDetailId}
+  })
+  if (result) {
+    return OrderDetails.update({type:"Cancel"}, { where: { id: orderDetailId } });
+  } else {
+    return;
+  }
+
+}
+
+
 module.exports = {
   createOrderDetails,
   getOrderDetails,
@@ -160,5 +174,6 @@ module.exports = {
   deleteOrderDetailsById,
   getOrderDetailsById,
   getOrderDetailsForUser,
-  getOrderDetailsByOrderId
+  getOrderDetailsByOrderId,
+  cancelOrder
 };

@@ -114,9 +114,10 @@ const createShiprocketOrder = async (req, res, orderDetailId) => {
       userId: userId, 
       orderDetailId: orderDetailId,
       shiprocketResponse: response,
+      orderType: "New Order"
     });
    
-    generateAWB(orderDetailId,response);
+    // generateAWB(orderDetailId,response);
     
     res.send(response);
   } catch (error) {
@@ -145,7 +146,7 @@ const cancelShiprocketOrder= async(req,res,orderDetailId)=>{
       ids:[Order.dataValues.shiprocketResponse.order_id]
     };
     const response=await shipRocketService.cancelOrder(orderData);
-    await shiprocketOrder.update({status:false},{where:{orderDetailId:orderDetailId}})
+    await shiprocketOrder.update({status:false},{where:{orderDetailId:orderDetailId, orderType:"New Order"}})
 
     res.json(response);
   } catch(error){
@@ -249,9 +250,10 @@ const createReturnOrder= async(req,res,orderDetailId)=>{
       userId: userId, 
       orderDetailId: orderDetailId,
       shiprocketResponse: response,
+      orderType: "Return Order"
     });
 
-    generateAWBForReturn(orderDetailId,response);
+    // generateAWBForReturn(orderDetailId,response);
     res.json(response);
   }catch(error){
     res.status(500).send(error.response.data);
@@ -326,7 +328,7 @@ const generateAWB = async (orderDetailId,details) => {
 
     const updatedOrder = await shiprocketOrder.update(
       { awbCode: awb_code },
-      { where: { orderDetailId: orderDetailId } }
+      { where: { orderDetailId: orderDetailId , orderType:"New Order" } }
     );
     
     console.log(response,updatedOrder)
@@ -352,7 +354,7 @@ const generateAWBForReturn = async (orderDetailId,details) => {
 
     const updatedOrder = await shiprocketOrder.update(
       { awbCode: awb_code },
-      { where: { orderDetailId: orderDetailId },shiprocketResponse:details.status="RETURN PENDING"}
+      { where: { orderDetailId: orderDetailId , orderType:"Return Order"}}
     );
     
     console.log(response,updatedOrder)
