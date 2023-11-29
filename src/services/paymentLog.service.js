@@ -55,10 +55,10 @@ async function checkPaymentStatus(userId, orderId) {
     });
   
     if (checkPayment?.dataValues?.isActive === true) {
-      console.log("TRUE----------------------------------")
+      console.log("TRUE----------------------------------😀😀")
       return true;
     } else {
-      console.log("FALSE----------------------------------")
+      console.log("FALSE----------------------------------😑😑")
 
       return false;
     }

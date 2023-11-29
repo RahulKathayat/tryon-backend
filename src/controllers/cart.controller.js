@@ -125,9 +125,9 @@ async function createCheckout(req, res) {
       : {};
     
       //clear cart on checkout
-    // const cartUpdate = await cartService.clearCartByUserId(req.user.dataValues.id);
+    const cartUpdate = await cartService.clearCartByUserId(req.user.dataValues.id);
 
-    res.json({ order, orderDetails: orderDetailsArray, totalAmount, razorpayPaymentDetails});
+    res.json({ order, orderDetails: orderDetailsArray, totalAmount, razorpayPaymentDetails,cartUpdate});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

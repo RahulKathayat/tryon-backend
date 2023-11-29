@@ -321,8 +321,12 @@ const generateAWB = async (orderDetailId,details) => {
       { awbCode: awb_code },
       { where: { orderDetailId: orderDetailId , orderType:"New Order" } }
     );
+
+    const addTrakingUrl=await OrderDetails.update(
+      {trackingLink:`https://shiprocket.co/tracking/${awb_code}`, trackingId:awb_code},
+      {where:{id:orderDetailId}}
+    )
     
-    console.log("response---------------------------------",response,updatedOrder)
     return ({ response, updatedOrder });
   } catch (error) {
     return(error.response.data);
