@@ -9,7 +9,7 @@ const createProduct = async (_userBody) => {
   _userBody.size = JSON.stringify(size);
   let finalAmount = userBody.totalPrice - ((userBody.totalPrice * userBody.discountPercentage) / 100).toFixed(2);
   finalAmount = finalAmount.toFixed(2);
-  let marginAmount= (userBody.basePrice*userBody.length)-finalAmount
+  let marginAmount= Math.abs((userBody.basePrice*userBody.length)-finalAmount)
   userBody = {
     ...userBody,
     finalAmount: finalAmount,
