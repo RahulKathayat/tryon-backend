@@ -44,21 +44,22 @@ const getPaymentLogForAdmin = async (userId) => {
   }
 };
 
-
+// used for cart checkout api
 async function checkPaymentStatus(userId, orderId) {
   try {
-    // Fetch the payment log for the given user and order
     const checkPayment = await paymentLog.findOne({
       where: {
         userId: userId,
         orderId: orderId
       }
     });
-    if (checkPayment && checkPayment.isActive === 1) {
-      console.log("mno-----------------------------true")
+  
+    if (checkPayment?.dataValues?.isActive === true) {
+      console.log("TRUE----------------------------------")
       return true;
     } else {
-      console.log('sDgJHKKJGV======================false')
+      console.log("FALSE----------------------------------")
+
       return false;
     }
   } catch (error) {
