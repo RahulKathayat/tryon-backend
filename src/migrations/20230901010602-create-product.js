@@ -66,7 +66,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       length: {
-        type: Sequelize.INTEGER
+        type: Sequelize.DOUBLE
       },
       totalPrice: {
         type: Sequelize.INTEGER

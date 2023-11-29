@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       },
       length: {
-        type: DataTypes.INTEGER
+        type: DataTypes.DOUBLE
       },
       totalPrice: {
         type: DataTypes.BIGINT

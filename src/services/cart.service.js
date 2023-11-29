@@ -129,7 +129,7 @@ async function createCheckout(userId, cartData) {
 
       const order = await Orders.create({
         userId: userId,
-        totalItems: cartItems.length, // Assuming you're using the cartItems array
+        totalItems: cartItems.length,
         totalQuantity: cartItems.reduce((acc, item) => acc + (item.selectedQuantity || 0), 0),
         totalAmount: Amount,
         orderDetails: cartDetails.cartDetails,
