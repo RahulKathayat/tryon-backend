@@ -1,4 +1,5 @@
 const { OrderDetails, Product, Orders, Users, Ratings } = require('../models');
+const {cancelShiprocketOrder}=require('../controllers/shipRocket.controller')
 
 const createOrderDetails = async (_userBody) => {
   const userBody = _userBody;
@@ -154,17 +155,42 @@ const getOrderDetailsForUser = async (query, userId) => {
   return support;
 };
 
-const cancelOrder=async(orderDetailId)=>{
-  const result=await OrderDetails.findOne({
-    where: {id:orderDetailId}
-  })
-  if (result) {
-    return OrderDetails.update({type:"Cancel"}, { where: { id: orderDetailId } });
-  } else {
-    return;
-  }
+// const manageOrder=async(orderDetailId,body)=>{
+//   const result=await OrderDetails.findOne({
+//     where: {id:orderDetailId}
+//   })
+//   if (result) {
+//     return OrderDetails.update(body, { where: { id: orderDetailId } });
+//   } else {
+//     return;
+//   }
 
-}
+// }
+
+const manageOrder = async (orderDetailId, body) => {
+  try {
+    const result = await OrderDetails.findOne({
+      where: { id: orderDetailId }
+    });
+
+    if (result) {
+      await OrderDetails.update(body, { where: { id: orderDetailId } });
+
+      if (body.type && body.type === "Cancel") {
+        const response=await cancelShiprocketOrder(orderDetailId);
+        return "Shiprocket order is cancelled successfully"
+      }
+
+      return "Order details updated successfully";
+    } else {
+      return "Order not found";
+    }
+  } catch (error) {
+    console.error("Error managing order:", error);
+    throw error;
+};
+};
+
 
 
 module.exports = {
@@ -175,5 +201,5 @@ module.exports = {
   getOrderDetailsById,
   getOrderDetailsForUser,
   getOrderDetailsByOrderId,
-  cancelOrder
+  manageOrder
 };

@@ -23,7 +23,7 @@ router
 // Routes for Users
 // router.get('/me', auth(), orderDetailsController.getOrderDetailsForUser);
 
-// For orders
-router.post('/cancel/:orderDetailId', auth(),orderDetailsController.cancelOrder)
+// For orders cancel/retrn/delivered/on-process
+router.put('/manageType/:orderDetailId',auth(),validate(orderDetailsValidation.manageOrder),orderDetailsController.manageOrder)
 
 module.exports = router;

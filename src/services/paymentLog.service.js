@@ -44,8 +44,32 @@ const getPaymentLogForAdmin = async (userId) => {
   }
 };
 
+
+async function checkPaymentStatus(userId, orderId) {
+  try {
+    // Fetch the payment log for the given user and order
+    const checkPayment = await paymentLog.findOne({
+      where: {
+        userId: userId,
+        orderId: orderId
+      }
+    });
+    if (checkPayment && checkPayment.isActive === 1) {
+      console.log("mno-----------------------------true")
+      return true;
+    } else {
+      console.log('sDgJHKKJGV======================false')
+      return false;
+    }
+  } catch (error) {
+    console.error('Error checking payment status:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   createPaymentLog,
   getPaymentLog,
-  getPaymentLogForAdmin
+  getPaymentLogForAdmin,
+  checkPaymentStatus
 };

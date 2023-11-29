@@ -36,6 +36,7 @@ const updateProduct = {
   params: Joi.object().keys({
     id: Joi.number().required()
   }),
+  body: Joi.object().keys({
   fabricId: Joi.string().optional(),
   designerName: Joi.string().optional(),
   productName: Joi.string().optional(),
@@ -63,6 +64,7 @@ const updateProduct = {
   upComingDate: Joi.string().allow(''),
   status: Joi.boolean(),
   isActive: Joi.boolean()
+  })
 };
 
 module.exports = {

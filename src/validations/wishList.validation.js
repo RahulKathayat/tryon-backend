@@ -13,10 +13,12 @@ const updateWishlist = {
   params: Joi.object().keys({
     id: Joi.number().required()
   }),
+  body: Joi.object().keys({
   productId: Joi.number().optional(),
   // userId: Joi.number().required(),
   status: Joi.boolean(),
   isActive: Joi.boolean()
+  })
 };
 
 module.exports = {

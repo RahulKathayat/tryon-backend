@@ -137,7 +137,7 @@ const createShiprocketOrder = async (req, res, orderDetailId) => {
 };
 
 
-const cancelShiprocketOrder= async(req,res,orderDetailId)=>{
+const cancelShiprocketOrder= async(orderDetailId)=>{
   const Order = await shiprocketOrder.findOne({
     where: { orderDetailId: orderDetailId },
   })
@@ -148,9 +148,9 @@ const cancelShiprocketOrder= async(req,res,orderDetailId)=>{
     const response=await shipRocketService.cancelOrder(orderData);
     await shiprocketOrder.update({status:false},{where:{orderDetailId:orderDetailId, orderType:"New Order"}})
 
-    res.json(response);
+    return(response);
   } catch(error){
-    res.status(500).send(error.response);
+    throw(error.response);
   }
 };
 
@@ -166,7 +166,6 @@ const cancelShiprocketOrder= async(req,res,orderDetailId)=>{
 
 const createReturnOrder= async(req,res,orderDetailId)=>{
   const userId=req.user.id;
-  console.log("dataaaaaaaaaaaaaaa==========================",userId,orderDetailId)
   const orderDetails = await OrderDetails.findOne({
     where: { id: orderDetailId },
     include: [
@@ -314,6 +313,7 @@ const generateInvoice=async(req,res)=>{
 }
 
 const generateAWB = async (orderDetailId,details) => {
+  console.log("data checking-------------------------",orderDetailId,details);
   try {
     const data={
         shipment_id:details.shipment_id
@@ -331,7 +331,7 @@ const generateAWB = async (orderDetailId,details) => {
       { where: { orderDetailId: orderDetailId , orderType:"New Order" } }
     );
     
-    console.log(response,updatedOrder)
+    console.log("response---------------------------------",response,updatedOrder)
     return ({ response, updatedOrder });
   } catch (error) {
     return(error.response.data);

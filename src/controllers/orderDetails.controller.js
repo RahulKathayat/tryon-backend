@@ -110,14 +110,16 @@ const getOrderDetailsForUser = catchAsync(async (req, res) => {
 });
 
 // cancel order
-const cancelOrder=catchAsync(async(req,res)=>{
+const manageOrder=catchAsync(async(req,res)=>{
   const orderDetailId=req.params.orderDetailId;
-  const data= await orderDetailsService.cancelOrder(orderDetailId);
+  const body=req.body;
+  const data= await orderDetailsService.manageOrder(orderDetailId,body);
   if (data){
-    res.status(httpStatus.OK).send({message: "Order canceled successfully"});
+    res.status(httpStatus.OK).send({message: "Order Type updated successfully",data});
   }else{
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetching data' });
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in updating data' });
   }
+
 })
 
 
@@ -129,5 +131,5 @@ module.exports = {
   getOrderDetailsById,
   getOrderDetailsForUser,
   getOrderDetailsByOrderId,
-  cancelOrder
+  manageOrder
 };

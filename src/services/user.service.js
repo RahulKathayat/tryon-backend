@@ -68,8 +68,7 @@ const getUserById = async (id) => {
       include: [
         {
           model: Address,
-          where: { userId: id, defaultAddress: true }, // Add condition for default address
-          required: false, // Use required: false to perform a LEFT JOIN
+          where: { userId: id},
         },
       ],
     });
@@ -83,7 +82,7 @@ const getUserById = async (id) => {
 const getUserByEmail = async (email) => {
   try {
     const data = await Users.findOne({
-      where: { email: email, status: true }
+      where: { email: email, status: true, isActive:true }
     });
     return data;
   } catch (error) {
@@ -106,11 +105,12 @@ const getUserByEmail = async (email) => {
 // };
 
 const updateUserById = async (id, newData) => {
+  console.log("newdta------------------",newData)
+  console.log("id------------------------",id)
   try {
     const user = await Users.findByPk(id);
 
     if (user) {
-      // Update the user's data with the new data
       await user.update(newData);
       return user;
     } else {
@@ -118,7 +118,23 @@ const updateUserById = async (id, newData) => {
     }
   } catch (error) {
     console.error('Error updating user:', error);
-    throw error; // Re-throw the error to be handled by the caller.
+    throw error;
+  }
+};
+
+const updateUserByAdmin = async (id, newData) => {
+  try {
+    const user = await Users.findByPk(id);
+
+    if (user) {
+      await user.update(newData);
+      return user;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
   }
 };
 
@@ -212,5 +228,6 @@ module.exports = {
   getUserDataByUserId,
   getExistingEmails,
   createGoogleUser,
-  createUserDetail
+  createUserDetail,
+  updateUserByAdmin
 };
