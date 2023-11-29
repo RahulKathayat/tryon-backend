@@ -117,7 +117,7 @@ const createShiprocketOrder = async (req, res, orderDetailId) => {
       orderType: "New Order"
     });
    
-    // generateAWB(orderDetailId,response);
+    generateAWB(orderDetailId,response);
     
     res.send(response);
   } catch (error) {
@@ -154,15 +154,6 @@ const cancelShiprocketOrder= async(orderDetailId)=>{
   }
 };
 
-// const createReturnOrder= async(req,res)=>{
-//   try{
-//     const data=req.body;
-//     const response=await shipRocketService.createReturnOrder(data);
-//     res.json(response);
-//   } catch(error){
-//     res.status(500).send(error.response.data);
-//   }
-// };
 
 const createReturnOrder= async(req,res,orderDetailId)=>{
   const userId=req.user.id;
