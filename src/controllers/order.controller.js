@@ -65,9 +65,9 @@ const updateOrderForUser = catchAsync(async (req, res) => {
 });
 const updateOrder = catchAsync(async (req, res) => {
   try {
-    const userId = req.params;
+    const orderId = req.params;
     const newData = req.body;
-    const updatedUser = await orderService.updateOrderById(userId, newData);
+    const updatedUser = await orderService.updateOrderById(orderId, newData);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'order updated successfully' });
     } else {

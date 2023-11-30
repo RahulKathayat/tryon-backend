@@ -63,7 +63,6 @@ const updateProduct = {
   // quantity:Joi.number().required(),
   upComingDate: Joi.string().allow(''),
   status: Joi.boolean(),
-  isActive: Joi.boolean()
   })
 };
 

@@ -424,6 +424,22 @@ cron.schedule('* * * * * *', async () => {
   // console.log('cron Called');
 });
 
+const updateIsActive = catchAsync(async (req, res) => {
+  try {
+    const userId = req.params;
+    const newData = req.body;
+    const updatedUser = await productService.updateIsActive(userId, newData);
+    if (updatedUser) {
+      res.status(200).send({ data: updatedUser, message: 'product updated successfully' });
+    } else {
+      res.status(404).send({ message: 'Product not found', status: 0 });
+    }
+  } catch (error) {
+    console.error('Error updating Product:', error);
+    res.status(500).send({ message: 'Internal server error', status: -1 });
+  }
+});
+
 module.exports = {
   createProduct,
   deleteProduct,
@@ -439,5 +455,6 @@ module.exports = {
   isUpcomingproduct,
   getProductBySearch,
   getProductsForUser,
-  getProductForAdmin
+  getProductForAdmin,
+  updateIsActive
 };

@@ -368,6 +368,21 @@ const updateAvrageRatings = async (data) => {
   }
 };
 
+const updateIsActive = async (id, newData) => {
+  try {
+    const findData = await Product.findOne({
+      where: id
+    });
+    if (findData) {
+      return Product.update(newData, { where: id });
+    } else {
+      return;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   createProduct,
   updateAvrageRatings,
@@ -381,6 +396,7 @@ module.exports = {
   getProductBySearch,
   getProductForWishlist,
   getProductByproductId,
-  getProductForAdmin
+  getProductForAdmin,
+  updateIsActive
   // updateImage
 };
