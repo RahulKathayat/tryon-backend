@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
         userId: {
           type: DataTypes.INTEGER
         },
+        shiprocketOrderId:{
+          type:DataTypes.TEXT
+  
+        },
         orderDetailId: {
           type: DataTypes.INTEGER
         },

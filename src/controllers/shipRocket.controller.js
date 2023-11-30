@@ -31,8 +31,16 @@ const getAllOrders=async(req,res)=>{
 
 const createShiprocketOrder = async (req, res, orderDetailId) => {
   const userId = req.user.id;
-
   try {
+
+    const existingOrder = await shiprocketOrder.findOne({
+      where: { orderDetailId: orderDetailId, orderType:"New Order" },
+    });
+
+    if (existingOrder) {
+      return res.status(400).send({message:'Order already created in Shiprocket'});
+    }
+
     const orderDetails = await OrderDetails.findOne({
       where: { id: orderDetailId },
       include: [
@@ -63,6 +71,7 @@ const createShiprocketOrder = async (req, res, orderDetailId) => {
     if (!orderDetails) {
       return res.status(404).send('Order details not found');
     }
+
     const order = orderDetails;
     const address = order.dataValues.Order.dataValues.User.dataValues.Addresses[0].dataValues.address;
     const order_items = [
@@ -100,7 +109,7 @@ const createShiprocketOrder = async (req, res, orderDetailId) => {
       billing_phone: order.dataValues.Order.dataValues.User.dataValues.phoneNumber,
     };
 
-    if (order_items.length === 0) {
+      if (order_items.length === 0) {
       return res.status(422).send({
         message: 'Shiprocket validation error',
         errors: { order_items: ['The order items field is required.'] },
@@ -112,6 +121,7 @@ const createShiprocketOrder = async (req, res, orderDetailId) => {
 
     await shiprocketOrder.create({
       userId: userId, 
+      shiprocketOrderId:orderObject.order_id,
       orderDetailId: orderDetailId,
       shiprocketResponse: response,
       orderType: "New Order"
@@ -235,18 +245,20 @@ const createReturnOrder= async(req,res,orderDetailId)=>{
       "height": 11,
       "weight": 0.5
     }
+    
     const response=await shipRocketService.createReturnOrder(data);
     await shiprocketOrder.create({
       userId: userId, 
+      shiprocketOrderId:data.order_id,
       orderDetailId: orderDetailId,
       shiprocketResponse: response,
       orderType: "Return Order"
     });
 
-    // generateAWBForReturn(orderDetailId,response);
+    generateAWBForReturn(orderDetailId,response);
     res.json(response);
   }catch(error){
-    res.status(500).send(error.response.data);
+    res.status(400).send(error.response.data);
   }
 
 }
@@ -334,7 +346,7 @@ const generateAWB = async (orderDetailId,details) => {
 };
 
 const generateAWBForReturn = async (orderDetailId,details) => {
-  console.log("data====================",details.status)
+  
   try {
     const data={
         shipment_id:details.shipment_id
@@ -358,10 +370,6 @@ const generateAWBForReturn = async (orderDetailId,details) => {
     return(error.response.data);
   }
 };
-
-
-
-
 
 
 module.exports={

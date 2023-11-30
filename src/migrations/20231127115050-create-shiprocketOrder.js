@@ -7,6 +7,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      shiprocketOrderId:{
+        type:Sequelize.TEXT
+
+      },
       userId: {
         type: Sequelize.INTEGER,
       },
