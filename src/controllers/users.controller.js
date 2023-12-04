@@ -84,9 +84,9 @@ const getUserByEmail = catchAsync(async (req, res) => {
 //update user
 const updateUser = catchAsync(async (req, res) => {
   try {
-    const query = req.user.id;
+    const id = req.user.id;
     const newData = req.body;
-    const updatedUser = await userService.updateUserById(query, newData);
+    const updatedUser = await userService.updateUserById(id, newData);
     if (updatedUser) {
       res.status(200).send({ message: 'user updated successfully' });
     } else {
@@ -123,6 +123,23 @@ const getUserDataByUserId = catchAsync(async (req, res) => {
     res.status(500).send({ message: 'Invalid input data', error: err.message });
   }
 });
+
+const updateUserByAdmin = catchAsync(async (req, res) => {
+  try {
+    const id = req.params.id;
+    const newData = req.body;
+    const updatedUser = await userService.updateUserByAdmin(id, newData);
+    if (updatedUser) {
+      res.status(200).send({ message: 'user updated successfully' });
+    } else {
+      res.status(404).send({ message: 'user not found', status: 0 });
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).send({ message: 'Internal server error', status: -1 });
+  }
+});
+
 module.exports = {
   createUser,
   deleteUser,
@@ -130,5 +147,6 @@ module.exports = {
   updateUser,
   getUserById,
   getUserByEmail,
-  getUserDataByUserId
+  getUserDataByUserId,
+  updateUserByAdmin
 };

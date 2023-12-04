@@ -39,7 +39,6 @@ const getPaymentLog = catchAsync(async (req, res) => {
   const getPaymentLogForAdmin = catchAsync(async (req, res) => {
     try {
       let userId = req.user.id;
-  
       const data = await paymentLogService.getPaymentLogForAdmin(userId);
   
       if (data) {

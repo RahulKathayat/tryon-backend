@@ -15,11 +15,13 @@ const updateRefund = {
   params: Joi.object().keys({
     id: Joi.number().required()
   }),
+  body: Joi.object().keys({
   userId: Joi.number().required(),
   orderId: Joi.number().required(),
   orderDetailId: Joi.number().required(),
   status: Joi.boolean(),
   isActive: Joi.boolean()
+  })
 };
 
 module.exports = {

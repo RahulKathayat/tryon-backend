@@ -13,4 +13,5 @@ router
 router
   .route('/:id')
   .delete(auth(),subscribedUserController.deleteSubscribedUser)
+  .put(auth(),validate(subscribedUserValidation.updateSubscribedUser),subscribedUserController.updateSubscribedUser)
 module.exports = router;

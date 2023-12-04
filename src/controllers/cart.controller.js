@@ -113,11 +113,8 @@ async function createCheckout(req, res) {
 
     const { order, orderDetailsArray, totalAmount } = checkoutResponse;
 
-    console.log('order controller check function ==============================', order, orderDetailsArray, totalAmount);
-
     const amountForPayment = await paymentService.createOrderForPayment(totalAmount);
 
-    // Ensure that amountForPayment is defined and has the expected properties
     const razorpayPaymentDetails = amountForPayment
       ? {
           created_at: amountForPayment.created_at,
@@ -126,10 +123,11 @@ async function createCheckout(req, res) {
           status: amountForPayment.status
         }
       : {};
-    //clear cart on checkout
+    
+      //clear cart on checkout
     const cartUpdate = await cartService.clearCartByUserId(req.user.dataValues.id);
 
-    res.json({ order, orderDetails: orderDetailsArray, totalAmount, razorpayPaymentDetails, cartUpdate });
+    res.json({ order, orderDetails: orderDetailsArray, totalAmount, razorpayPaymentDetails,cartUpdate});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -88,16 +88,15 @@ const getOrderForUser = async (query, options, userId) => {
   });
 
   // Compute totalAmount for each order based on its OrderDetails
-  const ordersWithTotalAmount = result.rows.map((order) => {
-    const totalAmount = order.OrderDetails.reduce((sum, detail) => sum + detail.amount, 0);
-    order.dataValues.totalAmount = totalAmount;
-    return order;
-  });
+  // const ordersWithTotalAmount = result.rows.map((order) => {
+  //   const totalAmount = order.OrderDetails.reduce((sum, detail) => sum + detail.amount, 0);
+  //   order.dataValues.totalAmount = totalAmount;
+  //   return order;
+  // });
 
-  return {
-    ...result,
-    rows: ordersWithTotalAmount
-  };
+  return   result
+    
+  
 };
 
 const createOrderForUser = async (_userBody, userId) => {

@@ -33,7 +33,7 @@ const getPaymentLog = async (userId) => {
 const getPaymentLogForAdmin = async (userId) => {
   try {
     const data = await paymentLog.findAll({
-      where: { userId: userId, status: true },
+      where: { status: true },
       include: [{ model: Orders }, { model: Users }]
     });
 
@@ -44,8 +44,33 @@ const getPaymentLogForAdmin = async (userId) => {
   }
 };
 
+// used for cart checkout api
+async function checkPaymentStatus(userId, orderId) {
+  try {
+    const checkPayment = await paymentLog.findOne({
+      where: {
+        userId: userId,
+        orderId: orderId
+      }
+    });
+  
+    if (checkPayment?.dataValues?.isActive === true) {
+      console.log("TRUE----------------------------------😀😀")
+      return true;
+    } else {
+      console.log("FALSE----------------------------------😑😑")
+
+      return false;
+    }
+  } catch (error) {
+    console.error('Error checking payment status:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   createPaymentLog,
   getPaymentLog,
-  getPaymentLogForAdmin
+  getPaymentLogForAdmin,
+  checkPaymentStatus
 };

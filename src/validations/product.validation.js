@@ -19,10 +19,10 @@ const createProduct = {
     totalPrice: Joi.number().required(),
     currentStock: Joi.number().required(),
     description: Joi.string().required(),
-    additionalInformation: Joi.string().required(),
+    additionalInformation: Joi.string().optional().allow(""),
     sku: Joi.string().required(),
     tags: Joi.string().required(),
-    fabric: Joi.string().required(),
+    fabric: Joi.string().optional(),
     size: Joi.array().required(),
     colour: Joi.array().required(),
     // quantity:Joi.number().required(),
@@ -36,6 +36,7 @@ const updateProduct = {
   params: Joi.object().keys({
     id: Joi.number().required()
   }),
+  body: Joi.object().keys({
   fabricId: Joi.string().optional(),
   designerName: Joi.string().optional(),
   productName: Joi.string().optional(),
@@ -53,7 +54,7 @@ const updateProduct = {
   totalPrice: Joi.number().optional(),
   currentStock: Joi.number().optional(),
   description: Joi.string().optional(),
-  additionalInformation: Joi.string().optional(),
+  additionalInformation: Joi.string().optional().allow(""),
   sku: Joi.string().optional(),
   tags: Joi.string().optional(),
   fabric: Joi.string().optional(),
@@ -62,7 +63,7 @@ const updateProduct = {
   // quantity:Joi.number().required(),
   upComingDate: Joi.string().allow(''),
   status: Joi.boolean(),
-  isActive: Joi.boolean()
+  })
 };
 
 module.exports = {

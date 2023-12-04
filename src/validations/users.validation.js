@@ -17,20 +17,36 @@ const createUser = {
   })
 };
 
-const updateUser = {
-  // params: Joi.object().keys({
-  //   id: Joi.number().required()
-  // }),
+const updateUserByAdmin = {
+  params: Joi.object().keys({
+    id: Joi.number().required()
+  }),
   body: Joi.object().keys({
     firstName: Joi.string().optional(),
     lastName: Joi.string().optional(),
     phoneNumber: Joi.number().optional(),
-    email: Joi.string().optional().email(),
+    // email: Joi.string().optional().email(),
     emailVerify: Joi.boolean().optional(),
     // password: Joi.string().required(),
     addressId: Joi.number().optional(),
     dob: Joi.date().optional(),
-    role: Joi.string().valid('Admin', 'Customer').optional(),
+    // role: Joi.string().valid('Admin', 'Customer').optional(),
+    status: Joi.boolean(),
+    isActive: Joi.boolean()
+  })
+};
+
+const updateUser = {
+  body: Joi.object().keys({
+    firstName: Joi.string().optional(),
+    lastName: Joi.string().optional(),
+    phoneNumber: Joi.number().optional(),
+    // email: Joi.string().optional().email(),
+    emailVerify: Joi.boolean().optional(),
+    // password: Joi.string().required(),
+    addressId: Joi.number().optional(),
+    dob: Joi.date().optional(),
+    // role: Joi.string().valid('Admin', 'Customer').optional(),
     status: Joi.boolean(),
     isActive: Joi.boolean()
   })
@@ -38,5 +54,6 @@ const updateUser = {
 
 module.exports = {
   createUser,
-  updateUser
+  updateUser,
+  updateUserByAdmin
 };

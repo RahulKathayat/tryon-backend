@@ -47,9 +47,26 @@ const deleteSubscribedUserById = async (Id) => {
   }
 };
 
+const updateSubscribedUser = async (id, newData) => {
+  try {
+    const user = await SubscribedUser.findByPk(id);
+
+    if (user) {
+      await user.update(newData);
+      return user;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   createSubscribedUser,
   getSubscribedUser,
   deleteSubscribedUserById,
-  getExistingEmails
+  getExistingEmails,
+  updateSubscribedUser
 };

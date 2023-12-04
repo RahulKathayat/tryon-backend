@@ -12,7 +12,7 @@ const router = express.Router();
 // User Routes
 router.get('/me', auth(), orderController.getOrderForUser);
 router.post('/me', auth(), validate(orderValidation.createOrder), orderController.createOrderForUser);
-router.put('/:id', auth(), validate(orderValidation.updateOrder), orderController.updateOrderForUser);
+router.put('/me/:id', auth(), validate(orderValidation.updateOrder), orderController.updateOrderForUser);
 router.delete('/:id', auth(), orderController.deleteOrderForUser);
 // Admin Routes
 router

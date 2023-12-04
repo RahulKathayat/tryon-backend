@@ -1,7 +1,8 @@
-const { Cart, Users, Orders, OrderDetails } = require('../models');
+const { Cart, Users, Orders, OrderDetails,paymentLog } = require('../models');
 const { createOrderForPayment } = require('../controllers/payment.controller');
 const { json } = require('sequelize');
 const shipRocketService = require('../services/shipRocket.service');
+const paymentService=require('../services/paymentLog.service')
 // const { cartService } = require('../services/cart.service');
 
 const createCart = async (_userBody) => {
@@ -128,7 +129,7 @@ async function createCheckout(userId, cartData) {
 
       const order = await Orders.create({
         userId: userId,
-        totalItems: cartItems.length, // Assuming you're using the cartItems array
+        totalItems: cartItems.length,
         totalQuantity: cartItems.reduce((acc, item) => acc + (item.selectedQuantity || 0), 0),
         totalAmount: Amount,
         orderDetails: cartDetails.cartDetails,
@@ -172,6 +173,80 @@ async function createCheckout(userId, cartData) {
     throw error;
   }
 }
+
+
+/* order will create according to the payment status, if paymentLog.isActive=true then order will create
+successfully else it will create a draft order with status=0. */
+// async function createCheckout(userId, cartData) {
+//     try {
+//       if (!userId) {
+//         throw new Error('No user ID provided.');
+//       }
+//       const cart = await Cart.findOne({ where: { userId: userId } });
+//       let cartDetails = cart.dataValues.cartDetail || {};
+//       try {
+//         cartDetails = JSON.parse(cartDetails);
+//       } catch (error) {
+//         console.error('Error parsing cartDetails:', error);
+//       }
+//       if (Array.isArray(cartDetails.cartDetails)) {
+//         let cartItems = [];
+//         let finalAmount = 0;
+//         cartDetails.cartDetails.forEach((item) => {
+//           const id = item.id;
+//           const selectedQuantity = item.selectedQuantity;
+//           finalAmount = item.finalAmount;
+//           cartItems.push({ id, finalAmount, selectedQuantity });
+//         });
+//         let Amount = cartItems.reduce((acc, item) => {
+//           return acc + item.finalAmount * item.selectedQuantity;
+//         }, 0);
+//         console.log('Total Amount:', Amount);
+//         // Create a draft order
+//         const draftOrder = await Orders.create({
+//           userId: userId,
+//           totalItems: cartItems.length,
+//           totalQuantity: cartItems.reduce((acc, item) => acc + (item.selectedQuantity || 0), 0),
+//           totalAmount: Amount,
+//           orderDetails: cartDetails.cartDetails,
+//           status: false // Draft status
+//         });
+//         // Create draft order details
+//         const orderDetailsData = cartItems.map((item) => {
+//           const itemAmount = item.finalAmount * 1 * (item.selectedQuantity * 1);
+//           return {
+//             orderId: draftOrder.id,
+//             productId: item.id,
+//             type: "Draft",
+//             amount: item.finalAmount || 0,
+//             totalQuantity: item.selectedQuantity || 0,
+//             calculatedAmount: itemAmount,
+//             status: false // Draft status
+//           };
+//         });
+//         const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
+//         const isPaymentSuccessful = await paymentService.checkPaymentStatus(userId, draftOrder.id);
+//         if (isPaymentSuccessful) {
+         
+//           await Orders.update({ status: true }, { where: { id: draftOrder.id } });
+//           await OrderDetails.update({ status: true, type:'On Process' }, { where: { orderId: draftOrder.id } });
+//         }
+      
+//         await Cart.update(
+//           {
+//             totalAmount: Amount,
+//             totalItems: draftOrder.totalItems,
+//             totalQuantity: draftOrder.totalQuantity
+//           },
+//           { where: { userId: userId } }
+//         );
+//         return { order: draftOrder, orderDetailsArray, totalAmount: Amount };
+//       }
+//     } catch (error) {
+//       console.error('Error in createCheckout:', error);
+//       throw error;
+//     }
+//   }
 
 module.exports = {
   createCart,

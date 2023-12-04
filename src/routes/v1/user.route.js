@@ -19,7 +19,7 @@ router.put('/me', auth(), validate(userValidation.updateUser), userController.up
 
 router
   .route('/:id')
-  .put(validate(auth(), userValidation.updateUser), userController.updateUser)
+  .put(auth(),validate(userValidation.updateUserByAdmin), userController.updateUserByAdmin)
   .delete(auth(), userController.deleteUser)
   .get(userController.getUserById);
 

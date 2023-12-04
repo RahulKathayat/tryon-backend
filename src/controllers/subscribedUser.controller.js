@@ -38,9 +38,27 @@ const deleteSubscribedUser = catchAsync(async (req, res) => {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in SubscribedUser delete' });
   }
 });
+
+const updateSubscribedUser = catchAsync(async (req, res) => {
+  try {
+    const id = req.params.id;
+    const newData = req.body;
+    const updatedUser = await subscribedUserService.updateSubscribedUser(id, newData);
+    if (updatedUser) {
+      res.status(200).send({ message: 'user updated successfully' });
+    } else {
+      res.status(404).send({ message: 'user not found', status: 0 });
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).send({ message: 'Internal server error', status: -1 });
+  }
+});
+
 module.exports = {
     createSubscribedUser,
     deleteSubscribedUser,
     getSubscribedUser,
+    updateSubscribedUser
 
 };

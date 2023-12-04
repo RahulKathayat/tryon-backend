@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       },
       length: {
-        type: DataTypes.INTEGER
+        type: DataTypes.DOUBLE
       },
       totalPrice: {
         type: DataTypes.BIGINT
@@ -80,6 +80,9 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: true
       },
       finalAmount: {
+        type: DataTypes.DOUBLE
+      },
+      marginAmount:{
         type: DataTypes.DOUBLE
       },
       averageRating: {
