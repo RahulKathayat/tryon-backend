@@ -8,7 +8,6 @@ const { tokenTypes } = require('../config/tokens');
 const logger = require('../config/logger');
 const { Users } = require('../models/user');
 
-
 // login without Google account--------------------------------------------------
 const loginUserWithEmailAndPassword = async (email, password) => {
   try {
@@ -36,7 +35,6 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   }
 };
 
-
 // For Google Login----------------------------------------------------------
 const loginUserWithEmailAndPasswordForGoogle = async (email, password) => {
   try {
@@ -50,7 +48,7 @@ const loginUserWithEmailAndPasswordForGoogle = async (email, password) => {
     console.log('password=======================', password);
     console.log('userWithSecretFields==========================', userWithSecretFields);
     logger.info('message');
-    
+
     if (!user || !(await bcrypt.compare(password, userWithSecretFields.gAuth))) {
       throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
     }
@@ -61,13 +59,6 @@ const loginUserWithEmailAndPasswordForGoogle = async (email, password) => {
     throw error;
   }
 };
-
-
-
-
-
-
-
 
 const loginWithGoogle = async (email, gAuth) => {
   console.log('gauth============================', email, gAuth);
@@ -134,7 +125,7 @@ const verifyEmail = async (verifyEmailToken) => {
  */
 const resetPassword = async (resetPasswordToken, newPassword) => {
   try {
-    const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
+    const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.REFRESH);
     if (!resetPasswordTokenDoc) {
       throw new Error('Invalid or expired reset password token');
     }
