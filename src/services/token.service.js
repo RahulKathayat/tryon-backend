@@ -34,7 +34,7 @@ const saveToken = async (token, userId, role, expires, type, blacklisted = false
 
 const verifyToken = async (token, type) => {
   const payload = jwt.verify(token, config.jwt.secret);
-  const tokenDoc = await Token.findOne({ where: { token, type, user: payload.sub, blacklisted: false } });
+  const tokenDoc = await Token.findOne({ where: { token, user: payload.sub, blacklisted: false } });
   console.log('token-------------', tokenDoc);
   if (!tokenDoc) {
     throw new Error('Token not found');
