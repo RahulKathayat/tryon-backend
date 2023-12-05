@@ -1,5 +1,5 @@
-const { OrderDetails, Product, Orders, Users, Ratings } = require('../models');
-const {cancelShiprocketOrder}=require('../controllers/shipRocket.controller')
+const { OrderDetails, Product, Orders, Users, Ratings, Address } = require('../models');
+const { cancelShiprocketOrder } = require('../controllers/shipRocket.controller');
 
 const createOrderDetails = async (_userBody) => {
   const userBody = _userBody;
@@ -18,15 +18,13 @@ const getOrderDetails = async (query, options) => {
         model: Product
       },
       {
-        model: Orders,
+        model: Users,
         include: [
           {
-            model: Users,
-            include: [
-              {
-                model: Ratings
-              }
-            ]
+            model: Address
+          },
+          {
+            model: Ratings
           }
         ]
       }
@@ -54,6 +52,9 @@ const getOrderDetailsByOrderId = async (id) => {
               include: [
                 {
                   model: Ratings
+                },
+                {
+                  model: Address
                 }
               ]
             }
@@ -176,22 +177,20 @@ const manageOrder = async (orderDetailId, body) => {
     if (result) {
       await OrderDetails.update(body, { where: { id: orderDetailId } });
 
-      if (body.type && body.type === "Cancel") {
-        const response=await cancelShiprocketOrder(orderDetailId);
-        return "Shiprocket order is cancelled successfully"
+      if (body.type && body.type === 'Cancel') {
+        const response = await cancelShiprocketOrder(orderDetailId);
+        return 'Shiprocket order is cancelled successfully';
       }
 
-      return "Order details updated successfully";
+      return 'Order details updated successfully';
     } else {
-      return "Order not found";
+      return 'Order not found';
     }
   } catch (error) {
-    console.error("Error managing order:", error);
+    console.error('Error managing order:', error);
     throw error;
+  }
 };
-};
-
-
 
 module.exports = {
   createOrderDetails,

@@ -94,9 +94,7 @@ const getOrderForUser = async (query, options, userId) => {
   //   return order;
   // });
 
-  return   result
-    
-  
+  return result;
 };
 
 const createOrderForUser = async (_userBody, userId) => {

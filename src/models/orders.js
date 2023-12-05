@@ -38,6 +38,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'SET NULL',
       allowNull: true
     });
+    // Orders.belongsTo(models.Address, {
+    //   foreignKey: 'userId',
+    //   onDelete: 'SET NULL',
+    //   allowNull: true
+    // });
 
     Orders.hasMany(models.Refund, {
       foreignKey: 'orderId'

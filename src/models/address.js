@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
-      isActive:{
+      isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       targetkey: 'id'
     });
+    // Address.hasMany(models.Orders, {
+    //   foreignKey: 'userId',
+    //   targetkey: 'id'
+    // });
   };
 
   return Address;
