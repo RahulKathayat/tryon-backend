@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+      },
+      addressId: {
+        type: DataTypes.INTEGER,
+        defaultValue: true
       }
     },
     {
@@ -54,6 +58,9 @@ module.exports = (sequelize, DataTypes) => {
 
     Orders.hasMany(models.paymentLog, {
       foreignKey: 'orderId'
+    });
+    Orders.belongsTo(models.Address, {
+      foreignKey: 'addressId'
     });
   };
 

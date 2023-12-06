@@ -49,6 +49,7 @@ const getOrderDetails = catchAsync(async (req, res) => {
 });
 
 const getOrderDetailsByOrderId = catchAsync(async (req, res) => {
+  console.log('req0000=-=====---------------------------------', req.params.id);
   const data = await orderDetailsService.getOrderDetailsByOrderId(req.params.id);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'order data by id is fetched successfully', data: data });
@@ -110,18 +111,16 @@ const getOrderDetailsForUser = catchAsync(async (req, res) => {
 });
 
 // cancel order
-const manageOrder=catchAsync(async(req,res)=>{
-  const orderDetailId=req.params.orderDetailId;
-  const body=req.body;
-  const data= await orderDetailsService.manageOrder(orderDetailId,body);
-  if (data){
-    res.status(httpStatus.OK).send({message: "Order Type updated successfully",data});
-  }else{
+const manageOrder = catchAsync(async (req, res) => {
+  const orderDetailId = req.params.orderDetailId;
+  const body = req.body;
+  const data = await orderDetailsService.manageOrder(orderDetailId, body);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'Order Type updated successfully', data });
+  } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in updating data' });
   }
-
-})
-
+});
 
 module.exports = {
   createOrderDetails,

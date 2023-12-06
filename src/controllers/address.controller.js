@@ -52,6 +52,7 @@ const updateAddress = catchAsync(async (req, res) => {
   try {
     const params = req.params;
     const newData = req.body;
+    console.log('params------------------', params);
     const updatedUser = await addressService.updateAddressById(newData, params);
     if (updatedUser) {
       res.status(200).send({ message: 'address updated successfully' });

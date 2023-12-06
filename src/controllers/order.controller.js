@@ -2,7 +2,7 @@ const catchAsync = require('../utils/catchAsync');
 const orderService = require('../services/order.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
-const { productService } = require('../services');
+const { productService, userService } = require('../services');
 
 const createOrderForUser = catchAsync(async (req, res) => {
   const userId = req.user.id;
@@ -90,6 +90,16 @@ const deleteOrder = catchAsync(async (req, res) => {
   }
 });
 
+const getUserById = catchAsync(async (req, res) => {
+  const userId = req.params.id;
+  const data = await orderService.getAllUserById(userId);
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'order data fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
 const getOrderForUser = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const query = {};
@@ -126,5 +136,6 @@ module.exports = {
   getOrderForUser,
   createOrderForUser,
   updateOrderForUser,
-  deleteOrderForUser
+  deleteOrderForUser,
+  getUserById
 };

@@ -68,9 +68,9 @@ const getUserById = async (id) => {
       include: [
         {
           model: Address,
-          where: { userId: id},
-        },
-      ],
+          where: { userId: id }
+        }
+      ]
     });
     return data;
   } catch (error) {
@@ -82,7 +82,7 @@ const getUserById = async (id) => {
 const getUserByEmail = async (email) => {
   try {
     const data = await Users.findOne({
-      where: { email: email, status: true, isActive:true }
+      where: { email: email, status: true, isActive: true }
     });
     return data;
   } catch (error) {
@@ -105,8 +105,8 @@ const getUserByEmail = async (email) => {
 // };
 
 const updateUserById = async (id, newData) => {
-  console.log("newdta------------------",newData)
-  console.log("id------------------------",id)
+  console.log('newdta------------------', newData);
+  console.log('id------------------------', id);
   try {
     const user = await Users.findByPk(id);
 
@@ -185,7 +185,7 @@ const getUserWithSecretFieldsById = async (id) => {
 const getUserDataByUserId = async (id) => {
   try {
     const data = await Users.findOne({
-      where: { id: id, status: true, isActive: true },
+      where: { id: id, status: true, isActive: true }
     });
     return data;
   } catch (error) {
@@ -209,11 +209,10 @@ const createGoogleUser = async (_userBody) => {
   }
 
   // Hash the gAuth field
-  userBody.gAuth = await bcrypt.hash(userBody.gAuth,10);
+  userBody.gAuth = await bcrypt.hash(userBody.gAuth, 10);
 
   return Users.create(userBody);
 };
-
 
 module.exports = {
   createUser,

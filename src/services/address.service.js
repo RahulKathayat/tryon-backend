@@ -57,12 +57,13 @@ const getAddressById = async (id) => {
 
 const updateAddressById = async (newData, id) => {
   const findData = await Address.findOne({ where: id });
-
   if (!findData) {
     return null; // Address not found
   }
   if (newData.defaultAddress) {
     await Address.update({ defaultAddress: false }, { where: { userId: findData.userId, id: { [Op.ne]: id.id } } });
+    await Users.update({ addressId: id.id }, { where: { id: findData.userId } });
+    // await Users.update({ addressId: id.id }, { where: { id: findData.userId } });
   }
 
   await Address.update(newData, { where: id });

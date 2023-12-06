@@ -64,6 +64,36 @@ const deleteOrderById = async (Id, userId) => {
 };
 
 // For users
+const getUserById = async (query, options, userId) => {
+  const result = await Orders.findAndCountAll({
+    where: { userId: userId, isActive: true, status: true },
+    order: [['updatedAt', 'DESC']],
+    include: [
+      {
+        model: Users
+      },
+      {
+        model: OrderDetails,
+        include: [
+          {
+            model: Product
+          }
+        ]
+      }
+    ],
+    limit,
+    offset
+  });
+
+  // Compute totalAmount for each order based on its OrderDetails
+  // const ordersWithTotalAmount = result.rows.map((order) => {
+  //   const totalAmount = order.OrderDetails.reduce((sum, detail) => sum + detail.amount, 0);
+  //   order.dataValues.totalAmount = totalAmount;
+  //   return order;
+  // });
+
+  return result;
+};
 const getOrderForUser = async (query, options, userId) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
@@ -95,6 +125,17 @@ const getOrderForUser = async (query, options, userId) => {
   // });
 
   return result;
+};
+const getAllUserById = async (id) => {
+  try {
+    const data = await Orders.findAndCountAll({
+      where: { userId: id }
+    });
+    return data;
+  } catch (error) {
+    console.error('Error retrieving user by id:', error);
+    throw error;
+  }
 };
 
 const createOrderForUser = async (_userBody, userId) => {
@@ -137,5 +178,7 @@ module.exports = {
   getOrderForUser,
   createOrderForUser,
   updateOrderForUser,
-  createOrderCheckout
+  createOrderCheckout,
+  getUserById,
+  getAllUserById
 };

@@ -31,10 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       targetkey: 'id'
     });
-    // Address.hasMany(models.Orders, {
-    //   foreignKey: 'userId',
-    //   targetkey: 'id'
-    // });
+    Address.hasMany(models.Orders, {
+      foreignKey: 'addressId'
+      // targetkey: 'id'
+    });
   };
 
   return Address;

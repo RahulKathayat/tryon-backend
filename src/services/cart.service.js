@@ -1,8 +1,8 @@
-const { Cart, Users, Orders, OrderDetails,paymentLog } = require('../models');
+const { Cart, Users, Orders, OrderDetails, paymentLog } = require('../models');
 const { createOrderForPayment } = require('../controllers/payment.controller');
 const { json } = require('sequelize');
 const shipRocketService = require('../services/shipRocket.service');
-const paymentService=require('../services/paymentLog.service')
+const paymentService = require('../services/paymentLog.service');
 // const { cartService } = require('../services/cart.service');
 
 const createCart = async (_userBody) => {
@@ -52,6 +52,7 @@ const getCartById = async (id) => {
 
 const updateCartById = async (userId, newData) => {
   try {
+    console.log('check service data---------------------------------------', newData, '000', userId);
     const updateQuantity = await Cart.update(newData, { where: { userId: userId } });
     console.log();
     return updateQuantity;
@@ -93,7 +94,8 @@ async function createCheckout(userId, cartData) {
     if (!userId) {
       throw new Error('No user ID provided.');
     }
-
+    const userData = await Users.findOne({ where: { id: userId } });
+    const addressId = userData.dataValues.addressId;
     const cart = await Cart.findOne({ where: { userId: userId } });
 
     let cartDetails = cart.dataValues.cartDetail || {};
@@ -108,7 +110,6 @@ async function createCheckout(userId, cartData) {
       let finalAmount = 0;
       cartDetails.cartDetails.forEach((item) => {
         console.log('total amounnt=================', item.selectedQuantity);
-
         const id = item.id;
         const selectedQuantity = item.selectedQuantity;
         finalAmount = item.finalAmount;
@@ -133,7 +134,8 @@ async function createCheckout(userId, cartData) {
         totalQuantity: cartItems.reduce((acc, item) => acc + (item.selectedQuantity || 0), 0),
         totalAmount: Amount,
         orderDetails: cartDetails.cartDetails,
-        status: true
+        status: true,
+        addressId: addressId
       });
 
       const orderDetailsData = cartItems.map((item) => {
@@ -146,10 +148,8 @@ async function createCheckout(userId, cartData) {
           amount: item.finalAmount || 0,
           totalQuantity: item.selectedQuantity || 0,
           calculatedAmount: itemAmount,
-
           status: true
         };
-
         return data;
       });
 
@@ -157,15 +157,16 @@ async function createCheckout(userId, cartData) {
 
       const totalAmount = orderDetailsData.reduce((acc, item) => acc + parseFloat(item.calculatedAmount), 0);
 
-      await Cart.update(
+      const data = await Cart.update(
         {
           totalAmount: totalAmount,
           totalItems: order.totalItems,
-          totalQuantity: order.totalQuantity
+          totalQuantity: order.totalQuantity,
+          addressId: addressId
         },
         { where: { userId: userId } }
       );
-
+      console.log('data====================', data);
       return { order, orderDetailsArray, totalAmount };
     }
   } catch (error) {
@@ -173,7 +174,6 @@ async function createCheckout(userId, cartData) {
     throw error;
   }
 }
-
 
 /* order will create according to the payment status, if paymentLog.isActive=true then order will create
 successfully else it will create a draft order with status=0. */
@@ -227,11 +227,11 @@ successfully else it will create a draft order with status=0. */
 //         const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
 //         const isPaymentSuccessful = await paymentService.checkPaymentStatus(userId, draftOrder.id);
 //         if (isPaymentSuccessful) {
-         
+
 //           await Orders.update({ status: true }, { where: { id: draftOrder.id } });
 //           await OrderDetails.update({ status: true, type:'On Process' }, { where: { orderId: draftOrder.id } });
 //         }
-      
+
 //         await Cart.update(
 //           {
 //             totalAmount: Amount,

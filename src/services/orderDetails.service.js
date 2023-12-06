@@ -38,6 +38,7 @@ const getOrderDetails = async (query, options) => {
 
 const getOrderDetailsByOrderId = async (id) => {
   try {
+    console.log('id--------------------------', id);
     const data = await OrderDetails.findAll({
       where: { orderId: id },
       include: [
@@ -48,14 +49,17 @@ const getOrderDetailsByOrderId = async (id) => {
           model: Orders,
           include: [
             {
+              model: Address
+            },
+            {
               model: Users,
               include: [
                 {
                   model: Ratings
-                },
-                {
-                  model: Address
                 }
+                // {
+                //   model: Address
+                // }
               ]
             }
           ]
