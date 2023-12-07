@@ -8,7 +8,6 @@ const { tokenTypes } = require('../config/tokens');
 const userService = require('../services/user.service');
 
 const generateToken = (userId, role, expires, type, secret = config.jwt.secret) => {
-  console.log('============================================', expires);
   const payload = {
     sub: userId,
     role,
@@ -70,7 +69,6 @@ const generateAuthTokens = async (user) => {
 
 const generateVerifyEmailToken = async (user) => {
   const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-  console.log('email-======================================================', expires);
   const verifyEmailToken = generateToken(user.id, user.role, expires, tokenTypes.VERIFY_EMAIL);
   await saveToken(verifyEmailToken, user.id, user.role, expires, tokenTypes.VERIFY_EMAIL);
   return verifyEmailToken;
@@ -89,7 +87,6 @@ const generateResetPasswordToken = async (email) => {
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
   const resetPasswordToken = generateToken(user.id, user.role, expires, tokenTypes.RESET_PASSWORD);
   await saveToken(resetPasswordToken, user.id, user.role, expires, tokenTypes.RESET_PASSWORD);
-  console.log('first===================', resetPasswordToken);
   return resetPasswordToken;
 };
 

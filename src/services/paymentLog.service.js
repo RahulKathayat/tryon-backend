@@ -1,4 +1,4 @@
-const {paymentLog,Orders,Users}=require('../models')
+const { paymentLog, Orders, Users } = require('../models');
 
 const createPaymentLog = async (body, userId) => {
   try {
@@ -6,15 +6,14 @@ const createPaymentLog = async (body, userId) => {
       ...body,
       userId: userId
     };
-    
+
     const result = await paymentLog.create(data);
     return result;
   } catch (err) {
-    console.log("error============", err);
+    console.log('error============', err);
     throw err; // Re-throw the error to propagate it up the call stack
   }
 };
-
 
 const getPaymentLog = async (userId) => {
   try {
@@ -53,12 +52,12 @@ async function checkPaymentStatus(userId, orderId) {
         orderId: orderId
       }
     });
-  
+
     if (checkPayment?.dataValues?.isActive === true) {
-      console.log("TRUE----------------------------------😀😀")
+      console.log('TRUE----------------------------------😀😀');
       return true;
     } else {
-      console.log("FALSE----------------------------------😑😑")
+      console.log('FALSE----------------------------------😑😑');
 
       return false;
     }

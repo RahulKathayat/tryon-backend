@@ -40,7 +40,6 @@ const updateCart = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
     const newData = req.body;
-    console.log('*******************newdata-----------------------------', newData);
     const updatedUser = await cartService.updateCartById(userId, newData);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'cart updated successfully' });
@@ -130,6 +129,7 @@ async function createCheckout(req, res) {
 
     res.json({ order, orderDetails: orderDetailsArray, totalAmount, razorpayPaymentDetails, cartUpdate });
   } catch (error) {
+    console.log('ero------------------', error);
     res.status(500).json({ error: error.message });
   }
 }

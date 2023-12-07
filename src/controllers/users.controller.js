@@ -10,7 +10,6 @@ const { Op } = require('sequelize');
 const createUser = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await userService.createUser(userBody);
-  console.log('object=====================', req.user.id);
   const createCart = await cartService.createCart(req.user.id);
   if (data) {
     await res.status(200).send({ message: 'user created successfully' });

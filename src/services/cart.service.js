@@ -52,9 +52,7 @@ const getCartById = async (id) => {
 
 const updateCartById = async (userId, newData) => {
   try {
-    console.log('check service data---------------------------------------', newData, '000', userId);
     const updateQuantity = await Cart.update(newData, { where: { userId: userId } });
-    console.log();
     return updateQuantity;
   } catch (err) {
     console.log('err=====================', err);
@@ -109,13 +107,11 @@ async function createCheckout(userId, cartData) {
       let cartItems = [];
       let finalAmount = 0;
       cartDetails.cartDetails.forEach((item) => {
-        console.log('total amounnt=================', item.selectedQuantity);
         const id = item.id;
         const selectedQuantity = item.selectedQuantity;
         finalAmount = item.finalAmount;
         cartItems.push({ id, finalAmount, selectedQuantity });
       });
-      console.log('cartitems=============', cartItems);
 
       //   return cartItems;
       // } else {
@@ -127,7 +123,7 @@ async function createCheckout(userId, cartData) {
       }, 0);
 
       console.log('Total Amount:', Amount);
-
+      console.log('addressId-----------------------', addressId);
       const order = await Orders.create({
         userId: userId,
         totalItems: cartItems.length,
@@ -137,7 +133,7 @@ async function createCheckout(userId, cartData) {
         status: true,
         addressId: addressId
       });
-
+      console.log('-----------------------', order);
       const orderDetailsData = cartItems.map((item) => {
         const itemAmount = item.finalAmount * 1 * (item.selectedQuantity * 1);
         console.log('object', itemAmount);
@@ -166,7 +162,6 @@ async function createCheckout(userId, cartData) {
         },
         { where: { userId: userId } }
       );
-      console.log('data====================', data);
       return { order, orderDetailsArray, totalAmount };
     }
   } catch (error) {
@@ -227,7 +222,6 @@ successfully else it will create a draft order with status=0. */
 //         const orderDetailsArray = await OrderDetails.bulkCreate(orderDetailsData);
 //         const isPaymentSuccessful = await paymentService.checkPaymentStatus(userId, draftOrder.id);
 //         if (isPaymentSuccessful) {
-
 //           await Orders.update({ status: true }, { where: { id: draftOrder.id } });
 //           await OrderDetails.update({ status: true, type:'On Process' }, { where: { orderId: draftOrder.id } });
 //         }

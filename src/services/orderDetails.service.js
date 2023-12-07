@@ -38,7 +38,6 @@ const getOrderDetails = async (query, options) => {
 
 const getOrderDetailsByOrderId = async (id) => {
   try {
-    console.log('id--------------------------', id);
     const data = await OrderDetails.findAll({
       where: { orderId: id },
       include: [

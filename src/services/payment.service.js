@@ -10,7 +10,6 @@ const razorpay = new Razorpay({
   key_secret: razorpayConf.RAZORPAY_API_SECRET
 });
 
-
 // for Razorpay
 const createOrderForPayment = async (amount, currency, receipt, notes) => {
   try {
@@ -45,7 +44,6 @@ const initiatePayment = async (orderId, amount, currency) => {
       amount: amount,
       currency: currency
     });
-    console.log('payment======================', payment);
 
     return payment;
   } catch (error) {

@@ -20,7 +20,6 @@ const getSubCategoryForAdmin = async (query, options, userId) => {
     });
     return support;
   } else {
-    console.log('category==============================================', query.categoryId);
     const support = await SubCategory.findAndCountAll({
       where: {
         ...query,
@@ -31,7 +30,6 @@ const getSubCategoryForAdmin = async (query, options, userId) => {
       limit,
       offset
     });
-    console.log('support========================', support);
     return support;
   }
 };

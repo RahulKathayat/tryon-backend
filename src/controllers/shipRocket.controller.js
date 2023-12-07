@@ -316,7 +316,6 @@ const generateInvoice=async(req,res)=>{
 }
 
 const generateAWB = async (orderDetailId,details) => {
-  console.log("data checking-------------------------",orderDetailId,details);
   try {
     const data={
         shipment_id:details.shipment_id

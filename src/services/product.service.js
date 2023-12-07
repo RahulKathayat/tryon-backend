@@ -9,11 +9,11 @@ const createProduct = async (_userBody) => {
   _userBody.size = JSON.stringify(size);
   let finalAmount = userBody.totalPrice - ((userBody.totalPrice * userBody.discountPercentage) / 100).toFixed(2);
   finalAmount = finalAmount.toFixed(2);
-  let marginAmount= Math.abs((userBody.basePrice*userBody.length)-finalAmount)
+  let marginAmount = Math.abs(userBody.basePrice * userBody.length - finalAmount);
   userBody = {
     ...userBody,
     finalAmount: finalAmount,
-    marginAmount:marginAmount
+    marginAmount: marginAmount
   };
 
   return Product.create(userBody);
@@ -47,7 +47,6 @@ const getProductForAdmin = async (query = {}, options = {}, between = {}, order 
         order: orderCriteria,
         include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }, { model: Ratings }]
       });
-      console.log('product===================================', products);
       return products;
     }
     // Parse limit and offset from options
@@ -112,7 +111,7 @@ const getProduct = async (query = {}, options = {}, between = {}, order = 'desc'
         order: orderCriteria,
         include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }, { model: Ratings }]
       });
-      console.log('product===================================', products);
+
       return products;
     }
     // Parse limit and offset from options
@@ -268,11 +267,11 @@ const updateProductById = async (id, data) => {
     newData.size = JSON.stringify(size);
     let finalAmount = newData.totalPrice - [(newData.totalPrice * newData.discountPercentage) / 100];
     finalAmount = finalAmount.toFixed(2);
-  let marginAmount= Math.abs((newData.basePrice*newData.length)-finalAmount)
+    let marginAmount = Math.abs(newData.basePrice * newData.length - finalAmount);
     newData = {
       ...newData,
       finalAmount: finalAmount,
-      marginAmount:marginAmount
+      marginAmount: marginAmount
     };
     if (findData) {
       return Product.update(newData, { where: id });

@@ -49,7 +49,6 @@ const getOrderDetails = catchAsync(async (req, res) => {
 });
 
 const getOrderDetailsByOrderId = catchAsync(async (req, res) => {
-  console.log('req0000=-=====---------------------------------', req.params.id);
   const data = await orderDetailsService.getOrderDetailsByOrderId(req.params.id);
   if (data) {
     res.status(httpStatus.OK).send({ message: 'order data by id is fetched successfully', data: data });

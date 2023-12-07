@@ -35,15 +35,14 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 // For Google Login----------------------------------------------------------
 const loginUserWithEmailAndPasswordForGoogle = async (email, password) => {
   try {
-    console.log('checkPassword=============================', email, password);
     const user = await userService.getUserByEmail(email);
 
     if (!user) {
       throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
     }
     const userWithSecretFields = await userService.getUserWithSecretFieldsById(user.id);
-    console.log('password=======================', password);
-    console.log('userWithSecretFields==========================', userWithSecretFields);
+    // console.log('password=======================', password);
+    // console.log('userWithSecretFields==========================', userWithSecretFields);
     logger.info('message');
 
     if (!user || !(await bcrypt.compare(password, userWithSecretFields.gAuth))) {
@@ -58,7 +57,7 @@ const loginUserWithEmailAndPasswordForGoogle = async (email, password) => {
 };
 
 const loginWithGoogle = async (email, gAuth) => {
-  console.log('gauth============================', email, gAuth);
+  // console.log('gauth============================', email, gAuth);
   const user = await loginUserWithEmailAndPasswordForGoogle(email, gAuth);
   // const userWithSecretFields = await userService.getUserWithSecretFields(email, gAuth);
   // const user = await userService.getUserByEmail(email);

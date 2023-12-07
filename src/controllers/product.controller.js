@@ -7,7 +7,7 @@ const pick = require('../utils/pick');
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
-const { Op ,Sequelize} = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const express = require('express');
 const app = express();
 const { encode } = require('hi-base32');
@@ -28,7 +28,6 @@ const createProduct = catchAsync(async (req, res) => {
 
 const uploadFeatureImage = async (req, res) => {
   try {
-    console.log('======================', req.file);
     if (!req.file) {
       return res.status(400).send({ message: 'You must select a file.' });
     }
@@ -45,7 +44,6 @@ const getProduct = async (req, res) => {
   let query = {};
   req.query ? (query.status = req.query.status ? req.query.status : true) : '';
   query.isActive = req.query.isActive ? req.query.isActive : true;
-
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const between = pick(req.query, ['priceFrom', 'priceTo']);
@@ -94,7 +92,6 @@ const getProduct = async (req, res) => {
   //     const updateAvrageRatings = await productService.updateAvrageRatings(getAvrageRatings);
   //   }
   // }
-console.log("data==============================",data);
 
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
@@ -105,7 +102,7 @@ console.log("data==============================",data);
 
 const getProductForAdmin = async (req, res) => {
   let query = {};
-  const userId=req.user.id;
+  const userId = req.user.id;
   req.query ? (query.status = req.query.status ? req.query.status : true) : '';
 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
@@ -148,14 +145,13 @@ const getProductForAdmin = async (req, res) => {
       }
     }
   });
-  const data = await productService.getProductForAdmin(query, options, between, order,userId);
+  const data = await productService.getProductForAdmin(query, options, between, order, userId);
   // if (data) {
   //   const getAvrageRatings = await ratingsService.calculateAverageRatings();
   //   if (getAvrageRatings) {
   //     const updateAvrageRatings = await productService.updateAvrageRatings(getAvrageRatings);
   //   }
   // }
-console.log("data==============================",data);
 
   if (data) {
     res.status(httpStatus.OK).send({ message: 'Product data fetched successfully', data: data });
@@ -300,7 +296,6 @@ const deleteProduct = catchAsync(async (req, res) => {
 const uploadImages = async (req, res) => {
   try {
     const images = req.files;
-    console.log('images==============', images);
 
     if (!images || images.length === 0) {
       return res.status(400).send('You must select at least one file.');
@@ -325,7 +320,6 @@ const uploadImages = async (req, res) => {
 //updateImage
 const updateImage = catchAsync(async (req, res) => {
   try {
-    console.log('id Req================', req.user);
     const userId = req.user.id;
     const body = {};
     if (req.body.image) {
@@ -349,7 +343,7 @@ const getProductsForUser = async (req, res, next) => {
   try {
     let query = {};
     query.status = req.query.status ? req.query.status : true;
-    query.isActive=req.query.isActive?req.query.isActive:true;
+    query.isActive = req.query.isActive ? req.query.isActive : true;
 
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const between = pick(req.query, ['priceFrom', 'priceTo']);

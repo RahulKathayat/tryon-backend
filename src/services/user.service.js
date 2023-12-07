@@ -105,8 +105,6 @@ const getUserByEmail = async (email) => {
 // };
 
 const updateUserById = async (id, newData) => {
-  console.log('newdta------------------', newData);
-  console.log('id------------------------', id);
   try {
     const user = await Users.findByPk(id);
 

@@ -5,7 +5,6 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: true
       }),
-
       queryInterface.addColumn('Product', 'isActive', {
         type: Sequelize.BOOLEAN,
         allowNull: true
