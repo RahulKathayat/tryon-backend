@@ -82,16 +82,16 @@ module.exports = (sequelize, DataTypes) => {
       finalAmount: {
         type: DataTypes.DOUBLE
       },
-      marginAmount:{
+      marginAmount: {
         type: DataTypes.DOUBLE
       },
       averageRating: {
         type: DataTypes.INTEGER
       },
-      isActive:{
+      isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
-      },
+      }
     },
     {
       tableName: 'Product',

@@ -2,7 +2,7 @@ module.exports = {
   up(queryInterface, Sequelize) {
     return Promise.all([
       queryInterface.addColumn('Product', 'finalAmount', {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DOUBLE,
         allowNull: true
       })
     ]);
