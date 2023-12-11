@@ -93,13 +93,15 @@ async function createCheckout(userId, cartData) {
       throw new Error('No user ID provided.');
     }
     const userData = await Users.findOne({ where: { id: userId } });
-    const addressId = userData.dataValues.addressId;
+    // console.log('------------------------------------', addressId, 'userId0------------------------', userId);
     const cart = await Cart.findOne({ where: { userId: userId } });
 
     let cartDetails = cart.dataValues.cartDetail || {};
     // cartDetails = JSON.parse(cartDetails);
+    const addressId = cart.dataValues.addressId;
     try {
       cartDetails = JSON.parse(cartDetails);
+      console.log(addressId);
     } catch (error) {
       console.error('Error parsing cartDetails:', error);
     }
@@ -140,7 +142,7 @@ async function createCheckout(userId, cartData) {
         let data = {
           orderId: order.id,
           productId: item.id,
-          type: 'On Process',
+          type: 'In Process',
           amount: item.finalAmount || 0,
           totalQuantity: item.selectedQuantity || 0,
           calculatedAmount: itemAmount,

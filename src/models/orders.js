@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: true
       },
       orderStatus: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        defaultValue: 'In Process'
       },
       addressId: {
         type: DataTypes.INTEGER,

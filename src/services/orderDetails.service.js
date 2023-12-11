@@ -40,29 +40,29 @@ const getOrderDetails = async (query, options) => {
 
 const getOrderDetailsByOrderId = async (id) => {
   try {
-    const data = await OrderDetails.findAll({
-      where: { orderId: id },
+    const data = await Orders.findAll({
+      where: { id },
       include: [
         {
-          model: Product
-        },
-        {
-          model: Orders,
+          model: OrderDetails,
           include: [
             {
-              model: Address
-            },
-            {
-              model: Users,
-              include: [
-                {
-                  model: Ratings
-                }
-                // {
-                //   model: Address
-                // }
-              ]
+              model: Product
             }
+          ]
+        },
+        {
+          model: Address
+        },
+        {
+          model: Users,
+          include: [
+            {
+              model: Ratings
+            }
+            // {
+            //   model: Address
+            // }
           ]
         }
       ]
@@ -109,8 +109,13 @@ const updateOrderDetailsById = async (id, newData) => {
     await OrderDetails.update(newData, { where: id });
     const orderId = findData.dataValues.orderId;
     const findOrderDetails = await OrderDetails.findAndCountAll({ where: { orderId: orderId } });
-    const checkProductStatus = findOrderDetails.rows.some((item) => item.dataValues.type === 'Delivered');
-    console.log('check-------------------------------------', checkProductStatus);
+    const checkProductStatus = findOrderDetails.rows.some((item) => {
+      if (item.dataValues.type === 'Delivered' || item.dataValues.type === 'Cancel' || item.dataValues.type === 'Refund') {
+        return true;
+      }
+      return false;
+    });
+
     if (checkProductStatus == true) {
       return await Orders.update({ orderStatus: 'Delivered' }, { where: { id: orderId } });
     }

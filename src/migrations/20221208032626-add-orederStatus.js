@@ -3,7 +3,7 @@ module.exports = {
     return Promise.all([
       queryInterface.addColumn('Orders', 'orderStatus', {
         type: Sequelize.TEXT,
-        allowNull: true
+        defaultValue: 'In Process'
       })
     ]);
   },

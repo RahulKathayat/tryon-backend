@@ -7,7 +7,6 @@ const { productService, userService } = require('../services');
 const createOrderForUser = catchAsync(async (req, res) => {
   const userId = req.user.id;
   let userBody = req.body;
-  console.log('user boidy------------------------------------', userBody, 'userId-------------------------', userId);
   const data = await orderService.createOrderForUser(userBody, userId);
   if (data) {
     await res.status(200).send({ message: 'order created successfully' });

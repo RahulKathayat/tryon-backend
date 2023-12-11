@@ -33,6 +33,9 @@ const getOrderById = async (id) => {
   }
 };
 
+const orderAddressId = async (userId, addressId) => {
+  return Orders.update({ addressId: addressId }, { where: { userId: userId } });
+};
 const updateOrderById = async (id, newData) => {
   const findData = await Orders.findOne({
     where: id
@@ -42,6 +45,15 @@ const updateOrderById = async (id, newData) => {
   } else {
     return;
   }
+};
+const orderStatusToPaymentFaild = async (id) => {
+  await Orders.update({ orderStatus: 'Payment Failed' }, { where: { id: id } });
+  const findOrderIdInOrderDetails = await OrderDetails.findAndCountAll({
+    where: { orderId: id }
+  });
+  const updatedData = findOrderIdInOrderDetails.rows.some(async (item) => {
+    await OrderDetails.update({ type: 'Payment Failed' }, { where: { orderId: item.dataValues.orderId } });
+  });
 };
 
 const deleteOrderById = async (Id, userId) => {
@@ -180,5 +192,7 @@ module.exports = {
   updateOrderForUser,
   createOrderCheckout,
   getUserById,
-  getAllUserById
+  getAllUserById,
+  orderStatusToPaymentFaild,
+  orderAddressId
 };
