@@ -54,6 +54,12 @@ const getAddressById = async (id) => {
   }
 };
 
+const updateAllAddress = async (id) => {
+  await Address.update({ defaultAddress: false }, { where: { userId: id } });
+};
+const updateAddress = async (id) => {
+  await Address.update({ defaultAddress: true }, { where: id });
+};
 const updateAddressById = async (newData, id) => {
   const findData = await Address.findOne({ where: id });
   if (!findData) {
@@ -119,5 +125,7 @@ module.exports = {
   deleteAddressById,
   getAddressById,
   getAddressMe,
-  setDefaultAddress
+  setDefaultAddress,
+  updateAllAddress,
+  updateAddress
 };

@@ -72,11 +72,8 @@ const updateOrderDetails = catchAsync(async (req, res) => {
     const userId = req.params;
     const newData = req.body;
     const updatedUser = await orderDetailsService.updateOrderDetailsById(userId, newData);
-    if (updatedUser) {
-      res.status(200).send({ data: updatedUser, message: 'order updated successfully' });
-    } else {
-      res.status(404).send({ message: 'order not found', status: 0 });
-    }
+
+    res.status(200).send({ data: updatedUser, message: 'order updated successfully' });
   } catch (error) {
     console.error('Error updating card:', error);
     res.status(500).send({ message: 'Internal server error', status: -1 });

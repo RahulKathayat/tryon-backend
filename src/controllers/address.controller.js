@@ -6,8 +6,12 @@ const pick = require('../utils/pick');
 const createAddress = catchAsync(async (req, res) => {
   let userId = req.user.id;
   let userBody = req.body;
+  await addressService.updateAllAddress(userId);
   const data = await addressService.createAddress(userBody, userId);
   if (data) {
+    let id = data.dataValues.id;
+    await addressService.updateAddress({ id: id });
+
     await res.status(200).send({ message: 'address created successfully' });
   } else {
     await res.status(404).send({ message: 'address not created' });

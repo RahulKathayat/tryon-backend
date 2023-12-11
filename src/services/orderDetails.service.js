@@ -1,5 +1,7 @@
 const { OrderDetails, Product, Orders, Users, Ratings, Address } = require('../models');
 const { cancelShiprocketOrder } = require('../controllers/shipRocket.controller');
+const { checkPaymentStatus } = require('./paymentLog.service');
+const { where } = require('sequelize');
 
 const createOrderDetails = async (_userBody) => {
   const userBody = _userBody;
@@ -104,7 +106,14 @@ const updateOrderDetailsById = async (id, newData) => {
     where: id
   });
   if (findData) {
-    return OrderDetails.update(newData, { where: id });
+    await OrderDetails.update(newData, { where: id });
+    const orderId = findData.dataValues.orderId;
+    const findOrderDetails = await OrderDetails.findAndCountAll({ where: { orderId: orderId } });
+    const checkProductStatus = findOrderDetails.rows.some((item) => item.dataValues.type === 'Delivered');
+    console.log('check-------------------------------------', checkProductStatus);
+    if (checkProductStatus == true) {
+      return await Orders.update({ orderStatus: 'Delivered' }, { where: { id: orderId } });
+    }
   } else {
     return;
   }

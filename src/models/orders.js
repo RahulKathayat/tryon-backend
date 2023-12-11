@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
+      orderStatus: {
+        type: DataTypes.TEXT
+      },
       addressId: {
         type: DataTypes.INTEGER,
         defaultValue: true
