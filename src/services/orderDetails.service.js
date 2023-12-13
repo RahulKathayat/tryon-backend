@@ -109,18 +109,11 @@ const updateOrderDetailsById = async (id, newData) => {
     await OrderDetails.update(newData, { where: id });
     const orderId = findData.dataValues.orderId;
     const findOrderDetails = await OrderDetails.findAndCountAll({ where: { orderId: orderId } });
-    const checkProductStatus = findOrderDetails.rows.some((item) => {
-      if (item.dataValues.type === 'Delivered' || item.dataValues.type === 'Cancel' || item.dataValues.type === 'Refund') {
-        return true;
-      }
-      return false;
-    });
-
-    if (checkProductStatus == true) {
-      return await Orders.update({ orderStatus: 'Delivered' }, { where: { id: orderId } });
+    const checkProductStatus = findOrderDetails.rows.some((item) => item.dataValues.type === 'In Process');
+    if (checkProductStatus) {
+      return Orders.update({ orderStatus: 'In Process' }, { where: { id: orderId } });
     }
-  } else {
-    return;
+    return Orders.update({ orderStatus: 'Delivered' }, { where: { id: orderId } });
   }
 };
 

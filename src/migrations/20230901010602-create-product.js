@@ -78,7 +78,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       additionalInformation: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       sku: {
         type: Sequelize.STRING

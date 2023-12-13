@@ -33,9 +33,9 @@ const getOrderById = async (id) => {
   }
 };
 
-const orderAddressId = async (userId, addressId) => {
-  return Orders.update({ addressId: addressId }, { where: { userId: userId } });
-};
+// const orderAddressId = async (userId, addressId) => {
+//   return Orders.update({ addressId: addressId }, { where: { userId: userId } });
+// };
 const updateOrderById = async (id, newData) => {
   const findData = await Orders.findOne({
     where: id
@@ -193,6 +193,6 @@ module.exports = {
   createOrderCheckout,
   getUserById,
   getAllUserById,
-  orderStatusToPaymentFaild,
-  orderAddressId
+  orderStatusToPaymentFaild
+  // orderAddressId
 };

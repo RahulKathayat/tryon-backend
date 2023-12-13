@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       additionalInformation: {
-        type: DataTypes.STRING
+        type: DataTypes.TEXT
       },
       sku: {
         type: DataTypes.STRING
