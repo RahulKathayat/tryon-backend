@@ -88,6 +88,9 @@ module.exports = (sequelize, DataTypes) => {
       averageRating: {
         type: DataTypes.INTEGER
       },
+      upComingImg: {
+        type: DataTypes.TEXT
+      },
       isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

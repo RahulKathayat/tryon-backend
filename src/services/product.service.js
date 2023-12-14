@@ -44,7 +44,7 @@ const getProductForAdmin = async (query = {}, options = {}, between = {}, order 
       order === undefined
     ) {
       const products = await Product.findAll({
-        order: orderCriteria,
+        order: [['updatedAt', 'DESC']],
         include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }, { model: Ratings }]
       });
       return products;
@@ -54,9 +54,9 @@ const getProductForAdmin = async (query = {}, options = {}, between = {}, order 
     const offset = options.page ? limit * (options.page - 1) : 0;
     // Update order criteria based on the provided order parameter
     if (order.toLowerCase() === 'asc') {
-      orderCriteria = [['finalAmount', 'ASC']];
+      orderCriteria = [['updatedAt', 'ASC']]; // Updated to 'ASC' for ascending order
     } else if (order.toLowerCase() === 'desc') {
-      orderCriteria = [['finalAmount', 'DESC']];
+      orderCriteria = [['updatedAt', 'DESC']];
     }
     // Apply price range filtering
     if (between.priceFrom && between.priceTo) {
@@ -94,9 +94,74 @@ const getProductForAdmin = async (query = {}, options = {}, between = {}, order 
     });
     return products;
   } catch (err) {
-    console.log('erro============', err);
+    console.log('error============', err);
   }
 };
+
+// const getProductForAdmin = async (query = {}, options = {}, between = {}, order = 'desc') => {
+//   try {
+//     let orderCriteria = [['updatedAt', 'DESC']]; // Default order criteria
+//     // Check if any of the required parameters is undefined, and fetch all products if so
+//     if (
+//       Object.values(query).length === 0 ||
+//       Object.values(options).length === 0 ||
+//       Object.values(between).length === 0 ||
+//       order === undefined
+//     ) {
+//       const products = await Product.findAll({
+//         order: orderCriteria,
+//         include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }, { model: Ratings }]
+//       });
+//       return products;
+//     }
+//     // Parse limit and offset from options
+//     const limit = Number(options.limit);
+//     const offset = options.page ? limit * (options.page - 1) : 0;
+//     // Update order criteria based on the provided order parameter
+//     if (order.toLowerCase() === 'asc') {
+//       orderCriteria = [['finalAmount', 'ASC']];
+//     } else if (order.toLowerCase() === 'desc') {
+//       orderCriteria = [['finalAmount', 'DESC']];
+//     }
+//     // Apply price range filtering
+//     if (between.priceFrom && between.priceTo) {
+//       query.finalAmount = {
+//         [Op.between]: [between.priceFrom, between.priceTo]
+//       };
+//     } else if (between.priceFrom) {
+//       query.finalAmount = {
+//         [Op.gte]: between.priceFrom
+//       };
+//     } else if (between.priceTo) {
+//       query.finalAmount = {
+//         [Op.lte]: between.priceTo
+//       };
+//     }
+//     // Fetch products based on the provided filters and options
+//     const products = await Product.findAll({
+//       where: query,
+//       order: [['updatedAt', 'DESC']],
+//       include: [
+//         { model: Category },
+//         { model: SubCategory },
+//         { model: SubSubCategory },
+//         {
+//           model: Ratings,
+//           include: [
+//             {
+//               model: Users
+//             }
+//           ]
+//         }
+//       ],
+//       limit,
+//       offset
+//     });
+//     return products;
+//   } catch (err) {
+//     console.log('erro============', err);
+//   }
+// };
 const getProduct = async (query = {}, options = {}, between = {}, order = 'desc') => {
   try {
     let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
