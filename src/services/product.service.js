@@ -35,7 +35,7 @@ const getProductByproductId = async (id) => {
 
 const getProductForAdmin = async (query = {}, options = {}, between = {}, order = 'desc') => {
   try {
-    let orderCriteria = [['createdAt', 'DESC']]; // Default order criteria
+    let orderCriteria = [['updatedAt', 'DESC']]; // Default order criteria
     // Check if any of the required parameters is undefined, and fetch all products if so
     if (
       Object.values(query).length === 0 ||

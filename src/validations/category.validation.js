@@ -8,7 +8,8 @@ const createCategory = {
     status: Joi.boolean(),
     isActive: Joi.boolean(),
     isFeatured: Joi.boolean(),
-    isSequence: Joi.number().min(1).optional()
+    isSequence: Joi.number().min(1).optional(),
+    icon: Joi.string().optional()
   })
 };
 
@@ -23,7 +24,8 @@ const updateCategory = {
     status: Joi.boolean(),
     isActive: Joi.boolean(),
     isFeatured: Joi.boolean(),
-    isSequence: Joi.number().min(1).optional()
+    isSequence: Joi.number().min(1).optional(),
+    icon: Joi.string().optional()
   })
 };
 

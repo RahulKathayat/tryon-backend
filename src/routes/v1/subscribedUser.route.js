@@ -8,10 +8,10 @@ const { commonService } = require('../../services');
 const router = express.Router();
 router
   .route('/')
-  .get(auth(),subscribedUserController.getSubscribedUser)
+  .get(auth(), subscribedUserController.getSubscribedUser)
   .post(validate(subscribedUserValidation.createSubscribedUser), subscribedUserController.createSubscribedUser);
 router
   .route('/:id')
-  .delete(auth(),subscribedUserController.deleteSubscribedUser)
-  .put(auth(),validate(subscribedUserValidation.updateSubscribedUser),subscribedUserController.updateSubscribedUser)
+  .delete(auth(), subscribedUserController.deleteSubscribedUser)
+  .put(auth(), validate(subscribedUserValidation.updateSubscribedUser), subscribedUserController.updateSubscribedUser);
 module.exports = router;

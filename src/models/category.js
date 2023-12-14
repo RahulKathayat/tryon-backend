@@ -24,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       isSequence: {
         type: DataTypes.INTEGER
+      },
+      icon: {
+        type: DataTypes.TEXT
       }
     },
     {
