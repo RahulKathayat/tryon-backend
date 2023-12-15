@@ -24,13 +24,12 @@ router.get('/me', auth(), productController.getProductsForUser); //for logged-in
 router
   .get('/search', productController.getProductBySearch)
   .route('/')
-  .get(productController.getProduct)  // for without logged-in user
+  .get(productController.getProduct) // for without logged-in user
 
   .post(auth(), validate(productValidation.createProduct), productController.createProduct);
 
-router.get('/admin',auth(),productController.getProductForAdmin)  //admin
-router.put('/isActive/:id',auth(),validate(productValidation.updateIsActive),productController.updateIsActive)
-  
+router.get('/admin', auth(), productController.getProductForAdmin); //admin
+router.put('/isActive/:id', auth(), validate(productValidation.updateIsActive), productController.updateIsActive);
 
 router
   .route('/:id')

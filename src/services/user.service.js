@@ -61,8 +61,20 @@ const getUser = async (query, options) => {
   return support;
 };
 
+const getUserById2 = async (id) => {
+  try {
+    const data = await Users.findOne({
+      where: { id: id }
+    });
+    return data;
+  } catch (error) {
+    console.error('Error retrieving user by id:', error);
+    throw error;
+  }
+};
 const getUserById = async (id) => {
   try {
+    console.log('id*****************************', id);
     const data = await Users.findOne({
       where: { id: id },
       include: [
@@ -72,6 +84,7 @@ const getUserById = async (id) => {
         }
       ]
     });
+    console.log('data----------------------------------', data);
     return data;
   } catch (error) {
     console.error('Error retrieving user by id:', error);
@@ -226,5 +239,6 @@ module.exports = {
   getExistingEmails,
   createGoogleUser,
   createUserDetail,
-  updateUserByAdmin
+  updateUserByAdmin,
+  getUserById2
 };
