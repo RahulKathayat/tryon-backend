@@ -4,6 +4,7 @@ const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
 const auth = require('../../middlewares/auth');
 const checkApiKey = require('../../middlewares/chekapikey');
+const path = require('path');
 
 const router = express.Router();
 
@@ -15,6 +16,8 @@ router.post('/refresh-tokens', validate(authValidation.refreshTokens), authContr
 router.get('/generate-password', validate(authValidation.generatePassword), authController.generatePassword);
 router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
 router.post('/verify-email', authController.verifyEmail);
+
+router.use('/static', express.static(path.join(__dirname, '../../public')));
 
 router.post('/forgot-password', validate(authValidation.forgotPassword), authController.forgotPassword);
 router.post('/reset-password', validate(authValidation.resetPassword), authController.resetPassword);
