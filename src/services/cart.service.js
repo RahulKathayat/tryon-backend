@@ -112,7 +112,7 @@ async function createCheckout(userId, cartData) {
         const id = item.id;
         const selectedQuantity = item.selectedQuantity;
         finalAmount = item.finalAmount;
-        cartItems.push({ id, finalAmount, selectedQuantity });
+        cartItems.push({ id, finalAmount, selectedQuantity, item });
       });
 
       //   return cartItems;
@@ -146,7 +146,8 @@ async function createCheckout(userId, cartData) {
           amount: item.finalAmount || 0,
           totalQuantity: item.selectedQuantity || 0,
           calculatedAmount: itemAmount,
-          status: true
+          status: true,
+          detail: item.item
         };
         return data;
       });

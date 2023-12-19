@@ -2,11 +2,13 @@ const catchAsync = require('../utils/catchAsync');
 const ratingsService = require('../services/ratings.services');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
-const { productService } = require('../services');
+const { productService, orderDetailsService } = require('../services');
 
 const createRatings = catchAsync(async (req, res) => {
   const userId = req.user.id;
   let userBody = req.body;
+  console.log('userbody-------------------------', req.body);
+  await orderDetailsService.updateRatings(req.body.orderDetailId);
   const data = await ratingsService.createRatings(userBody, userId);
   if (data) {
     const getAvrageRatings = await ratingsService.calculateAverageRatings();

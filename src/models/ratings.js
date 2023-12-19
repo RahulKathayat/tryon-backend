@@ -17,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       ratings: {
         type: DataTypes.INTEGER
       },
-      isActive:{
+      orderDetailId: {
+        type: DataTypes.INTEGER
+      },
+      isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
@@ -39,6 +42,16 @@ module.exports = (sequelize, DataTypes) => {
       //   allowNull: true
     });
 
+    Ratings.belongsTo(models.Product, {
+      foreignKey: 'productId'
+      // onDelete: 'SET NULL',
+      // allowNull: true
+    });
+    Ratings.belongsTo(models.OrderDetails, {
+      foreignKey: 'orderDetailId'
+      // onDelete: 'SET NULL',
+      // allowNull: true
+    });
     Ratings.belongsTo(models.Product, {
       foreignKey: 'productId'
       // onDelete: 'SET NULL',

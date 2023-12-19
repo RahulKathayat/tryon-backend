@@ -66,6 +66,9 @@ module.exports = (sequelize, DataTypes) => {
     Orders.belongsTo(models.Address, {
       foreignKey: 'addressId'
     });
+    Orders.hasOne(models.Ratings, {
+      foreignKey: 'orderId'
+    });
   };
 
   return Orders;

@@ -42,28 +42,25 @@ const getOrderDetailsByOrderId = async (id) => {
   try {
     const data = await Orders.findAll({
       where: { id },
+      attributes: { exclude: ['orderDetails'] },
       include: [
         {
           model: OrderDetails,
           include: [
             {
               model: Product
+            },
+            {
+              model: Ratings
             }
           ]
         },
+
         {
           model: Address
         },
         {
-          model: Users,
-          include: [
-            {
-              model: Ratings
-            }
-            // {
-            //   model: Address
-            // }
-          ]
+          model: Users
         }
       ]
     });
@@ -101,6 +98,16 @@ const getOrderDetailsById = async (id) => {
   }
 };
 
+const updateRatings = async (id) => {
+  const findData = await OrderDetails.findOne({
+    where: { id: id }
+  });
+  console.log('findData---------------------------------------', findData);
+  const newData = { reviewed: true };
+  if (findData) {
+    return OrderDetails.update(newData, { where: { id: id } });
+  }
+};
 const updateOrderDetailsById = async (id, newData) => {
   const findData = await OrderDetails.findOne({
     where: id
@@ -210,5 +217,6 @@ module.exports = {
   getOrderDetailsById,
   getOrderDetailsForUser,
   getOrderDetailsByOrderId,
-  manageOrder
+  manageOrder,
+  updateRatings
 };

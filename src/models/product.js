@@ -134,6 +134,9 @@ module.exports = (sequelize, DataTypes) => {
     Product.hasMany(models.ProductFabric, {
       foreignKey: 'productId'
     });
+    Product.hasOne(models.Ratings, {
+      foreignKey: 'productId'
+    });
   };
   return Product;
 };

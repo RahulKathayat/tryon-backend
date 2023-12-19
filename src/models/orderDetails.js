@@ -23,12 +23,19 @@ module.exports = (sequelize, DataTypes) => {
       totalQuantity: {
         type: DataTypes.INTEGER
       },
-      calculatedAmount:{
+      detail: {
+        type: DataTypes.JSON
+      },
+      calculatedAmount: {
         type: DataTypes.INTEGER
       },
-      isActive:{
+      isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+      },
+      reviewed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       },
       status: {
         type: DataTypes.BOOLEAN,
@@ -55,8 +62,11 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     OrderDetails.hasMany(models.shiprocketOrder, {
-          foreignKey: 'orderDetailId'
-        });
+      foreignKey: 'orderDetailId'
+    });
+    OrderDetails.hasOne(models.Ratings, {
+      foreignKey: 'orderDetailId'
+    });
   };
 
   return OrderDetails;
