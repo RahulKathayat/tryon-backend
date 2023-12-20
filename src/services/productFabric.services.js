@@ -3,7 +3,6 @@ const { ProductFabric, Fabric, Product } = require('../models');
 const createProductFabric = async (_userBody) => {
   const userBody = _userBody;
   const data = await ProductFabric.create(userBody);
-  console.log('data', data);
   return data;
 };
 
@@ -20,7 +19,7 @@ const getProductFabric = async (query, options) => {
   return support;
 };
 
-const getProductFabricForAdmin = async (query, options,userId) => {
+const getProductFabricForAdmin = async (query, options, userId) => {
   const limit = Number(options.limit);
   const offset = options.page ? limit * (options.page - 1) : 0;
   const support = await ProductFabric.findAndCountAll({

@@ -328,7 +328,6 @@ const getProductById = async (id, setLimit) => {
 
 const updateProductById = async (id, data) => {
   try {
-    console.log('id-------------------------------------', id);
     const findData = await Product.findOne({
       where: id
     });
@@ -345,7 +344,6 @@ const updateProductById = async (id, data) => {
       finalAmount: finalAmount,
       marginAmount: marginAmount
     };
-    console.log('newData**--------------------------------------------------', newData);
     if (findData) {
       return Product.update(newData, { where: id });
     } else {
@@ -442,7 +440,6 @@ const updateAvrageRatings = async (data) => {
 
 const updateIsActive = async (id, newData) => {
   try {
-    console.log('newData--------------------------------------------------------', newData);
     const findData = await Product.findOne({
       where: id
     });

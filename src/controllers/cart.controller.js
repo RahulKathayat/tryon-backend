@@ -40,7 +40,6 @@ const updateCart = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
     const newData = req.body;
-    console.log('newdata-------------------------------------------------', newData);
     const updatedUser = await cartService.updateCartById(userId, newData);
 
     // const orderAddressId = await orderService.orderAddressId(userId, newData.addressId);

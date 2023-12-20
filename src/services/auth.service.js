@@ -17,8 +17,6 @@ const loginUserWithEmailAndPassword = async (email, password) => {
     }
 
     const userWithSecretFields = await userService.getUserWithSecretFieldsById(user.id);
-    console.log('password', password);
-    console.log('userWithSecretFields', userWithSecretFields);
     logger.info('message');
 
     if (!user || !(await bcrypt.compare(password, userWithSecretFields.password))) {
@@ -102,7 +100,6 @@ const verifyEmail = async (verifyEmailToken) => {
   try {
     const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
     const user = await userService.getUserById2(verifyEmailTokenDoc.user);
-    console.log('verifyEmail-----------------------------------------', user);
     if (!user) {
       throw new Error();
     }
@@ -126,16 +123,12 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
     if (!resetPasswordTokenDoc) {
       throw new Error('Invalid or expired reset password token');
     }
-    console.log('resetpassword--------------------------------------', resetPasswordTokenDoc);
-
     const user = await userService.getUserBy(resetPasswordTokenDoc.user);
-    console.log('resetpassword--------------------------------------', user);
     if (!user) {
       throw new Error('User not found');
     }
 
     const newHashedPassword = await bcrypt.hash(newPassword, 8);
-    console.log('resetpassword--------------------------------------', newHashedPassword);
     const updatedUser = await userService.updateUserById(user.id, { password: newHashedPassword });
 
     if (updatedUser) {

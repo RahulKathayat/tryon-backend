@@ -257,7 +257,6 @@ const isUpcomingproduct = catchAsync(async (req, res) => {
 });
 
 const getProductById = catchAsync(async (req, res) => {
-  console.log('query-----------------------', req.query.limit);
   const data = await productService.getProductById(req.params.id, req.query.limit);
   if (data === false) {
     res.status(httpStatus.BAD_REQUEST).send({ message: "i'd does not exist " });

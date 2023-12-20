@@ -74,7 +74,6 @@ const getUserById2 = async (id) => {
 };
 const getUserBy = async (id) => {
   try {
-    console.log('id*****************************', id);
     const data = await Users.findOne({
       where: { id: id }
     });
@@ -87,7 +86,6 @@ const getUserBy = async (id) => {
 };
 const getUserById = async (id) => {
   try {
-    console.log('id*****************************', id);
     const data = await Users.findOne({
       where: { id: id },
       include: [

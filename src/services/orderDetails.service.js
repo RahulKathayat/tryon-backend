@@ -102,7 +102,6 @@ const updateRatings = async (id) => {
   const findData = await OrderDetails.findOne({
     where: { id: id }
   });
-  console.log('findData---------------------------------------', findData);
   const newData = { reviewed: true };
   if (findData) {
     return OrderDetails.update(newData, { where: { id: id } });

@@ -101,7 +101,6 @@ async function createCheckout(userId, cartData) {
     const addressId = cart.dataValues.addressId;
     try {
       cartDetails = JSON.parse(cartDetails);
-      console.log(addressId);
     } catch (error) {
       console.error('Error parsing cartDetails:', error);
     }
@@ -125,7 +124,6 @@ async function createCheckout(userId, cartData) {
       }, 0);
 
       console.log('Total Amount:', Amount);
-      console.log('addressId-----------------------', addressId);
       const order = await Orders.create({
         userId: userId,
         totalItems: cartItems.length,
@@ -135,10 +133,8 @@ async function createCheckout(userId, cartData) {
         status: true,
         addressId: addressId
       });
-      console.log('-----------------------', order);
       const orderDetailsData = cartItems.map((item) => {
         const itemAmount = item.finalAmount * 1 * (item.selectedQuantity * 1);
-        console.log('object', itemAmount);
         let data = {
           orderId: order.id,
           productId: item.id,
