@@ -127,13 +127,15 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
       throw new Error('Invalid or expired reset password token');
     }
     console.log('resetpassword--------------------------------------', resetPasswordTokenDoc);
-    console.log('resetpassword--------------------------------------', resetPasswordTokenDoc.user);
-    const user = await userService.getUserById(resetPasswordTokenDoc.user.id);
+
+    const user = await userService.getUserById(resetPasswordTokenDoc.user);
+    console.log('resetpassword--------------------------------------', user);
     if (!user) {
       throw new Error('User not found');
     }
 
     const newHashedPassword = await bcrypt.hash(newPassword, 8);
+    console.log('resetpassword--------------------------------------', newHashedPassword);
     const updatedUser = await userService.updateUserById(user.id, { password: newHashedPassword });
 
     if (updatedUser) {
