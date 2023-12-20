@@ -122,7 +122,7 @@ const verifyEmail = async (verifyEmailToken) => {
  */
 const resetPassword = async (resetPasswordToken, newPassword) => {
   try {
-    const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.REFRESH);
+    const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
     if (!resetPasswordTokenDoc) {
       throw new Error('Invalid or expired reset password token');
     }
