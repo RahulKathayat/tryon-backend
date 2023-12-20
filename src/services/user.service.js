@@ -72,6 +72,19 @@ const getUserById2 = async (id) => {
     throw error;
   }
 };
+const getUserBy = async (id) => {
+  try {
+    console.log('id*****************************', id);
+    const data = await Users.findOne({
+      where: { id: id }
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Error retrieving user by id:', error);
+    throw error;
+  }
+};
 const getUserById = async (id) => {
   try {
     console.log('id*****************************', id);
@@ -84,7 +97,7 @@ const getUserById = async (id) => {
         }
       ]
     });
-    console.log('data----------------------------------', data);
+
     return data;
   } catch (error) {
     console.error('Error retrieving user by id:', error);
@@ -240,5 +253,6 @@ module.exports = {
   createGoogleUser,
   createUserDetail,
   updateUserByAdmin,
-  getUserById2
+  getUserById2,
+  getUserBy
 };

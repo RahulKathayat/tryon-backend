@@ -128,7 +128,7 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
     }
     console.log('resetpassword--------------------------------------', resetPasswordTokenDoc);
 
-    const user = await userService.getUserById(resetPasswordTokenDoc.user);
+    const user = await userService.getUserBy(resetPasswordTokenDoc.user);
     console.log('resetpassword--------------------------------------', user);
     if (!user) {
       throw new Error('User not found');
