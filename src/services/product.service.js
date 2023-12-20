@@ -296,8 +296,9 @@ const isUpcomingProduct = async (options) => {
   }
 };
 
-const getProductById = async (id) => {
+const getProductById = async (id, setLimit) => {
   try {
+    const dynamicLimit = Number(setLimit);
     const data = await Product.findAll({
       where: { id: id },
       include: [
@@ -310,11 +311,16 @@ const getProductById = async (id) => {
             {
               model: Users
             }
-          ]
+          ],
+          limit: dynamicLimit
         }
       ]
     });
-    return data;
+
+    if (data.length > 0) {
+      return data;
+    }
+    return false;
   } catch (error) {
     console.error('product not found!!', error);
   }

@@ -32,16 +32,20 @@ document.addEventListener('DOMContentLoaded', function () {
   //   myFunction(enteredPassword);
   // });
 
-  function showLoader() {document.getElementById('loader').style.display = 'block';}
+  function showLoader() {
+    document.getElementById('loader').style.display = 'block';
+  }
 
-  function hideLoader() {document.getElementById('loader').style.display = 'none';}
+  function hideLoader() {
+    document.getElementById('loader').style.display = 'none';
+  }
 
   function myFunction(enteredPassword) {
     showLoader();
     // const apiUrl = `http://localhost:5000/v1/auth/verify-email?token=${idParam}`;
-    const apiUrl = `https://api.korakagaj.com/v1/auth/verify-email?token=${idParam}`;
+    const apiUrl = `https://api.korakagaj.com/v1/auth/reset-password?token=${idParam}`;
     const requestBody = {
-      password: enteredPassword,
+      password: enteredPassword
     };
     const other_params = {
       headers: { 'content-type': 'application/json; charset=UTF-8' },
@@ -62,7 +66,9 @@ document.addEventListener('DOMContentLoaded', function () {
         hideLoader();
         document.getElementById('result').innerHTML = `<p>password Reset Successfully</p>`;
         showLoader();
-        setTimeout(function () {window.location.href = 'https://www.korakagaj.com';}, 2000);
+        setTimeout(function () {
+          window.location.href = 'https://www.korakagaj.com';
+        }, 2000);
       })
       .catch(function (error) {
         hideLoader();
