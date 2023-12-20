@@ -126,8 +126,9 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
     if (!resetPasswordTokenDoc) {
       throw new Error('Invalid or expired reset password token');
     }
-
-    const user = await userService.getUserById(resetPasswordTokenDoc.user);
+    console.log('resetpassword--------------------------------------', resetPasswordTokenDoc);
+    console.log('resetpassword--------------------------------------', resetPasswordTokenDoc.user);
+    const user = await userService.getUserById(resetPasswordTokenDoc.user.id);
     if (!user) {
       throw new Error('User not found');
     }
