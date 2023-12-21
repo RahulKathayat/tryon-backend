@@ -20,3 +20,4 @@ module.exports.subscribedUserService = require('./subscribedUser.service');
 module.exports.shipRocketService = require('./shipRocket.service');
 module.exports.paymentLogService = require('./paymentLog.service');
 module.exports.couponService = require('./coupon.service');
+module.exports.settingService = require('./setting.service');

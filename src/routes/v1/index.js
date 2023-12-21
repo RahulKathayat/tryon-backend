@@ -20,6 +20,7 @@ const subscribedUserRoute = require('./subscribedUser.route');
 const shipRocketRoute = require('./shipRocket.route');
 const paymentLogRoute = require('./paymentLog.route');
 const discountCoupon = require('./coupon.route');
+const setting = require('./setting.route');
 
 const router = express.Router();
 
@@ -100,6 +101,10 @@ const defaultRoutes = [
   {
     path: '/discountCoupon',
     route: discountCoupon
+  },
+  {
+    path: '/setting',
+    route: setting
   },
   {
     path: '/paymentLog',

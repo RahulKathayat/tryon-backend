@@ -13,14 +13,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.REAL,
         defaultValue: 0
       },
-      active: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      },
-      deActive: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-      },
+      // active: {
+      //   type: DataTypes.BOOLEAN,
+      //   defaultValue: false
+      // },
+      // deActive: {
+      //   type: DataTypes.BOOLEAN,
+      //   defaultValue: false
+      // },
       status: {
         type: DataTypes.BOOLEAN
       }

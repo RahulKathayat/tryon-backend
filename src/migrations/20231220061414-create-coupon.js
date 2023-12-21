@@ -18,14 +18,14 @@ module.exports = {
         type: Sequelize.REAL,
         defaultValue: 0
       },
-      active: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
-      },
-      deActive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
-      },
+      // active: {
+      //   type: Sequelize.BOOLEAN,
+      //   defaultValue: false
+      // },
+      // deActive: {
+      //   type: Sequelize.BOOLEAN,
+      //   defaultValue: false
+      // },
       status: {
         type: Sequelize.BOOLEAN,
         defaultValue: true

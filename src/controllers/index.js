@@ -17,3 +17,4 @@ module.exports.productFabricController = require('./productFabric.controller');
 module.exports.subscribedUserController = require('./subscribedUser.controller');
 module.exports.shipRocketController = require('./shipRocket.controller');
 module.exports.couponController = require('./coupon.controller');
+module.exports.setingController = require('./setting.controller');
