@@ -18,7 +18,7 @@ const register = catchAsync(async (req, res) => {
 
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
-  const user = await authService.loginUserWithEmailAndPassword(email, password);
+  const user = await authService.loginUserWithEmailAndPassword(email, password, req.body.role);
 
   if (user) {
     const data = await cartService.createCart(user.id);

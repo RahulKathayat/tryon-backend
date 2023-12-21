@@ -1,6 +1,6 @@
 const express = require('express');
 const authRoute = require('./auth.route');
-const commonRoute = require('./common.route')
+const commonRoute = require('./common.route');
 const userRoute = require('./user.route');
 const refundRoute = require('./refund.route');
 const ratingsRoute = require('./ratings.route');
@@ -12,16 +12,14 @@ const wishListRoute = require('./wishList.route');
 const CategoryRoute = require('./category.route');
 const subCategoryRoute = require('./subCategory.route');
 const subSubCategoryRoute = require('./subSubCategory.route');
-const addressRoute= require("./address.route");
-const cartRoute= require("./cart.route");
-const fabricRoute= require("./fabric.route");
-const productFabricRoute= require("./productFabric.route");
-const subscribedUserRoute=require("./subscribedUser.route")
-const shipRocketRoute=require("./shipRocket.route")
-const paymentLogRoute=require("./paymentLog.route")
-
-
-
+const addressRoute = require('./address.route');
+const cartRoute = require('./cart.route');
+const fabricRoute = require('./fabric.route');
+const productFabricRoute = require('./productFabric.route');
+const subscribedUserRoute = require('./subscribedUser.route');
+const shipRocketRoute = require('./shipRocket.route');
+const paymentLogRoute = require('./paymentLog.route');
+const discountCoupon = require('./coupon.route');
 
 const router = express.Router();
 
@@ -100,10 +98,13 @@ const defaultRoutes = [
     route: shipRocketRoute
   },
   {
+    path: '/discountCoupon',
+    route: discountCoupon
+  },
+  {
     path: '/paymentLog',
     route: paymentLogRoute
   }
-  
 ];
 
 defaultRoutes.forEach((route) => {

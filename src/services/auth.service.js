@@ -9,9 +9,12 @@ const logger = require('../config/logger');
 const { Users } = require('../models/user');
 
 // login without Google account--------------------------------------------------
-const loginUserWithEmailAndPassword = async (email, password) => {
+const loginUserWithEmailAndPassword = async (email, password, role) => {
   try {
     const user = await userService.getUserByEmail(email);
+    if (user.dataValues.role !== role) {
+      throw new ApiError(httpStatus.FORBIDDEN, 'Incorrect email or password');
+    }
     if (user == null) {
       throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
     }
