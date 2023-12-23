@@ -2,14 +2,14 @@ module.exports = (sequelize, DataTypes) => {
   const Setting = sequelize.define(
     'Setting',
     {
-      DISCOUNT_BANNER: {
+      name: {
         type: DataTypes.JSON,
         unique: true
       },
-      CMS: {
+      html: {
         type: DataTypes.TEXT
       },
-      STATUS: {
+      status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       }

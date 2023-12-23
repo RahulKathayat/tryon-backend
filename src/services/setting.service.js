@@ -11,14 +11,13 @@ const getSetting = async (id) => {
   return support;
 };
 
-const updateSettingById = async (id, newData) => {
+const updateSettingById = async (newData) => {
   try {
-    const data = JSON.stringify(newData);
-    console.log('newdata------------------', newData);
-    if (newData.NAME) {
-      return Setting.update({ CMS: data }, { where: { id: id } });
+    //const data = JSON.stringify(newData);
+    if (newData.name) {
+      console.log(newData);
+      return Setting.update(newData, { where: { name: newData.name } });
     }
-    return Setting.update({ DISCOUNT_BANNER: data }, { where: { id: id } });
   } catch (err) {
     console.log('err=====================', err);
   }

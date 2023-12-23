@@ -1,8 +1,5 @@
 const Joi = require('joi');
 const updateCms = {
-  params: Joi.object().keys({
-    id: Joi.number().required()
-  }),
   body: Joi.object().keys({
     DISCOUNT_BANNER: Joi.string().optional(),
 

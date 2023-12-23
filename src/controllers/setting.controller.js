@@ -14,9 +14,8 @@ const getSetting = catchAsync(async (req, res) => {
 
 const updateSetting = catchAsync(async (req, res) => {
   try {
-    const id = req.params.id;
     const newData = req.body;
-    const updatedSetting = await settingService.updateSettingById(id, newData);
+    const updatedSetting = await settingService.updateSettingById(newData);
     console.log('up=-------------------', updateSetting);
     if (updatedSetting) {
       res.status(200).send({ data: updatedSetting, message: 'Setting updated successfully' });

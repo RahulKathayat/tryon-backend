@@ -6,9 +6,9 @@ const cmsValidation = require('../../validations/cms.validation');
 
 const router = express.Router();
 router.post('/', setingController.createSetting);
-router.put('/:id', validate(cmsValidation.updateCms), setingController.updateSetting);
+router.put('/', setingController.updateSetting);
 router.get('/', setingController.getSetting);
 
-router.delete('/:id', setingController.deleteSetting);
+//router.delete('/:id', setingController.deleteSetting);
 
 module.exports = router;

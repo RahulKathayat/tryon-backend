@@ -103,7 +103,7 @@ const defaultRoutes = [
     route: discountCoupon
   },
   {
-    path: '/cms',
+    path: '/setting',
     route: setting
   },
   {
