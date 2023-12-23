@@ -22,7 +22,7 @@ const ifExistCoupon = async (id) => {
 };
 const getCoupon = async (id) => {
   if (id) {
-    const support = await DiscountCoupon.findOne({ where: { id: id } });
+    const support = await DiscountCoupon.findOne({ where: { id: id }, order: ['DESC', 'updatedAt'] });
     return support;
   }
   const support = await DiscountCoupon.findAndCountAll();

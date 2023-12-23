@@ -14,21 +14,4 @@ module.exports.fabricValidation = require('./fabric.validation');
 module.exports.productFabricValidation = require('./productFabric.validation');
 module.exports.subscribedUserValidation = require('./subscribedUser.validation');
 module.exports.paymentLogValidation = require('./paymentLog.validation');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports.couponValidation = require('./coupon.validation');

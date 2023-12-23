@@ -7,13 +7,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      html: {
+      DISCOUNT_BANNER: {
         type: Sequelize.JSON
       },
-      status: {
+      CMS: {
+        type: Sequelize.TEXT
+      },
+      STATUS: {
         type: Sequelize.BOOLEAN,
         defaultValue: true
       },

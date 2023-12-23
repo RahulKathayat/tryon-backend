@@ -1,34 +1,32 @@
 const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
+const { createDiscountBanner } = require('../src/utils/createDiscountBanner');
 //
 var fs = require('fs');
 var https = require('https');
 
 if (config.env == 'qa') {
-var certificate  = fs.readFileSync('/root/deployment/ssl/6_39_C1.cer', 'utf8');
-var ca = fs.readFileSync('/root/deployment/ssl/00_00_00_02.cer', 'utf8');
-var privateKey = fs.readFileSync('/root/deployment/ssl/new-2023.key', 'utf8');
+  var certificate = fs.readFileSync('/root/deployment/ssl/6_39_C1.cer', 'utf8');
+  var ca = fs.readFileSync('/root/deployment/ssl/00_00_00_02.cer', 'utf8');
+  var privateKey = fs.readFileSync('/root/deployment/ssl/new-2023.key', 'utf8');
 }
 if (config.env == 'production') {
-var certificate  = fs.readFileSync('/root/deployment/ssl/E_3E.cer', 'utf8');
-var ca = fs.readFileSync('/root/deployment/ssl/_02.cer', 'utf8');
-var privateKey = fs.readFileSync('/root/deployment/ssl/prod023.key', 'utf8');
+  var certificate = fs.readFileSync('/root/deployment/ssl/E_3E.cer', 'utf8');
+  var ca = fs.readFileSync('/root/deployment/ssl/_02.cer', 'utf8');
+  var privateKey = fs.readFileSync('/root/deployment/ssl/prod023.key', 'utf8');
 }
-if(config.env == 'production' || config.env == 'qa'){
-var credentials = {key: privateKey, cert: certificate, ca:ca};
+if (config.env == 'production' || config.env == 'qa') {
+  var credentials = { key: privateKey, cert: certificate, ca: ca };
 
-// your express configuration here
+  // your express configuration here
 
-var server = https.createServer(credentials, app).listen(443);
+  var server = https.createServer(credentials, app).listen(443);
+} else {
+  var server = app.listen(config.port, () => {
+    logger.info(`Listening to port ${config.port}`);
+  });
 }
-else{
-
-var server = app.listen(config.port, () => {
-  logger.info(`Listening to port ${config.port}`);
-});
-}
-
 
 const exitHandler = () => {
   if (server) {
@@ -48,6 +46,8 @@ const unexpectedErrorHandler = (error) => {
 
 process.on('uncaughtException', unexpectedErrorHandler);
 process.on('unhandledRejection', unexpectedErrorHandler);
+
+createDiscountBanner();
 
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received');
