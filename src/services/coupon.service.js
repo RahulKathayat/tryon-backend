@@ -20,6 +20,13 @@ const ifExistCoupon = async (id) => {
   const support = await DiscountCoupon.findAndCountAll();
   return support;
 };
+const verifyCoupon = async (couponcode) => {
+  const support = await DiscountCoupon.findOne({ where: { couponCode: couponcode, status: true } });
+  if (support) {
+    return support;
+  }
+  return false;
+};
 const getCoupon = async (id) => {
   if (id) {
     const support = await DiscountCoupon.findOne({ where: { id: id }, order: ['DESC', 'updatedAt'] });
@@ -34,7 +41,10 @@ const getCouponById = async (id) => {
     const data = await DiscountCoupon.findOne({
       where: { id: id }
     });
-    return data;
+    if (data) {
+      return data;
+    }
+    return false;
   } catch (error) {
     console.error('cart not found!!', error);
   }
@@ -74,5 +84,6 @@ module.exports = {
   updateCouponById,
   deleteCouponById,
   getCouponById,
-  ifExistCoupon
+  ifExistCoupon,
+  verifyCoupon
 };

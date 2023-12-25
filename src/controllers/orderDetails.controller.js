@@ -71,7 +71,7 @@ const updateOrderDetails = catchAsync(async (req, res) => {
   try {
     const userId = req.params;
     const newData = req.body;
-    console.log('check bodty for updat------------------------------------', newData, 'id---------------------', userId);
+
     const updatedUser = await orderDetailsService.updateOrderDetailsById(userId, newData);
 
     res.status(200).send({ data: updatedUser, message: 'order updated successfully' });

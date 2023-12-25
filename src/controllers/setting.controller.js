@@ -16,7 +16,7 @@ const updateSetting = catchAsync(async (req, res) => {
   try {
     const newData = req.body;
     const updatedSetting = await settingService.updateSettingById(newData);
-    console.log('up=-------------------', updateSetting);
+
     if (updatedSetting) {
       res.status(200).send({ data: updatedSetting, message: 'Setting updated successfully' });
     } else {
@@ -29,7 +29,6 @@ const updateSetting = catchAsync(async (req, res) => {
 });
 
 const deleteSetting = catchAsync(async (req, res) => {
-  console.log('req-----------------------------', req.query.id);
   const deleteUser = await settingService.deleteSettingById(req.query.id);
   if (deleteUser) {
     res.status(httpStatus.OK).send({ message: 'Setting deleted successfully' });

@@ -10,7 +10,7 @@ const createCart = {
     discountCode: Joi.string().required(),
     role: Joi.string().valid('Customer').required(),
     status: Joi.boolean(),
-    isActive:Joi.boolean()
+    isActive: Joi.boolean()
   })
 };
 
@@ -24,8 +24,9 @@ const updateCart = {
     discountCode: Joi.string().optional(),
     quantity: Joi.number().optional(),
     addressId: Joi.number().optional(),
+    discountId: Joi.number().optional().allow(''),
     status: Joi.boolean(),
-    isActive:Joi.boolean()
+    isActive: Joi.boolean()
   })
 };
 

@@ -6,7 +6,7 @@ const { where } = require('sequelize');
 const createOrderDetails = async (_userBody) => {
   const userBody = _userBody;
   const data = await OrderDetails.create(userBody);
-  console.log('data', data);
+
   return data;
 };
 

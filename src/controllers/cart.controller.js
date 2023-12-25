@@ -2,7 +2,7 @@ const catchAsync = require('../utils/catchAsync');
 const cartService = require('../services/cart.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
-const { paymentService, orderService } = require('../services');
+const { paymentService, couponService } = require('../services');
 
 const getCart = catchAsync(async (req, res) => {
   const query = {};
@@ -40,9 +40,10 @@ const updateCart = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
     const newData = req.body;
-    console.log('newdata-------------------------------------------------', newData);
-    const updatedUser = await cartService.updateCartById(userId, newData);
-
+    console.log('newdata-------------------------------------------------', newData.discountId);
+    const data = await couponService.getCouponById(newData.discountId);
+    const discountCoupon = data?.dataValues?.discount;
+    const updatedUser = await cartService.updateCartById(userId, newData, discountCoupon);
     // const orderAddressId = await orderService.orderAddressId(userId, newData.addressId);
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, message: 'cart updated successfully' });

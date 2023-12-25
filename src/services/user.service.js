@@ -35,11 +35,6 @@ const createUser = async (_userBody) => {
 };
 const getUserWithSecretFields = async (email, password) => {
   try {
-    console.log(
-      'secret fields loginUserWithEmailAndPassword==============================================',
-      email,
-      password
-    );
     const user = await authService.loginUserWithEmailAndPassword(email, password);
     const tokens = await tokenService.generateAuthTokens(user);
     //res.send({ user, tokens });

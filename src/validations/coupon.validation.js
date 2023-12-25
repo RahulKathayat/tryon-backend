@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const updateCoupon = {
   params: Joi.object().keys({
-    id: Joi.number().required()
+    id: Joi.number().optional()
   }),
   body: Joi.object().keys({
     couponCode: Joi.string().optional(),
@@ -11,4 +11,15 @@ const updateCoupon = {
   })
 };
 
-module.exports = { updateCoupon };
+const VerifyCoupon = {
+  query: Joi.object().keys({
+    couponcode: Joi.string().optional()
+  })
+};
+const getCouponById = {
+  params: Joi.object().keys({
+    id: Joi.string().optional()
+  })
+};
+
+module.exports = { updateCoupon, VerifyCoupon, getCouponById };

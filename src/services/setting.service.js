@@ -15,7 +15,6 @@ const updateSettingById = async (newData) => {
   try {
     //const data = JSON.stringify(newData);
     if (newData.name) {
-      console.log(newData);
       return Setting.update(newData, { where: { name: newData.name } });
     }
   } catch (err) {

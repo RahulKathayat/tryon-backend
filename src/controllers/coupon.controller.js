@@ -11,6 +11,18 @@ const getCouponById = catchAsync(async (req, res) => {
   }
   return data;
 });
+const verifyCoupon = catchAsync(async (req, res) => {
+  const couponcode = req.query.couponcode;
+
+  const data = await couponService.verifyCoupon(couponcode);
+
+  if (data === false) {
+    res.status(httpStatus.NOT_FOUND).send({ message: 'invalid coupon code' });
+  } else {
+    res.status(httpStatus.OK).send({ message: 'Coupon Code Verify Successfully', data: data });
+  }
+  return data;
+});
 const getCoupon = catchAsync(async (req, res) => {
   const id = req.query.id;
   const data = await couponService.getCoupon(id);
@@ -48,7 +60,6 @@ const updateCoupon = catchAsync(async (req, res) => {
 });
 
 const deleteCoupon = catchAsync(async (req, res) => {
-  console.log('req-----------------------------', req.query.id);
   const deleteUser = await couponService.deleteCouponById(req.query.id);
   if (deleteUser) {
     res.status(httpStatus.OK).send({ message: 'Coupon deleted successfully' });
@@ -83,5 +94,6 @@ module.exports = {
   updateCoupon,
   createCoupon,
   getCouponById,
-  ifExistCoupon
+  ifExistCoupon,
+  verifyCoupon
 };

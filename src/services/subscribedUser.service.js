@@ -10,7 +10,7 @@ const createSubscribedUser = async (_userBody) => {
     throw new ApiError(httpStatus.BAD_REQUEST, messages.EMAIL_ALREADY_EXISTS);
   }
   const data = await SubscribedUser.create(userBody);
-  console.log('data', data);
+
   return data;
 };
 
