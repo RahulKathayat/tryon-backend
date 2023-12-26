@@ -40,8 +40,7 @@ const updateCart = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
     const newData = req.body;
-    console.log('newdata-------------------------------------------------', newData.discountId);
-    const data = await couponService.getCouponById(newData.discountId);
+    const data = await couponService.getCouponById(newData.cartDetail.discountId);
     const discountCoupon = data?.dataValues?.discount;
     const updatedUser = await cartService.updateCartById(userId, newData, discountCoupon);
     // const orderAddressId = await orderService.orderAddressId(userId, newData.addressId);

@@ -370,6 +370,7 @@ const getProductsForUser = async (req, res, next) => {
       'fabric',
       'size',
       'id',
+      'searchProduct',
       'colour'
     ];
 

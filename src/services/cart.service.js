@@ -50,9 +50,18 @@ const getCartById = async (id) => {
   }
 };
 
-const updateCartById = async (userId, newData) => {
+const updateCartById = async (userId, newData, discountCoupon) => {
   try {
-    console.log('check data------------------------------', newData);
+    console.log('discount-------------------------', discountCoupon);
+    if (discountCoupon) {
+      const discountAmount = (newData.totalAmount * discountCoupon) / 100;
+      const finalAmount = parseFloat(newData.totalAmount - discountAmount);
+      newData = {
+        totalAmount: finalAmount,
+        discountCode: discountAmount
+      };
+    }
+
     const updateQuantity = await Cart.update(newData, { where: { userId: userId } });
     return updateQuantity;
   } catch (err) {
