@@ -218,6 +218,7 @@ const getProductBySearch = catchAsync(async (req, res) => {
       ]
     };
   }
+
   const data = await productService.getProductBySearch(query, options, between);
 
   if (data) {
@@ -305,7 +306,6 @@ const uploadImages = async (req, res) => {
     }
 
     const fileInformation = images.map((file) => {
-      console.log(file.file);
       return file.filename.trim();
     });
     // const fileInformation= image.map((item)=>{
@@ -370,7 +370,7 @@ const getProductsForUser = async (req, res, next) => {
       'fabric',
       'size',
       'id',
-      'searchProduct',
+      // 'searchProduct',
       'colour'
     ];
 
@@ -390,7 +390,6 @@ const getProductsForUser = async (req, res, next) => {
         }
       }
     });
-
     let products = await productService.getProductForWishlist(query, options, between, order);
     const wishlistedProductIds = await wishlistService.isWishlisted(userId);
     // products = products.map((product) => product.get({ plain: true }));

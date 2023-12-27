@@ -24,6 +24,7 @@ const createOrderForPayment = async (amount, currency, receipt, notes) => {
 
     return order;
   } catch (error) {
+    console.log('Razor pay error', error);
     throw error;
   }
 };

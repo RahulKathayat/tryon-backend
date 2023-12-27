@@ -19,33 +19,50 @@ const getCart = catchAsync(async (req, res) => {
 
 const getCartMe = catchAsync(async (req, res) => {
   const data = await cartService.getCartById(req.user.id);
+  // const discountCoupon = getDiscountAmt?.dataValues?.discount;
+  console.log('data-----------------------------------------', data);
+  let getDiscountAmt;
+  if (data.cartDetail != null) {
+    getDiscountAmt = await couponService.getCouponById(data.cartDetail.discountId);
+    console.log('getdeiscoubnt amt-----------------------------------------', getDiscountAmt);
+  }
   if (data) {
-    res.status(httpStatus.OK).send({ message: 'cart data by id is fetched successfully', data: data });
+    res
+      .status(httpStatus.OK)
+      .send({ message: 'cart data by id is fetched successfully', data: data, discountAmount: getDiscountAmt });
   } else {
     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
   }
   return data;
 });
-const getCartById = catchAsync(async (req, res) => {
-  const data = await cartService.getCartById(req.params.id);
-  if (data) {
-    res.status(httpStatus.OK).send({ message: 'cart data by id is fetched successfully', data: data });
-  } else {
-    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
-  }
-  return data;
-});
+// const getCartById = catchAsync(async (req, res) => {
+//   const data = await cartService.getCartById(req.params.id);
+//   if (data) {
+//     res.status(httpStatus.OK).send({ message: 'cart data by id is fetched successfully', data: data });
+//   } else {
+//     res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+//   }
+//   return data;
+// });
 
 const updateCart = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
     const newData = req.body;
+    console.log('discountCoupon===Beforeeeeeeeeeee=======', newData.cartDetail.discountId);
     const data = await couponService.getCouponById(newData.cartDetail.discountId);
-    const discountCoupon = data?.dataValues?.discount;
-    const updatedUser = await cartService.updateCartById(userId, newData, discountCoupon);
+    let discountCoupon;
+    let couponCode;
+    if (data) {
+      discountCoupon = data?.dataValues?.discount;
+      couponCode = data.dataValues.couponCode;
+    }
+
+    console.log('data==========', data);
+    const updatedUser = await cartService.updateCartById(userId, newData, discountCoupon, couponCode);
     // const orderAddressId = await orderService.orderAddressId(userId, newData.addressId);
     if (updatedUser) {
-      res.status(200).send({ data: updatedUser, message: 'cart updated successfully' });
+      res.status(200).send({ data: updatedUser, discountPercentage: discountCoupon, message: 'cart updated successfully' });
     } else {
       res.status(404).send({ message: 'cart not found', status: 0 });
     }
@@ -107,16 +124,15 @@ const clearCart = catchAsync(async (req, res) => {
 async function createCheckout(req, res) {
   try {
     const userId = req.user.id;
-
     const checkoutResponse = await cartService.createCheckout(userId);
 
     if (!checkoutResponse || !checkoutResponse.order) {
       return res.status(httpStatus.OK).send({ message: 'No items in your cart!' });
     }
 
-    const { order, orderDetailsArray, totalAmount } = checkoutResponse;
+    const { order, orderDetailsArray, totalAmount, _finalAmount } = checkoutResponse;
 
-    const amountForPayment = await paymentService.createOrderForPayment(totalAmount);
+    const amountForPayment = await paymentService.createOrderForPayment(_finalAmount);
 
     const razorpayPaymentDetails = amountForPayment
       ? {
@@ -141,7 +157,7 @@ module.exports = {
   deleteCart,
   getCart,
   updateCart,
-  getCartById,
+  // getCartById,
   getCartMe,
   clearCart,
   createCheckout

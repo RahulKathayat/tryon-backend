@@ -28,11 +28,10 @@ const verifyCoupon = async (couponcode) => {
   return false;
 };
 const getCoupon = async (id) => {
-  if (id) {
-    const support = await DiscountCoupon.findOne({ where: { id: id }, order: ['DESC', 'updatedAt'] });
-    return support;
+  if (id == null) {
+    return false;
   }
-  const support = await DiscountCoupon.findAndCountAll();
+  const support = await DiscountCoupon.findOne({ where: { id: id }, order: ['DESC', 'updatedAt'] });
   return support;
 };
 
@@ -46,7 +45,7 @@ const getCouponById = async (id) => {
     }
     return false;
   } catch (error) {
-    console.error('cart not found!!', error);
+    console.error('DiscountCoupon found!!', error);
   }
 };
 

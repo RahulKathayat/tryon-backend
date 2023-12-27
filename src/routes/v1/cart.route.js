@@ -18,7 +18,7 @@ router.route('/').get(auth(), cartController.getCart);
 router
   .route('/:id')
   // .put(validate(cartValidation.updateCart), cartController.updateCart)
-  .delete(cartController.deleteCart)
-  .get(cartController.getCartById);
+  .delete(cartController.deleteCart);
+// .get(cartController.getCartById);
 
 module.exports = router;

@@ -11,11 +11,23 @@ module.exports = (sequelize, DataTypes) => {
       totalQuantity: {
         type: DataTypes.INTEGER
       },
-      totalAmount: {
-        type: DataTypes.INTEGER
-      },
       orderDetails: {
         type: DataTypes.JSON
+      },
+      totalAmount: {
+        type: DataTypes.REAL
+      },
+      couponPercent: {
+        type: DataTypes.REAL
+      },
+      discountAmount: {
+        type: DataTypes.REAL
+      },
+      finalAmount: {
+        type: DataTypes.REAL
+      },
+      couponCode: {
+        type: DataTypes.TEXT
       },
       isActive: {
         type: DataTypes.BOOLEAN,

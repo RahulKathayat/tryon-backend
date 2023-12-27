@@ -12,7 +12,6 @@ const { Users } = require('../models/user');
 const loginUserWithEmailAndPassword = async (email, password, role) => {
   try {
     const user = await userService.getUserByEmail(email);
-    console.log('user--------------------------------', user);
     if (user) {
       if (user.dataValues.role !== role) {
         throw new ApiError(httpStatus.FORBIDDEN, 'Incorrect email or password');

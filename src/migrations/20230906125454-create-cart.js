@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.JSON
       },
       totalAmount: {
-        type: Sequelize.INTEGER
+        type: Sequelize.REAL
       },
       totalItems: {
         type: Sequelize.INTEGER

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.JSON
       },
       totalAmount: {
-        type: DataTypes.INTEGER
+        type: DataTypes.REAL
       },
       totalItems: {
         type: DataTypes.INTEGER
@@ -17,13 +17,22 @@ module.exports = (sequelize, DataTypes) => {
       totalQuantity: {
         type: DataTypes.INTEGER
       },
-      discountCode: {
-        type: DataTypes.STRING
+      discountAmount: {
+        type: DataTypes.REAL
+      },
+      finalAmount: {
+        type: DataTypes.REAL
+      },
+      couponPercent: {
+        type: DataTypes.REAL
+      },
+      couponCode: {
+        type: DataTypes.TEXT
       },
       addressId: {
         type: DataTypes.INTEGER
       },
-      isActive:{
+      isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
