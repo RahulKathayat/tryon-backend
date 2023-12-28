@@ -40,7 +40,6 @@ const getCart = async (query, options) => {
 
 const getCartById = async (id) => {
   try {
-    console.log('###################is===============', id);
     const data = await Cart.findOne({
       where: { userId: id, isActive: true, status: true }
     });
@@ -55,16 +54,12 @@ const updateCartById = async (userId, newData, discountCoupon, couponCode) => {
   let finalAmount = newData.totalAmount;
   let discountAmount = 0;
   let discountCouponPercent = 0;
-  let CouponeCode;
+  let CouponeCode = null;
   try {
     if (discountCoupon) {
       discountCouponPercent = discountCoupon;
       discountAmount = (newData.totalAmount * 1 * (discountCoupon * 1)) / 100;
       finalAmount = parseFloat(newData.totalAmount - discountAmount);
-      console.log('discountAmount-----------------------', discountAmount);
-      console.log('finalAmount-----------------------', finalAmount);
-      console.log('newData-----------------------', newData);
-      console.log('discountCouponPercent-----------------------', discountCouponPercent);
       CouponeCode = couponCode;
     }
     newData = {
@@ -74,7 +69,6 @@ const updateCartById = async (userId, newData, discountCoupon, couponCode) => {
       couponPercent: discountCouponPercent,
       couponCode: CouponeCode
     };
-    console.log('newData-----------------------', newData);
 
     const updateQuantity = await Cart.update(newData, { where: { userId: userId } });
     return updateQuantity;
@@ -111,7 +105,8 @@ const clearCartByUserId = async (userId) => {
       totalQuantity: 0,
       finalAmount: 0,
       discountAmount: 0,
-      couponPercent: 0
+      couponPercent: 0,
+      couponCode: null
     },
     {
       where: { userId, status: true }
@@ -132,7 +127,6 @@ async function createCheckout(userId) {
     const _discountAmount = cart.dataValues.discountAmount;
     const discountCoupon = cart.dataValues.couponPercent;
     const couponCode = cart.dataValues.couponCode;
-    console.log('check ==================total couponCode------------------------------******', couponCode);
     let cartDetails = cart.dataValues.cartDetail || {};
     // cartDetails = JSON.parse(cartDetails);
     const addressId = cart.dataValues.addressId;
@@ -160,7 +154,6 @@ async function createCheckout(userId) {
       let Amount = cartItems.reduce((acc, item) => {
         return acc + item.finalAmount * item.selectedQuantity;
       }, 0);
-      console.log('final Amountttttttttttttttttttttttttt Totallll', Amount);
 
       console.log(' cartDetails.cartDetails----------------------------=======================', cartDetails.cartDetails);
       const order = await Orders.create({
@@ -178,7 +171,7 @@ async function createCheckout(userId) {
         status: true,
         addressId: addressId
       });
-      console.log('ORDER RESPONSE//////////////////////////', order);
+
       const orderDetailsData = cartItems.map((item) => {
         const itemAmount = item.finalAmount * 1 * (item.selectedQuantity * 1);
         console.log('object', itemAmount);

@@ -39,7 +39,7 @@ const sendResetPasswordEmail = async (to, token, host) => {
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> ObeyTina </title>
+  <title> Korakagaj </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="" />
   <meta name="keywords" content="" />
@@ -128,7 +128,7 @@ const sendVerificationEmail = async (to, token, host) => {
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title> ObeyTina </title>
+    <title> Korakagaj </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="" />
     <meta name="keywords" content="" />

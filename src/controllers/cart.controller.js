@@ -20,11 +20,10 @@ const getCart = catchAsync(async (req, res) => {
 const getCartMe = catchAsync(async (req, res) => {
   const data = await cartService.getCartById(req.user.id);
   // const discountCoupon = getDiscountAmt?.dataValues?.discount;
-  console.log('data-----------------------------------------', data);
+
   let getDiscountAmt;
   if (data.cartDetail != null) {
     getDiscountAmt = await couponService.getCouponById(data.cartDetail.discountId);
-    console.log('getdeiscoubnt amt-----------------------------------------', getDiscountAmt);
   }
   if (data) {
     res
@@ -49,7 +48,6 @@ const updateCart = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
     const newData = req.body;
-    console.log('discountCoupon===Beforeeeeeeeeeee=======', newData.cartDetail.discountId);
     const data = await couponService.getCouponById(newData.cartDetail.discountId);
     let discountCoupon;
     let couponCode;
@@ -57,8 +55,6 @@ const updateCart = catchAsync(async (req, res) => {
       discountCoupon = data?.dataValues?.discount;
       couponCode = data.dataValues.couponCode;
     }
-
-    console.log('data==========', data);
     const updatedUser = await cartService.updateCartById(userId, newData, discountCoupon, couponCode);
     // const orderAddressId = await orderService.orderAddressId(userId, newData.addressId);
     if (updatedUser) {

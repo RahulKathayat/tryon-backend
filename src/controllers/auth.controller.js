@@ -8,11 +8,11 @@ const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  const cartData = await cartService.createCart(user.id);
-  const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
+  await cartService.createCart(user.id);
+  // const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
   const tokens = await tokenService.generateAuthTokens(user);
-  const host = config.email.CUSTOMER_HOST;
-  await emailService.sendVerificationEmail(req.body.email, verifyEmailToken, host);
+  // const host = config.email.CUSTOMER_HOST;
+  // await emailService.sendVerificationEmail(req.body.email, verifyEmailToken, host);
   res.status(200).send({ message: 'register successfully', user, tokens });
 });
 
@@ -31,6 +31,7 @@ const login = catchAsync(async (req, res) => {
 
 const loginWithGoogle = catchAsync(async (req, res) => {
   try {
+    console.log('request bodyu*************************************************************', req.body);
     const existUser = await userService.getExistingEmails(req.body.email);
     if (existUser) {
       const user = await authService.loginWithGoogle(req.body.email, req.body.gAuth);
