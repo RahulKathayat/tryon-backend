@@ -5,6 +5,25 @@ const shipRocketService = require('../services/shipRocket.service');
 const paymentService = require('../services/paymentLog.service');
 // const { cartService } = require('../services/cart.service');
 
+const createCartToGoggle = async (id) => {
+  console.log('id--------------------***************************************************-', id);
+  const existingCart = await Cart.findOne({
+    where: { userId: id }
+  });
+  if (!existingCart) {
+    const data = await Users.findOne({
+      where: {
+        id: id,
+        role: 'Customer'
+      }
+    });
+    if (data) {
+      return Cart.create({ userId: id, cartDetail: null });
+    } else {
+      return 'user role does not matched';
+    }
+  }
+};
 const createCart = async (_userBody) => {
   const userBody = _userBody;
   const existingCart = await Cart.findOne({
@@ -288,5 +307,6 @@ module.exports = {
   deleteCartById,
   getCartById,
   clearCartByUserId,
-  createCheckout
+  createCheckout,
+  createCartToGoggle
 };

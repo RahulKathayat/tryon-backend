@@ -28,11 +28,10 @@ const verifyCoupon = async (couponcode) => {
   return false;
 };
 const getCoupon = async (id) => {
-  if (id == null) {
-    return false;
-  }
-  const support = await DiscountCoupon.findOne({ where: { id: id }, order: ['DESC', 'updatedAt'] });
-  return support;
+  const coupon = await DiscountCoupon.findAndCountAll({
+    order: [['updatedAt', 'DESC']]
+  });
+  return coupon;
 };
 
 const getCouponById = async (id) => {

@@ -32,6 +32,7 @@ const login = catchAsync(async (req, res) => {
 const loginWithGoogle = catchAsync(async (req, res) => {
   try {
     console.log('request bodyu*************************************************************', req.body);
+    // return;
     const existUser = await userService.getExistingEmails(req.body.email);
     if (existUser) {
       const user = await authService.loginWithGoogle(req.body.email, req.body.gAuth);
@@ -41,19 +42,24 @@ const loginWithGoogle = catchAsync(async (req, res) => {
     } else {
       const user = await userService.createGoogleUser({
         ...req.body,
+        firstName: req.body.firstname,
+        lastName: req.body.lastname,
         isEmailVerified: true,
-        gLogin: true
+        gLogin: true,
+        role: 'Customer'
       });
+      console.log('check use r ************************************************************', user);
       const userDetailBody = {
-        id: user.dataValues.id,
+        // id: user.dataValues.id,
         firstName: user.dataValues.firstName,
         lastName: user.dataValues.lastName,
         phoneNumber: user.dataValues.phoneNumber,
         email: user.dataValues.email
       };
-      await userService.createUserDetail(userDetailBody);
+      console.log('user----------------------------------------', user);
+      // await userService.createUserDetail(userDetailBody);
       const tokens = await tokenService.generateAuthTokens(user);
-      await cartService.createCart({ userId: user.dataValues.id, cartDetail: null });
+      await cartService.createCartToGoggle(user.dataValues.id);
       res.send({ user, tokens });
     }
   } catch (err) {

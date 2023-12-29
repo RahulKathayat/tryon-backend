@@ -21,8 +21,8 @@ const loginWithGoogle = {
   body: Joi.object().keys({
     email: Joi.string().required(),
     gAuth: Joi.string().required(),
-    firstName: Joi.string().optional(),
-    lastName: Joi.string().optional(),
+    firstname: Joi.string().optional(),
+    lastname: Joi.string().optional(),
     clientId: Joi.string().optional(),
     credential: Joi.string().optional()
   })

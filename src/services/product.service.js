@@ -241,12 +241,14 @@ const getProductBySearch = async (query, options) => {
     if (query == null || options == null) {
       const data = await Product.findAndCountAll({
         limit: limit,
-        offset: offset
+        offset: offset,
+        include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }]
       });
       return data;
     } else {
       const data = await Product.findAndCountAll({
         where: { ...query },
+        include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
         limit: limit,
         offset: offset
       });

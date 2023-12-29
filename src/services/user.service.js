@@ -24,6 +24,7 @@ const createUser = async (_userBody) => {
     if (await getExistingEmails(userBody.email)) {
       throw new ApiError(httpStatus.BAD_REQUEST, messages.EMAIL_ALREADY_EXISTS);
     }
+    userBody.email = userBody.email.toLowerCase();
     userBody.password = await bcrypt.hash(userBody.password, 8);
     const createdUser = await Users.create(userBody);
 
@@ -219,6 +220,8 @@ const getUserDataByUserId = async (id) => {
 
 const createGoogleUser = async (_userBody) => {
   const userBody = _userBody;
+
+  console.log('_userBody////////////////////////////////////////////////////////////////', _userBody);
 
   if (Array.isArray(userBody.gAuth) || typeof userBody.gAuth === 'object') {
     // Handle the case where gAuth is an array or object (e.g., stringify it)
