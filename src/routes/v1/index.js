@@ -21,6 +21,7 @@ const shipRocketRoute = require('./shipRocket.route');
 const paymentLogRoute = require('./paymentLog.route');
 const discountCoupon = require('./coupon.route');
 const setting = require('./setting.route');
+const contact = require('./contact.route');
 
 const router = express.Router();
 
@@ -105,6 +106,10 @@ const defaultRoutes = [
   {
     path: '/setting',
     route: setting
+  },
+  {
+    path: '/contact',
+    route: contact
   },
   {
     path: '/paymentLog',
