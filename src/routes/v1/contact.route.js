@@ -8,6 +8,6 @@ const { commonService } = require('../../services');
 const router = express.Router();
 
 router.get('/', auth(), contactController.getAllContact);
-router.post('/', auth(), validate(contactValidation.createContact), contactController.createContact);
+router.post('/', validate(contactValidation.createContact), contactController.createContact);
 
 module.exports = router;
