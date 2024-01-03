@@ -8,7 +8,9 @@ const createContact = async (contactBody) => {
 };
 
 const getAllContact = async () => {
-  const contacts = await Contact.findAll(); // Use findAll instead of findAndCountAll if you only need the data
+  const contacts = await Contact.findAll({
+    order: [['updatedAt', 'DESC']]
+  }); // Use findAll instead of findAndCountAll if you only need the data
   return contacts;
 };
 
