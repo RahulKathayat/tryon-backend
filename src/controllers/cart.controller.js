@@ -106,6 +106,7 @@ const updateCart = catchAsync(async (req, res) => {
     }
     const id = newData.cartDetail.discountId;
     let data;
+    console.log('id6666666666666666666666666666666666666666666666666', id);
     if (id) {
       data = await couponService.getCouponById(id);
       if (data == false) {
