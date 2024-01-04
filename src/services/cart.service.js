@@ -6,7 +6,6 @@ const paymentService = require('../services/paymentLog.service');
 // const { cartService } = require('../services/cart.service');
 
 const createCartToGoggle = async (id) => {
-  console.log('id--------------------***************************************************-', id);
   const existingCart = await Cart.findOne({
     where: { userId: id }
   });
@@ -62,7 +61,7 @@ const getCartById = async (id) => {
     const data = await Cart.findOne({
       where: { userId: id, isActive: true, status: true }
     });
-
+    // console.log('check data----------------------------', data);
     return data;
   } catch (error) {
     console.error('This is due  to cart not found!!', error);
@@ -173,8 +172,6 @@ async function createCheckout(userId) {
       let Amount = cartItems.reduce((acc, item) => {
         return acc + item.finalAmount * item.selectedQuantity;
       }, 0);
-
-      console.log(' cartDetails.cartDetails----------------------------=======================', cartDetails.cartDetails);
       const order = await Orders.create({
         userId: userId,
         totalItems: cartItems.length,

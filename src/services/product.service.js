@@ -327,6 +327,41 @@ const getProductById = async (id, setLimit) => {
     console.error('product not found!!', error);
   }
 };
+const checkDiscountPercentage = async (id, percentage) => {
+  try {
+    // console.log('id check in percentage ************************************', id);
+    const data = await Product.findAll({
+      where: { id: id }
+    });
+
+    const mismatchedProducts = [];
+
+    data.forEach((item) => {
+      const productPercentage = item.dataValues.discountPercentage;
+
+      // console.log('item ----------------------------------------', productPercentage);
+
+      if (productPercentage !== percentage) {
+        mismatchedProducts.push({
+          productId: item.dataValues.id,
+          actualPercentage: productPercentage
+        });
+      }
+    });
+
+    if (mismatchedProducts.length === 0) {
+      return true; // All products have the specified discount percentage
+    } else {
+      return {
+        mismatchedProducts: mismatchedProducts,
+        message: 'Something went wrong please Re-add the product'
+      };
+    }
+  } catch (error) {
+    console.error('Error finding products:', error);
+    throw error; // Rethrow the error for handling it further up the call stack if needed
+  }
+};
 
 const updateProductById = async (id, data) => {
   try {
@@ -469,6 +504,7 @@ module.exports = {
   getProductForWishlist,
   getProductByproductId,
   getProductForAdmin,
-  updateIsActive
+  updateIsActive,
+  checkDiscountPercentage
   // updateImage
 };

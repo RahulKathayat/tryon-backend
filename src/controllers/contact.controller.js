@@ -1,10 +1,11 @@
 const catchAsync = require('../utils/catchAsync');
-const { contactService } = require('../services');
+const { contactService, emailService } = require('../services');
 const httpStatus = require('http-status');
 const createContact = catchAsync(async (req, res) => {
   let contactBody = req.body;
   const data = await contactService.createContact(contactBody);
   if (data) {
+    await emailService.sendEmailToUser(req.body.email, req.body.name);
     await res.status(200).send({ message: 'Contact created successfully' });
   } else {
     await res.status(404).send({ message: 'Contact not created' });

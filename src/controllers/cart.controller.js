@@ -2,7 +2,8 @@ const catchAsync = require('../utils/catchAsync');
 const cartService = require('../services/cart.service');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
-const { paymentService, couponService } = require('../services');
+const { paymentService, couponService, productService } = require('../services');
+const ApiError = require('../utils/ApiError');
 
 const getCart = catchAsync(async (req, res) => {
   const query = {};
@@ -20,12 +21,12 @@ const getCart = catchAsync(async (req, res) => {
 const getCartMe = catchAsync(async (req, res) => {
   const data = await cartService.getCartById(req.user.id);
   // const discountCoupon = getDiscountAmt?.dataValues?.discount;
-
   let getDiscountAmt;
   if (data.cartDetail != null) {
     getDiscountAmt = await couponService.getCouponById(data.cartDetail.discountId);
   }
   if (data) {
+    // data.dataValues.cartDetail = JSON.parse(data.dataValues.cartDetail);
     res
       .status(httpStatus.OK)
       .send({ message: 'cart data by id is fetched successfully', data: data, discountAmount: getDiscountAmt });
@@ -44,26 +45,93 @@ const getCartMe = catchAsync(async (req, res) => {
 //   return data;
 // });
 
+// const updateCart = catchAsync(async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const newData = req.body;
+//     const productPromises = newData.cartDetail.cartDetails.map(async (item) => {
+//       console.log('check percentage************************************', item.discountPercentage);
+//       return productService.checkDiscountPercentage(item.id, item.discountPercentage);
+//     });
+//     let res = null;
+//     Promise.all(productPromises)
+//       .then((results) => {
+//         if (results !== true) {
+//           return (res = results);
+//         }
+//         console.log('check treue resulets-----------------------', results);
+//       })
+//       .catch((error) => {
+//         console.error('An error occurred: ***********************', error);
+//       });
+//     if (res !== null) {
+//       console.log(first)
+//       res.send({ message: res });
+//     }
+//     const data = await couponService.getCouponById(newData.cartDetail.discountId);
+//     let discountCoupon;
+//     let couponCode;
+//     if (data) {
+//       discountCoupon = data?.dataValues?.discount;
+//       couponCode = data.dataValues.couponCode;
+//     }
+//     const updatedUser = await cartService.updateCartById(userId, newData, discountCoupon, couponCode);
+//     // const orderAddressId = await orderService.orderAddressId(userId, newData.addressId);
+//     if (updatedUser) {
+//       res.status(200).send({ data: updatedUser, discountPercentage: discountCoupon, message: 'cart updated successfully' });
+//     } else {
+//       res.status(404).send({ message: 'cart not found', status: 0 });
+//     }
+//   } catch (error) {
+//     console.error('Error updating card:', error);
+//     res.status(500).send({ message: 'Internal server error', status: -1 });
+//   }
+// });
+
 const updateCart = catchAsync(async (req, res) => {
   try {
     const userId = req.user.id;
     const newData = req.body;
-    const data = await couponService.getCouponById(newData.cartDetail.discountId);
+    const productPromises = newData.cartDetail.cartDetails.map(async (item) => {
+      return productService.checkDiscountPercentage(item.id, item.discountPercentage);
+    });
+
+    // Change the variable name to result
+
+    const resp = await Promise.all(productPromises);
+    let result = resp[0];
+    if (result !== true && resp.length >= 1) {
+      res.status(400).send({ message: resp });
+      return;
+    }
+    const id = newData.cartDetail.discountId;
+    let data;
+    if (id) {
+      data = await couponService.getCouponById(id);
+      if (data == false) {
+        console.log('');
+        res.status(400).send({ message: 'coupon code expired' });
+        return;
+        // return ApiError('coupon code expired');
+      }
+    }
+
     let discountCoupon;
     let couponCode;
     if (data) {
       discountCoupon = data?.dataValues?.discount;
       couponCode = data.dataValues.couponCode;
     }
+
     const updatedUser = await cartService.updateCartById(userId, newData, discountCoupon, couponCode);
-    // const orderAddressId = await orderService.orderAddressId(userId, newData.addressId);
+
     if (updatedUser) {
       res.status(200).send({ data: updatedUser, discountPercentage: discountCoupon, message: 'cart updated successfully' });
     } else {
       res.status(404).send({ message: 'cart not found', status: 0 });
     }
   } catch (error) {
-    console.error('Error updating card:', error);
+    console.error('Error updating cart:', error);
     res.status(500).send({ message: 'Internal server error', status: -1 });
   }
 });
@@ -121,6 +189,7 @@ async function createCheckout(req, res) {
   try {
     const userId = req.user.id;
     const checkoutResponse = await cartService.createCheckout(userId);
+    console.log('check che---------------------------------------', checkoutResponse);
 
     if (!checkoutResponse || !checkoutResponse.order) {
       return res.status(httpStatus.OK).send({ message: 'No items in your cart!' });
