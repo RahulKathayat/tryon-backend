@@ -78,6 +78,7 @@
     "razorpay": "^2.9.2",
     "sequelize": "^6.25.5",
     "sequelize-cli": "^6.5.2",
+    "sequelize-slugify": "^1.6.2",
     "sharp": "^0.32.5",
     "shortid": "^2.2.16",
     "swagger-jsdoc": "^6.0.8",

@@ -1,3 +1,4 @@
+const SequelizeSlugify = require('sequelize-slugify');
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
     'Product',
@@ -94,6 +95,10 @@ module.exports = (sequelize, DataTypes) => {
       isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+      },
+      slug: {
+        type: DataTypes.STRING,
+        unique: true
       }
     },
     {
@@ -138,5 +143,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'productId'
     });
   };
+
+  SequelizeSlugify.slugifyModel(Product, {
+    source: ['productName']
+  });
   return Product;
 };
