@@ -221,8 +221,6 @@ const getUserDataByUserId = async (id) => {
 const createGoogleUser = async (_userBody) => {
   const userBody = _userBody;
 
-  console.log('_userBody////////////////////////////////////////////////////////////////', _userBody);
-
   if (Array.isArray(userBody.gAuth) || typeof userBody.gAuth === 'object') {
     // Handle the case where gAuth is an array or object (e.g., stringify it)
     userBody.gAuth = JSON.stringify(userBody.gAuth);

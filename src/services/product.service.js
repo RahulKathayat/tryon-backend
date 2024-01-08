@@ -298,6 +298,35 @@ const isUpcomingProduct = async (options) => {
   }
 };
 
+const getProductBySlug = async (slug, setLimit) => {
+  try {
+    const dynamicLimit = Number(setLimit);
+    const data = await Product.findAll({
+      where: { slug: slug },
+      include: [
+        { model: Category },
+        { model: SubCategory },
+        { model: SubSubCategory },
+        {
+          model: Ratings,
+          include: [
+            {
+              model: Users
+            }
+          ],
+          limit: dynamicLimit
+        }
+      ]
+    });
+
+    if (data.length > 0) {
+      return data;
+    }
+    return false;
+  } catch (error) {
+    console.error('product slug not found!!', error);
+  }
+};
 const getProductById = async (id, setLimit) => {
   try {
     const dynamicLimit = Number(setLimit);
@@ -327,9 +356,9 @@ const getProductById = async (id, setLimit) => {
     console.error('product not found!!', error);
   }
 };
+
 const checkDiscountPercentage = async (id, percentage) => {
   try {
-    // console.log('id check in percentage ************************************', id);
     const data = await Product.findAll({
       where: { id: id }
     });
@@ -338,10 +367,14 @@ const checkDiscountPercentage = async (id, percentage) => {
 
     data.forEach((item) => {
       const productPercentage = item.dataValues.discountPercentage;
-
-      // console.log('item ----------------------------------------', productPercentage);
-
-      if (productPercentage !== percentage) {
+      const status = item.dataValues.isActive;
+      if (!status) {
+        mismatchedProducts.push({
+          productId: item.dataValues.id,
+          actualPercentage: productPercentage,
+          message: 'Product is not active'
+        });
+      } else if (productPercentage !== percentage) {
         mismatchedProducts.push({
           productId: item.dataValues.id,
           actualPercentage: productPercentage
@@ -505,6 +538,7 @@ module.exports = {
   getProductByproductId,
   getProductForAdmin,
   updateIsActive,
-  checkDiscountPercentage
+  checkDiscountPercentage,
+  getProductBySlug
   // updateImage
 };

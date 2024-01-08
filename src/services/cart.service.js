@@ -2,7 +2,7 @@ const { Cart, Users, Orders, OrderDetails, paymentLog } = require('../models');
 const { createOrderForPayment } = require('../controllers/payment.controller');
 const { json } = require('sequelize');
 const shipRocketService = require('../services/shipRocket.service');
-const paymentService = require('../services/paymentLog.service');
+const { productService } = require('../services');
 // const { cartService } = require('../services/cart.service');
 
 const createCartToGoggle = async (id) => {
@@ -61,7 +61,6 @@ const getCartById = async (id) => {
     const data = await Cart.findOne({
       where: { userId: id, isActive: true, status: true }
     });
-    // console.log('check data----------------------------', data);
     return data;
   } catch (error) {
     console.error('This is due  to cart not found!!', error);
@@ -137,10 +136,18 @@ async function createCheckout(userId) {
     if (!userId) {
       throw new Error('No user ID provided.');
     }
-    console.log('USerID------------------------', userId);
+
     // const userData = await Users.findOne({ where: { id: userId } });
     // console.log('------------------------------------', addressId, 'userId0------------------------', userId);
     const cart = await Cart.findOne({ where: { userId: userId } });
+    const productPromises = cart.cartDetail.cartDetails.map(async (item) => {
+      return productService.checkDiscountPercentage(item.id, item.discountPercentage);
+    });
+    const resp = await Promise.all(productPromises);
+    let result = resp[0];
+    if (result !== true && resp.length >= 1) {
+      return { data: resp };
+    }
     const _finalAmount = cart.dataValues.finalAmount;
     const _discountAmount = cart.dataValues.discountAmount;
     const discountCoupon = cart.dataValues.couponPercent;
@@ -217,7 +224,7 @@ async function createCheckout(userId) {
         },
         { where: { userId: userId } }
       );
-      return { order, orderDetailsArray, totalAmount, _finalAmount };
+      return { order, orderDetailsArray, totalAmount, _finalAmount, resp };
     }
   } catch (error) {
     console.error('Error in createCheckout:', error);

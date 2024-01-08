@@ -36,11 +36,9 @@ const getCoupon = async (id) => {
 
 const getCouponById = async (id) => {
   try {
-    console.log('id 0000000000000000000000000000000000000', id);
     const data = await DiscountCoupon.findOne({
       where: { id: id, status: true }
     });
-    console.log('ch handle data==================', data);
     if (!data) {
       return false;
     }

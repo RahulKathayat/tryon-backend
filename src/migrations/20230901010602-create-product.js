@@ -101,6 +101,10 @@ module.exports = {
       upComingDate: {
         type: Sequelize.JSON
       },
+      slug: {
+        type: Sequelize.STRING,
+        unique: true
+      },
       status: {
         type: Sequelize.BOOLEAN
       },

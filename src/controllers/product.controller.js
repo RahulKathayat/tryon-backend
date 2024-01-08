@@ -257,6 +257,18 @@ const isUpcomingproduct = catchAsync(async (req, res) => {
   }
 });
 
+const getProductBySlug = catchAsync(async (req, res) => {
+  const data = await productService.getProductBySlug(req.params.slug, req.query.limit);
+  if (data === false) {
+    res.status(httpStatus.BAD_REQUEST).send({ message: 'slug does not exist ' });
+  }
+  if (data) {
+    res.status(httpStatus.OK).send({ message: 'product data by slug is fetched successfully', data: data });
+  } else {
+    res.status(httpStatus.NO_CONTENT).send({ message: 'Error in fetch data' });
+  }
+  return data;
+});
 const getProductById = catchAsync(async (req, res) => {
   const data = await productService.getProductById(req.params.id, req.query.limit);
   if (data === false) {
@@ -413,13 +425,15 @@ const getProductsForUser = async (req, res, next) => {
   }
 };
 
-cron.schedule('* * * * * *', async () => {
-  // const getAvrageRatings = await ratingsService.calculateAverageRatings();
-  // if (getAvrageRatings) {
-  //   await productService.updateAvrageRatings(getAvrageRatings);
-  // }
-  // console.log('cron Called');
-});
+// cron
+
+// cron.schedule('* * * * * *', async () => {
+// const getAvrageRatings = await ratingsService.calculateAverageRatings();
+// if (getAvrageRatings) {
+//   await productService.updateAvrageRatings(getAvrageRatings);
+// }
+// console.log('cron Called');
+// });
 
 const updateIsActive = catchAsync(async (req, res) => {
   try {
@@ -453,5 +467,6 @@ module.exports = {
   getProductBySearch,
   getProductsForUser,
   getProductForAdmin,
-  updateIsActive
+  updateIsActive,
+  getProductBySlug
 };

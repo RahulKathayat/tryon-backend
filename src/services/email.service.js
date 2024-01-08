@@ -243,17 +243,17 @@ const sendEmailToUser = async (to, name) => {
         <h6 style="color: #1E1142;font-weight: 500;font-size: 20px;margin:0px 0px 16px 0px;">Hello!</h6>
         <p style="color: #717972;font-size: 16px;font-weight: 400;margin-bottom: 35px;margin-top:0rem;line-height: 28px;">
        
-        Dear ${name},
+        Dear ${name} <br/><br/>
         I hope this message finds you well. We've received your recent inquiry through our Contact Us page on the website, and I wanted to personally reach out to address your concerns.
         Thank you for taking the time to connect with us. Your feedback is invaluable in helping us improve our services and address any issues you may be facing.
         If you have any further questions or need clarification, please don't hesitate to reach out. We are here to ensure your experience with  TEX 3D INNOVATIVES PRIVATE LIMITED is positive and seamless.
         Thank you for choosing TEX 3D INNOVATIVES PRIVATE LIMITED . We appreciate your trust and look forward to resolving this matter for you.
-        Best regards,
-        TEX 3D INNOVATIVES PRIVATE LIMITED Gadwal Ganeshpur Basti
+        <br/> <br/> Best regards<br/>
+        TEX 3D INNOVATIVES PRIVATE LIMITED <br/> Gadwal Ganeshpur Basti
         UP India 272001
-        9791028374 / 9891088434
-        abhaysharma@korakagaj.com/santosh@korakagaj.com
-        Company Founders - Abhay Kumar Sharma & Santosh Kumar Sharma
+        9791028374 / 9891088434 <br/>
+        abhaysharma@korakagaj.com/santosh@korakagaj.com <br/>
+        Company Founders - Abhay Kumar Sharma & Santosh Kumar Sharma <br/>
         </p>
       </td>
     </tr>

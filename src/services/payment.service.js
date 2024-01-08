@@ -13,7 +13,7 @@ const razorpay = new Razorpay({
 // for Razorpay
 const createOrderForPayment = async (amount, currency, receipt, notes) => {
   try {
-    amount = parseInt(amount);
+    amount = parseFloat(amount);
     const options = {
       amount: amount * 100, // Amount in the smallest currency unit (e.g., 100 paise for 1 INR)
       currency: 'INR', // Currency code (e.g., 'INR')

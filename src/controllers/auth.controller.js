@@ -31,7 +31,6 @@ const login = catchAsync(async (req, res) => {
 
 const loginWithGoogle = catchAsync(async (req, res) => {
   try {
-    console.log('request bodyu*************************************************************', req.body);
     // return;
     const existUser = await userService.getExistingEmails(req.body.email);
     if (existUser) {
@@ -48,7 +47,7 @@ const loginWithGoogle = catchAsync(async (req, res) => {
         gLogin: true,
         role: 'Customer'
       });
-      console.log('check use r ************************************************************', user);
+
       const userDetailBody = {
         // id: user.dataValues.id,
         firstName: user.dataValues.firstName,
@@ -56,7 +55,7 @@ const loginWithGoogle = catchAsync(async (req, res) => {
         phoneNumber: user.dataValues.phoneNumber,
         email: user.dataValues.email
       };
-      console.log('user----------------------------------------', user);
+
       // await userService.createUserDetail(userDetailBody);
       const tokens = await tokenService.generateAuthTokens(user);
       await cartService.createCartToGoggle(user.dataValues.id);
