@@ -31,7 +31,7 @@ router
 router.get('/admin', auth(), productController.getProductForAdmin); //admin
 router.put('/isActive/:id', auth(), validate(productValidation.updateIsActive), productController.updateIsActive);
 
-router.get('/getProductDetailsBySlug/:slug', auth(), productController.getProductBySlug);
+router.get('/getProductDetailsBySlug/:slug', productController.getProductBySlug);
 
 router
   .route('/:id')
