@@ -174,6 +174,7 @@ const getProduct = async (query = {}, options = {}, between = {}, order = 'desc'
     ) {
       const products = await Product.findAll({
         order: orderCriteria,
+        isActive: true,
         include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }, { model: Ratings }]
       });
 
@@ -206,6 +207,7 @@ const getProduct = async (query = {}, options = {}, between = {}, order = 'desc'
     const products = await Product.findAll({
       where: query,
       order: orderCriteria,
+      isActive: true,
       include: [
         { model: Category },
         { model: SubCategory },
@@ -240,6 +242,7 @@ const getProductBySearch = async (query, options) => {
 
     if (query == null || options == null) {
       const data = await Product.findAndCountAll({
+        where: { isActive: true },
         limit: limit,
         offset: offset,
         include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }]
@@ -247,7 +250,7 @@ const getProductBySearch = async (query, options) => {
       return data;
     } else {
       const data = await Product.findAndCountAll({
-        where: { ...query },
+        where: { ...query, isActive: true },
         include: [{ model: Category }, { model: SubCategory }, { model: SubSubCategory }],
         limit: limit,
         offset: offset
