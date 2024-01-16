@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 
 const createProduct = async (_userBody) => {
   let userBody = _userBody;
+  console.log('check user body--------------------------------------------------', userBody);
   const colour = _userBody.colour;
   const size = _userBody.size;
   _userBody.colour = JSON.stringify(colour);
@@ -15,7 +16,7 @@ const createProduct = async (_userBody) => {
     finalAmount: finalAmount,
     marginAmount: marginAmount
   };
-
+  console.log('before creating product---------------------------------------------------------', userBody);
   return Product.create(userBody);
 };
 
@@ -407,6 +408,7 @@ const updateProductById = async (id, data) => {
     let newData = data;
     let colour = newData.colour;
     let size = newData.size;
+    const slug = newData.productName.toLowerCase().replace(/\s+/g, '-');
     newData.colour = JSON.stringify(colour);
     newData.size = JSON.stringify(size);
     let finalAmount = newData.totalPrice - [(newData.totalPrice * newData.discountPercentage) / 100];
@@ -415,7 +417,8 @@ const updateProductById = async (id, data) => {
     newData = {
       ...newData,
       finalAmount: finalAmount,
-      marginAmount: marginAmount
+      marginAmount: marginAmount,
+      slug: slug
     };
     if (findData) {
       return Product.update(newData, { where: id });
