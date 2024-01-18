@@ -1,4 +1,4 @@
-const { Orders, OrderDetails, Users, Product } = require('../models');
+const { Orders, OrderDetails, Users, Product, paymentLog } = require('../models');
 // const orderDetails = require('../models/orderDetails');
 
 const createOrder = async (_userBody) => {
@@ -115,6 +115,9 @@ const getOrderForUser = async (query, options, userId) => {
     include: [
       {
         model: Users
+      },
+      {
+        model: paymentLog
       },
       {
         model: OrderDetails,

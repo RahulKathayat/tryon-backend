@@ -13,8 +13,10 @@ const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const path = require('path');
+// const cronCalled = require('./utils/cron');
 
 const app = express();
+// cronCalled();
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);

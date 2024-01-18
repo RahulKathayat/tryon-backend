@@ -6,8 +6,11 @@ const createPaymentLog = async (body, userId) => {
       ...body,
       userId: userId
     };
-
+    // console.log('check--in payment log-----------------------------------------------------', data);
     const result = await paymentLog.create(data);
+    // if (data.paymentResponse.status == 'paid') {
+    //   await Orders.update({ orderStatus: 'Paid' }, { where: { id: data.orderId } });
+    // }
     return result;
   } catch (err) {
     console.log('error============', err);

@@ -125,6 +125,7 @@ async function createCheckout(req, res) {
   try {
     const userId = req.user.id;
     const checkoutResponse = await cartService.createCheckout(userId);
+    console.log('check checkout----------------------------------------------', checkoutResponse);
     if (checkoutResponse.data) {
       res.status(400).send({ message: checkoutResponse.data });
       return;
