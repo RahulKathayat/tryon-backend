@@ -2,6 +2,7 @@ const catchAsync = require('../utils/catchAsync');
 const { paymentLogService, orderService } = require('../services');
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
+const { Orders } = require('../models');
 
 const createPaymentLog = catchAsync(async (req, res) => {
   try {
@@ -10,8 +11,13 @@ const createPaymentLog = catchAsync(async (req, res) => {
     const data = await paymentLogService.createPaymentLog(body, userId);
 
     if (data) {
-      if (data.dataValues.paymentResponse.status === 'failed') {
+      if (
+        data.dataValues.paymentResponse.status === 'failed' ||
+        data.dataValues.paymentResponse.status === 'Intially Payment'
+      ) {
         await orderService.orderStatusToPaymentFaild(data.dataValues.orderId);
+      } else if (data.dataValues.paymentResponse.status === 'paid') {
+        await Orders.update({ orderStatus: 'In Process' }, { where: { id: data.orderId } });
       }
       await res.status(200).send({ message: 'payment log created successfully' });
     } else {
