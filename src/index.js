@@ -1,7 +1,6 @@
 const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
-const { createDiscountBanner } = require('../src/utils/createDiscountBanner');
 //
 var fs = require('fs');
 var https = require('https');
@@ -46,8 +45,6 @@ const unexpectedErrorHandler = (error) => {
 
 process.on('uncaughtException', unexpectedErrorHandler);
 process.on('unhandledRejection', unexpectedErrorHandler);
-
-createDiscountBanner();
 
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received');

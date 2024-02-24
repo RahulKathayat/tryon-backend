@@ -2,42 +2,20 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'Users',
     {
-      firstName: {
-        type: DataTypes.STRING
-      },
-      lastName: {
-        type: DataTypes.STRING
-      },
-      phoneNumber: {
-        type: DataTypes.BIGINT
-      },
       email: {
         type: DataTypes.STRING
       },
-      emailVerify: {
-        type: DataTypes.STRING
+      name: {
+        type: DataTypes.STRING(255)  // Specify the length for VARCHAR
       },
-      password: {
-        type: DataTypes.STRING
+      firebaseId: {
+        type: DataTypes.STRING(255)  // Specify the length for VARCHAR
       },
-      addressId: {
-        type: DataTypes.STRING
+      contact: {
+        type: DataTypes.STRING(655)  // Specify the length for VARCHAR
       },
-      dob: {
-        type: DataTypes.DATE
-      },
-      role: {
-        type: DataTypes.STRING
-      },
-      gAuth:{
-        type: DataTypes.STRING,
-      },
-      gLogin:{
-        type: DataTypes.BOOLEAN,
-      },
-      isActive:{
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
+      loginType: {
+        type: DataTypes.STRING(255)  // Specify the length for VARCHAR
       },
       status: {
         type: DataTypes.BOOLEAN,
@@ -46,49 +24,25 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       tableName: 'Users',
+      
       freezeTableName: true,
       defaultScope: {
-        attributes: { exclude: ['password','gAuth'] }
+        // attributes: { exclude: ['password'] }
       },
       scopes: {
         withSecretColumns: {
-          attributes: { include: ['password','gAuth'] }
+          // attributes: { include: ['password'] }
         }
       }
     }
   );
 
-  User.associate = function (models) {
-    User.hasMany(models.Address, {
-      foreignKey: 'userId'
-      // onDelete: 'SET NULL',
-      // allowNull: true
-    });
+  // User.associate = function (models) {
 
-    User.hasOne(models.Cart, {
-      foreignKey: 'userId'
-    });
-
-    User.hasMany(models.Orders, {
-      foreignKey: 'userId'
-    });
-
-    User.hasMany(models.Ratings, {
-      foreignKey: 'userId'
-    });
-
-    User.hasMany(models.Refund, {
-      foreignKey: 'userId'
-    });
-
-    User.hasOne(models.WishList, {
-      foreignKey: 'userId'
-    });
-
-    User.hasMany(models.paymentLog, {
-      foreignKey: 'userId'
-    });
-  };
+  //   User.hasOne(models.Cart, {
+  //     foreignKey: 'userId'
+  //   });  
+  // };
 
   return User;
 };

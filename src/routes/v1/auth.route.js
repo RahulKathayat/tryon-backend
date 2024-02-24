@@ -1,4 +1,6 @@
 const express = require('express');
+
+
 const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
@@ -7,7 +9,7 @@ const checkApiKey = require('../../middlewares/chekapikey');
 const path = require('path');
 
 const router = express.Router();
-
+ 
 router.post('/register', authController.register);
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/loginWithGoogle', validate(authValidation.loginWithGoogle), authController.loginWithGoogle);

@@ -9,6 +9,7 @@ module.exports = {
       },
       token: {
         type: Sequelize.STRING
+        
       },
       user: {
         type: Sequelize.INTEGER

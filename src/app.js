@@ -12,17 +12,19 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs')
 const path = require('path');
-// const cronCalled = require('./utils/cron');
+const swaggerJsDoc = YAML.load(path.join(__dirname, 'swagger.yaml'));
 
 const app = express();
-// cronCalled();
+
+// Serve Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc));
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
-  // app.use(morgan.logErrorHandler);
-  // app.use(morgan.logSuccessHandler);
 }
 
 // set security HTTP headers
@@ -68,9 +70,5 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
-
-// razorpay routes
-// const paymentRoutes = require('./routes/v1/payment.route');
-// app.use('/razorpay', paymentRoutes);
 
 module.exports = app;

@@ -1,6 +1,5 @@
 const catchAsync = require('../utils/catchAsync');
 const userService = require('../services/user.service');
-const cartService = require('../services/cart.service');
 
 const httpStatus = require('http-status');
 const pick = require('../utils/pick');
@@ -10,7 +9,7 @@ const { Op } = require('sequelize');
 const createUser = catchAsync(async (req, res) => {
   let userBody = req.body;
   const data = await userService.createUser(userBody);
-  const createCart = await cartService.createCart(req.user.id);
+  
   if (data) {
     await res.status(200).send({ message: 'user created successfully' });
   } else {

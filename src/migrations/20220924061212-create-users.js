@@ -1,39 +1,28 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Users', {
+    queryInterface.createTable('ecommerce_users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING
-      },
-      lastName: {
-        type: Sequelize.STRING
-      },
-      phoneNumber: {
-        type: Sequelize.BIGINT
-      },
       email: {
         type: Sequelize.STRING
       },
-      emailVerify: {
-        type: Sequelize.STRING
+      name: {
+        type: Sequelize.TEXT
       },
-      password: {
-        type: Sequelize.STRING
+      firebaseId: {
+        type: Sequelize.TEXT
       },
-      addressId: {
-        type: Sequelize.STRING
+      contact: {
+        type: Sequelize.TEXT
       },
-      dob: {
-        type: Sequelize.DATE
+      loginType: {
+        type: Sequelize.TEXT
       },
-      role: {
-        type: Sequelize.STRING
-      },
+
       status: {
         type: Sequelize.BOOLEAN
       },
@@ -46,5 +35,5 @@ module.exports = {
         type: Sequelize.DATE
       }
     }),
-  down: (queryInterface) => queryInterface.dropTable('Users')
+  down: (queryInterface) => queryInterface.dropTable('ecommerce_users')
 };

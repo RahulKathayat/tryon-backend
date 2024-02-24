@@ -2,9 +2,7 @@ const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const { userController } = require('../../controllers');
-const authValidation = require('../../validations/auth.validation');
 const { userValidation } = require('../../validations');
-const { commonService } = require('../../services');
 // const auth = require('../../middlewares/auth');
 
 const router = express.Router();
@@ -14,6 +12,7 @@ router
   .post(auth(), validate(userValidation.createUser), userController.createUser);
 
 router.get('/email', userController.getUserByEmail);
+
 router.get('/me', auth(), userController.getUserDataByUserId);
 router.put('/me', auth(), validate(userValidation.updateUser), userController.updateUser);
 
