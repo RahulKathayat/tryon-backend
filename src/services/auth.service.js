@@ -68,7 +68,7 @@ const loginWithGoogle = async (email) => {
   // if (!userWithSecretFields || !(gAuth === userWithSecretFields.gAuth)) {
   //   throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect auth');
   // }
-  if (!user.isActive) {
+  if (!user.status) {
     throw new ApiError(httpStatus.FORBIDDEN, 'You Account is not active');
   }
   return user;
@@ -83,7 +83,7 @@ const loginWithFacebook = async (email) => {
   // if (!userWithSecretFields || !(gAuth === userWithSecretFields.gAuth)) {
   //   throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect auth');
   // }
-  if (!user.isActive) {
+  if (!user.status) {
     throw new ApiError(httpStatus.FORBIDDEN, 'You Account is not active');
   }
   return user;
