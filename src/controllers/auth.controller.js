@@ -8,24 +8,24 @@ const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  await cartService.createCart(user.id);
+  // await cartService.createCart(user.id);
   // const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
-  const tokens = await tokenService.generateAuthTokens(user);
+  // const tokens = await tokenService.generateAuthTokens(user);
   // const host = config.email.CUSTOMER_HOST;
   // await emailService.sendVerificationEmail(req.body.email, verifyEmailToken, host);
-  res.status(200).send({ message: 'register successfully', user, tokens });
+  res.status(200).send({ message: 'register successfully', user });
 });
 
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
-  const user = await authService.loginUserWithEmailAndPassword(email, password, req.body.role);
+  const user = await authService.loginUserWithEmailAndPassword(email, password);
 
   if (user) {
-    const data = await cartService.createCart(user.id);
+    // const data = await cartService.createCart(user.id);
     const tokens = await tokenService.generateAuthTokens(user);
     res.send({ message: 'Login Successfully!!', user, tokens });
   } else {
-    res.send({ message: 'Invalid email or password', user, tokens });
+    res.send({ message: 'Invalid email or password'});
   }
 });
 
@@ -34,31 +34,61 @@ const loginWithGoogle = catchAsync(async (req, res) => {
     // return;
     const existUser = await userService.getExistingEmails(req.body.email);
     if (existUser) {
-      const user = await authService.loginWithGoogle(req.body.email, req.body.gAuth);
+      const user = await authService.loginWithGoogle(req.body.email);
       const tokens = await tokenService.generateAuthTokens(user);
-      await userService.updateUserById(existUser.dataValues.id, { gLogin: true });
+      // await userService.updateUserById(existUser.dataValues.id, { gLogin: true });
       res.send({ user, tokens });
     } else {
       const user = await userService.createGoogleUser({
-        ...req.body,
-        firstName: req.body.firstname,
-        lastName: req.body.lastname,
-        isEmailVerified: true,
-        gLogin: true,
-        role: 'Customer'
+        email: req.body.email,
+        name: req.body.name,
+        loginType: "google",
       });
 
-      const userDetailBody = {
-        // id: user.dataValues.id,
-        firstName: user.dataValues.firstName,
-        lastName: user.dataValues.lastName,
-        phoneNumber: user.dataValues.phoneNumber,
-        email: user.dataValues.email
-      };
+      // const userDetailBody = {
+      //   // id: user.dataValues.id,
+      //   firstName: user.dataValues.firstName,
+      //   lastName: user.dataValues.lastName,
+      //   phoneNumber: user.dataValues.phoneNumber,
+      //   email: user.dataValues.email
+      // };
 
       // await userService.createUserDetail(userDetailBody);
       const tokens = await tokenService.generateAuthTokens(user);
-      await cartService.createCartToGoggle(user.dataValues.id);
+      // await cartService.createCartToGoggle(user.dataValues.id);
+      res.send({ user, tokens });
+    }
+  } catch (err) {
+    console.log('error=====', err);
+  }
+});
+const loginWithFacebook = catchAsync(async (req, res) => {
+  try {
+    // return;
+    const existUser = await userService.getExistingEmails(req.body.email);
+    if (existUser) {
+      const user = await authService.loginWithFacebook(req.body.email);
+      const tokens = await tokenService.generateAuthTokens(user);
+      // await userService.updateUserById(existUser.dataValues.id, { gLogin: true });
+      res.send({ user, tokens });
+    } else {
+      const user = await userService.createFacebookUser({
+        email: req.body.email,
+        name: req.body.name,
+        loginType: "facebook",
+      });
+
+      // const userDetailBody = {
+      //   // id: user.dataValues.id,
+      //   firstName: user.dataValues.firstName,
+      //   lastName: user.dataValues.lastName,
+      //   phoneNumber: user.dataValues.phoneNumber,
+      //   email: user.dataValues.email
+      // };
+
+      // await userService.createUserDetail(userDetailBody);
+      const tokens = await tokenService.generateAuthTokens(user);
+      // await cartService.createCartToGoggle(user.dataValues.id);
       res.send({ user, tokens });
     }
   } catch (err) {
@@ -147,5 +177,6 @@ module.exports = {
   forgotPassword,
   resetPassword,
   changePassword,
-  loginWithGoogle
+  loginWithGoogle,
+  loginWithFacebook,
 };

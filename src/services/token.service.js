@@ -7,11 +7,9 @@ const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const userService = require('../services/user.service');
 
-const generateToken = (userId, role, expires, type, secret = config.jwt.secret) => {
+const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   const payload = {
     sub: userId,
-    role,
-
     iat: moment().unix(),
     exp: expires.unix(),
     type
@@ -19,11 +17,10 @@ const generateToken = (userId, role, expires, type, secret = config.jwt.secret) 
   return jwt.sign(payload, secret);
 };
 
-const saveToken = async (token, userId, role, expires, type, blacklisted = false) => {
+const saveToken = async (token, userId, expires, type, blacklisted = false) => {
   const tokenDoc = await Token.create({
     token,
     user: userId,
-    role,
     expires: expires.toDate(),
     type,
     blacklisted
@@ -43,11 +40,11 @@ const verifyToken = async (token, type) => {
 
 const generateAuthTokens = async (user) => {
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-  const accessToken = generateToken(user.id, user.role, accessTokenExpires, tokenTypes.ACCESS);
+  const accessToken = generateToken(user.id,accessTokenExpires, tokenTypes.ACCESS);
 
   const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
-  const refreshToken = generateToken(user.id, user.role, refreshTokenExpires, tokenTypes.REFRESH);
-  await saveToken(accessToken, user.id, user.role, accessTokenExpires, tokenTypes.REFRESH);
+  const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
+  await saveToken(accessToken, user.id, accessTokenExpires, tokenTypes.REFRESH);
 
   return {
     access: {

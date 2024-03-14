@@ -11,19 +11,19 @@ const login = {
   body: Joi.object().keys({
     email: Joi.string().required(),
     password: Joi.string().required(),
-    role: Joi.string().required(),
-    role: Joi.string().required().valid('Admin', 'Customer')
   })
 };
 
 const loginWithGoogle = {
   body: Joi.object().keys({
     email: Joi.string().required(),
-    gAuth: Joi.string().required(),
-    firstname: Joi.string().optional(),
-    lastname: Joi.string().optional(),
-    clientId: Joi.string().optional(),
-    credential: Joi.string().optional()
+    name: Joi.string().required(),
+  })
+};
+const loginWithFacebook = {
+  body: Joi.object().keys({
+    email: Joi.string().required(),
+    name: Joi.string().required(),
   })
 };
 
@@ -77,5 +77,6 @@ module.exports = {
   forgotPassword,
   resetPassword,
   changePassword,
-  loginWithGoogle
+  loginWithGoogle,
+  loginWithFacebook,
 };

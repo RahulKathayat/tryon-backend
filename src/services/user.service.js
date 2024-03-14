@@ -26,6 +26,7 @@ const createUser = async (_userBody) => {
     }
     userBody.email = userBody.email.toLowerCase();
     userBody.password = await bcrypt.hash(userBody.password, 8);
+    userBody.loginType = "emailpass";
     const createdUser = await Users.create(userBody);
 
     return createdUser;
@@ -102,7 +103,7 @@ const getUserById = async (id) => {
 const getUserByEmail = async (email) => {
   try {
     const data = await Users.findOne({
-      where: { email: email, status: true, isActive: true }
+      where: { email: email, status: true }
     });
     return data;
   } catch (error) {
@@ -219,19 +220,22 @@ const getUserDataByUserId = async (id) => {
 // };
 
 const createGoogleUser = async (_userBody) => {
-  const userBody = _userBody;
+  // const userBody = _userBody;
 
-  if (Array.isArray(userBody.gAuth) || typeof userBody.gAuth === 'object') {
-    // Handle the case where gAuth is an array or object (e.g., stringify it)
-    userBody.gAuth = JSON.stringify(userBody.gAuth);
-  }
+  // if (Array.isArray(userBody.gAuth) || typeof userBody.gAuth === 'object') {
+  //   // Handle the case where gAuth is an array or object (e.g., stringify it)
+  //   userBody.gAuth = JSON.stringify(userBody.gAuth);
+  // }
 
-  // Hash the gAuth field
-  userBody.gAuth = await bcrypt.hash(userBody.gAuth, 10);
+  // // Hash the gAuth field
+  // userBody.gAuth = await bcrypt.hash(userBody.gAuth, 10);
 
-  return Users.create(userBody);
+  return Users.create(_userBody);
 };
 
+const createFacebookUser = async (_userBody) => {
+  return Users.create(_userBody);
+};
 module.exports = {
   createUser,
   getUser,
@@ -245,6 +249,7 @@ module.exports = {
   getUserDataByUserId,
   getExistingEmails,
   createGoogleUser,
+  createFacebookUser,
   createUserDetail,
   updateUserByAdmin,
   getUserById2,

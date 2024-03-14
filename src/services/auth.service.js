@@ -9,22 +9,22 @@ const logger = require('../config/logger');
 const { Users } = require('../models/user');
 
 // login without Google account--------------------------------------------------
-const loginUserWithEmailAndPassword = async (email, password, role) => {
+const loginUserWithEmailAndPassword = async (email, password) => {
   try {
     const user = await userService.getUserByEmail(email);
-    if (user) {
-      if (user.dataValues.role !== role) {
-        throw new ApiError(httpStatus.FORBIDDEN, 'Incorrect email or password');
-      }
-    }
+    // if (user) {
+    //   if (user.dataValues.role !== role) {
+    //     throw new ApiError(httpStatus.FORBIDDEN, 'Incorrect email or password');
+    //   }
+    // }
     if (user == null) {
       throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
     }
 
-    const userWithSecretFields = await userService.getUserWithSecretFieldsById(user.id);
+    // const userWithSecretFields = await userService.getUserById2(user.id);
     logger.info('message');
 
-    if (!user || !(await bcrypt.compare(password, userWithSecretFields.password))) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
     }
 
@@ -43,25 +43,25 @@ const loginUserWithEmailAndPasswordForGoogle = async (email, password) => {
     if (!user) {
       throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
     }
-    const userWithSecretFields = await userService.getUserWithSecretFieldsById(user.id);
-    // console.log('password=======================', password);
-    // console.log('userWithSecretFields==========================', userWithSecretFields);
-    logger.info('message');
+    // const userWithSecretFields = await userService.getUserById2(user.id);
+    // // console.log('password=======================', password);
+    // // console.log('userWithSecretFields==========================', userWithSecretFields);
+    // logger.info('message');
 
-    if (!user || !(await bcrypt.compare(password, userWithSecretFields.gAuth))) {
-      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
-    }
+    // if (!user || !(await bcrypt.compare(password, userWithSecretFields.gAuth))) {
+    //   throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    // }
 
     return user;
   } catch (error) {
-    console.error('Error in loginUserWithEmailAndPassword:', error);
+    console.error('Error in login with google email:', error);
     throw error;
   }
 };
 
-const loginWithGoogle = async (email, gAuth) => {
+const loginWithGoogle = async (email) => {
   // console.log('gauth============================', email, gAuth);
-  const user = await loginUserWithEmailAndPasswordForGoogle(email, gAuth);
+  const user = await userService.getUserByEmail(email);
   // const userWithSecretFields = await userService.getUserWithSecretFields(email, gAuth);
   // const user = await userService.getUserByEmail(email);
   logger.info('message');
@@ -73,6 +73,22 @@ const loginWithGoogle = async (email, gAuth) => {
   }
   return user;
 };
+
+const loginWithFacebook = async (email) => {
+  // console.log('gauth============================', email, gAuth);
+  const user = await userService.getUserByEmail(email);
+  // const userWithSecretFields = await userService.getUserWithSecretFields(email, gAuth);
+  // const user = await userService.getUserByEmail(email);
+  logger.info('message');
+  // if (!userWithSecretFields || !(gAuth === userWithSecretFields.gAuth)) {
+  //   throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect auth');
+  // }
+  if (!user.isActive) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'You Account is not active');
+  }
+  return user;
+};
+
 
 const logout = async (refreshToken) => {
   const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
@@ -153,5 +169,6 @@ module.exports = {
   verifyEmail,
   resetPassword,
   loginWithGoogle,
-  loginUserWithEmailAndPasswordForGoogle
+  loginUserWithEmailAndPasswordForGoogle,
+  loginWithFacebook,
 };

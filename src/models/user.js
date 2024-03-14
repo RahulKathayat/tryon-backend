@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING
       },
+      password: {
+        type: DataTypes.STRING
+      },
       name: {
         type: DataTypes.STRING(255)  // Specify the length for VARCHAR
       },

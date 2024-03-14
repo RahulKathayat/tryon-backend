@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         onDelete: 'SET Null',
         references: {
-          model: 'ecommerce_users',
+          model: 'Users',
           key: 'id'
         }
       },
