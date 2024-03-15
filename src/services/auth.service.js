@@ -12,16 +12,31 @@ const { Users } = require('../models/user');
 const loginUserWithEmailAndPassword = async (email, password) => {
   try {
     const user = await userService.getUserByEmail(email);
-    // if (user) {
-    //   if (user.dataValues.role !== role) {
-    //     throw new ApiError(httpStatus.FORBIDDEN, 'Incorrect email or password');
-    //   }
-    // }
     if (user == null) {
       throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
     }
 
     // const userWithSecretFields = await userService.getUserById2(user.id);
+    logger.info('message');
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    }
+
+    return user;
+  } catch (error) {
+    console.error('Error in loginUserWithEmailAndPassword:', error);
+    throw error;
+  }
+};
+// login admin with email and password
+const loginAdminWithEmailAndPassword = async (email, password) => {
+  try {
+    const user = await userService.getAdminByEmail(email);
+    if (user == null) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    }
+
     logger.info('message');
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -164,6 +179,7 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
 
 module.exports = {
   loginUserWithEmailAndPassword,
+  loginAdminWithEmailAndPassword,
   logout,
   refreshAuth,
   verifyEmail,

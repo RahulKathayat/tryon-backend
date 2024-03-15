@@ -2,7 +2,7 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const firebase = require('./firebase.route')
-
+const adminRoute = require('./admin.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -14,6 +14,10 @@ const defaultRoutes = [
   {
     path: '/user',
     route: userRoute
+  },
+  {
+    path: '/admin',
+    route: adminRoute
   },
   {
     path: '/firebase',

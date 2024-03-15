@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     
-  const Admin = sequelize.define('Admin', {
+  const Admin = sequelize.define('Admins', {
         name: {
           type: DataTypes.STRING
         },
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       {
-        tableName: 'Admin',
+        tableName: 'Admins',
         freezeTableName: true
       }
     );

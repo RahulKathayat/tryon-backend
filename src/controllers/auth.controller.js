@@ -3,11 +3,23 @@ const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const { authService, tokenService, userService, cartService, emailService, wishlistService } = require('../services');
 const config = require('../config/config');
-
+const { Admins } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
+  // await cartService.createCart(user.id);
+  // const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
+  // const tokens = await tokenService.generateAuthTokens(user);
+  // const host = config.email.CUSTOMER_HOST;
+  // await emailService.sendVerificationEmail(req.body.email, verifyEmailToken, host);
+  res.status(200).send({ message: 'register successfully', user });
+});
+
+const adminRegister = catchAsync(async (req, res) => {
+  const values = {name:req.body.name, email:req.body.email,password:await bcrypt.hash(req.body.password, 8)};
+  console.log("values are : ",values);
+  const user = await Admins.create(values);
   // await cartService.createCart(user.id);
   // const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
   // const tokens = await tokenService.generateAuthTokens(user);
@@ -24,6 +36,18 @@ const login = catchAsync(async (req, res) => {
     // const data = await cartService.createCart(user.id);
     const tokens = await tokenService.generateAuthTokens(user);
     res.send({ message: 'Login Successfully!!', user, tokens });
+  } else {
+    res.send({ message: 'Invalid email or password'});
+  }
+});
+
+const adminLogin = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+  const admin = await authService.loginAdminWithEmailAndPassword(email, password);
+
+  if (admin) {
+    const tokens = await tokenService.generateAuthTokens(admin);
+    res.send({ message: 'Login Successfully!!', admin, tokens });
   } else {
     res.send({ message: 'Invalid email or password'});
   }
@@ -168,7 +192,9 @@ const changePassword = catchAsync(async (req, res) => {
 
 module.exports = {
   register,
+  adminRegister,
   login,
+  adminLogin,
   logout,
   refreshTokens,
   generatePassword,
