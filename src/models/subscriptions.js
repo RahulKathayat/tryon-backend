@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
     const Subscription = sequelize.define('Subscription', {
         type: {
-            type: DataTypes.STRING(5)
+            type: DataTypes.TEXT
           },
           title: {
             type: DataTypes.TEXT
