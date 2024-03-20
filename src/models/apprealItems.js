@@ -11,6 +11,12 @@ portalId: {
   imageUrl: {
     type: DataTypes.TEXT
   },
+  apparelType: {
+    type: DataTypes.TEXT
+  },
+  description: {
+    type: DataTypes.JSON
+  },
   status: {
     type: DataTypes.BOOLEAN
   },

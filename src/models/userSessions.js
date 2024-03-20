@@ -6,6 +6,12 @@ module.exports = (sequelize, DataTypes) => {
           userId: {
             type: DataTypes.STRING
           },
+          apparelId: {
+            type: DataTypes.STRING
+          },
+          feedback: {
+            type: DataTypes.TEXT
+          },
           duration: {
             type: DataTypes.TEXT
           },

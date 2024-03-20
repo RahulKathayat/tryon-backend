@@ -29,6 +29,17 @@ module.exports = {
           key: 'id'
         }
       },
+      apparelId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'SET Null',
+        references: {
+          model: 'apparel_items',
+          key: 'id'
+        }
+      },
+      feedback: {
+        type: Sequelize.TEXT
+      },
       duration: {
         type: Sequelize.TEXT
       },

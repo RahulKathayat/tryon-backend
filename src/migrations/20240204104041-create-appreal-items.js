@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('appreal-items', {
+    queryInterface.createTable('apparel_items', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -21,6 +21,12 @@ module.exports = {
       imageUrl: {
         type: Sequelize.TEXT
       },
+      apparelType: {
+        type: Sequelize.TEXT
+      },
+      description: {
+        type: Sequelize.JSON
+      },
       status: {
         type: Sequelize.BOOLEAN
       },
@@ -33,5 +39,5 @@ module.exports = {
         type: Sequelize.DATE
       }
     }),
-  down: (queryInterface) => queryInterface.dropTable('appreal-items')
+  down: (queryInterface) => queryInterface.dropTable('apparel_items')
 };
