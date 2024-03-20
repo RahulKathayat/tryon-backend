@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const bcrypt = require('bcryptjs');
-const { Users, Address,Admins } = require('../models');
+const { Users, Address,Admins ,Owner} = require('../models');
 const logger = require('../config/logger');
 const messages = require('../constant/message.json');
 const authService = require('./auth.service');
@@ -114,6 +114,17 @@ const getUserByEmail = async (email) => {
 const getAdminByEmail = async (email) => {
   try {
     const data = await Admins.findOne({
+      where: { email: email }
+    });
+    return data;
+  } catch (error) {
+    console.error('Error retrieving user by email:', error);
+    throw error;
+  }
+};
+const getOwnerByEmail = async (email) => {
+  try {
+    const data = await Owner.findOne({
       where: { email: email }
     });
     return data;
@@ -255,6 +266,7 @@ module.exports = {
   getUserWithSecretFieldsById,
   getUserByEmail,
   getAdminByEmail,
+  getOwnerByEmail,
   getUserById,
   getUserWithSecretFields,
   updateUserPasswordById,

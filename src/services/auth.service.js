@@ -49,6 +49,26 @@ const loginAdminWithEmailAndPassword = async (email, password) => {
     throw error;
   }
 };
+// login owner with email and password
+const loginOwnerWithEmailAndPassword = async (email, password) => {
+  try {
+    const user = await userService.getOwnerByEmail(email);
+    if (user == null) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    }
+
+    logger.info('message');
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    }
+
+    return user;
+  } catch (error) {
+    console.error('Error in loginOwnerWithEmailAndPassword:', error);
+    throw error;
+  }
+};
 
 // For Google Login----------------------------------------------------------
 const loginUserWithEmailAndPasswordForGoogle = async (email, password) => {
@@ -180,6 +200,7 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
 module.exports = {
   loginUserWithEmailAndPassword,
   loginAdminWithEmailAndPassword,
+  loginOwnerWithEmailAndPassword,
   logout,
   refreshAuth,
   verifyEmail,
