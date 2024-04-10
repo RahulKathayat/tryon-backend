@@ -33,8 +33,19 @@ const ownerLogin = catchAsync(async (req, res) => {
 
 });
 
+const fetchOwners = catchAsync(async (req, res) => {
+    try{
+        const owners = await Owner.findAll();
+        res.status(httpStatus.OK).send({ message: 'Successfully fetched owners' , data: owners });
+    }
+    catch(err){
+        console.log(err);
+        res.send({ message: 'Problem in fetching owners' });
+    }
+});
+
 module.exports = { 
     ownerRegister,
     ownerLogin,
-
+    fetchOwners,
 };
