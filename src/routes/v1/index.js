@@ -4,6 +4,7 @@ const userRoute = require('./user.route');
 const firebase = require('./firebase.route')
 const adminRoute = require('./admin.route');
 const ownerRoute = require('./owner.route');
+const widgetConfigurationRoute = require('./widgetConfigurations.route');
 
 const router = express.Router();
 
@@ -24,6 +25,10 @@ const defaultRoutes = [
   {
     path: '/owner',
     route: ownerRoute
+  },
+  {
+    path: '/widgetConfigurations',
+    route: widgetConfigurationRoute
   },
   {
     path: '/firebase',

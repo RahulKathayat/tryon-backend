@@ -34,7 +34,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         onDelete: 'SET Null',
         references: {
-          model: 'widget_configuration',
+          model: 'WidgetConfiguration',
           key: 'id'
         }
       },

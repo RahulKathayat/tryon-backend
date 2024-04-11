@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('widget_configuration', {
+    queryInterface.createTable('WidgetConfiguration', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -24,5 +24,5 @@ module.exports = {
         type: Sequelize.DATE
       }
     }),
-  down: (queryInterface) => queryInterface.dropTable('widget_configuration')
+  down: (queryInterface) => queryInterface.dropTable('WidgetConfiguration')
 };
